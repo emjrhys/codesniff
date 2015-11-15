@@ -1,14 +1,26 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Code(models.Model):
 	content = models.TextField()
 	language = models.TextField()
-	user = models.TextField() #models.ForeignKey(User)
+	creator = models.ForeignKey(User, default=1)
+	date_added = models.DateTimeField()
+
+class Scores(models.Model):
+	code = models.ForeignKey(Code)
+	user = models.ForeignKey(User)
+	score = models.DecimalField(max_digits=5, decimal_places=2)
+
+class CodeSmells(models.Model):
+	code = models.ForeignKey(Code)
+	user = models.ForeignKey(User)
+	line = models.IntegerField()
+	smell = models.TextField()
 
 class Comment(models.Model):
 	content = models.TextField()
 	line = models.IntegerField()
-	user = models.TextField() #models.ForeignKey(User)
+	user = models.ForeignKey(User)
 	code = models.ForeignKey(Code)
