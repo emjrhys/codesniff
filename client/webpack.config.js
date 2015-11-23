@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './components',
+    entry: './index.js',
     context: __dirname + '/src',
     target: 'web',
     debug: true,
