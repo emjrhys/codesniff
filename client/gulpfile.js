@@ -76,6 +76,7 @@ var execWebpack = function(cb) {
     new webpackDevServer(webpack(webpackConfig), {
         contentBase: __dirname + '/dist/',
         publicPath: webpackConfig.output.publicPath,
+        quiet: true,
     }).listen(8080, "localhost", function(err) {
     
         if(err)
@@ -86,4 +87,4 @@ var execWebpack = function(cb) {
         cb();
     });
 
-}
+};
