@@ -4,7 +4,7 @@ gutil = require('gulp-util');
 sass = require('gulp-sass');
 clean = require('gulp-clean');
 webpack = require('webpack');
-
+webpackDevServer = require('webpack-dev-server');
 
 // Configs
 webpackConfig = require('./webpack.config.js');
@@ -12,7 +12,13 @@ if (gulp.env.proudction) {
     // Do production stuff
 }
 
+var myDevConfig = Object.create(webpackConfig);
+var devCompiler = webpack(myDevConfig);
+
 sassConfig = { includePaths: ['src/styles'] };
+vendorPaths = {
+    
+}
 
 // Tasks
 
@@ -21,58 +27,63 @@ gulp.task('clean', function() {
         .pipe(clean());
 })
 
-.task('sass', function() {
-    return gulp.src('src/styles/main.scss')
+.task('sass', ['clean'], function() {
+    return gulp.src('./src/styles/main.scss')
         .pipe(sass(sassConfig).on('error', gutil.log))
-        .pipe(gulp.dest('dist/assets'));
-})
-
-.task('vendor', function() {
-    paths = vendorPaths.map(function(p) {
-        path.resolve('./bower_components', p);
-    });
-    return gulp.src(paths)
-        .pipe(gulp.dest('dist/assets/vendor'));
-})
-
-.task('copy', function() {
-    return gulp.src(['src/**/*'])
         .pipe(gulp.dest('dist'));
 })
 
-.task('webpack', function(cb) {
-    execWebpack(webpackConfig);
-    cb();
+.task('copy', ['clean'], function() {
+    return gulp.src(['src/index.html'])
+        .pipe(gulp.dest('dist'));
 })
 
-.task('dev', ['build'], function() {
-    servers = createServers(35729);
-    gulp.watch(['src/**/*'], function(e) { gulp.run('build'); });
-    gulp.watch(['./dist/**/*'], function(e) {
-         gutil.log(gutil.colors.cyan(e.path), 'changed');
-         return servers.lr.changed({
-            body: {
-                files: [e.path]
-            }
-         });
+.task('webpack:dev-server', ['sass', 'copy'], function(cb) {
+    execWebpack(cb)
 })
 
-.task('build', ['webpack', 'sass', 'copy', 'vendor'], function() {} );
-
-.task('default', ['build'], function() {} );
-
-var createServers = function(port) {
-    lr = tiny_lr();
-    lr.listen(lrport, function() {
-        gutil.log('LiveReload listening on ', lrport);
+.task('webpack:build-dev', function(cb) {
+    
+    devCompiler.run(function(err, stats) {
+        if(err) throw new gutil.PluginError('webpack:build-dev', err);
+        gutil.log('[webpack:build-dev]', stats.toString({ colors: true }));
+        cb();
     });
-    return {lr: lr}
-};
+})
 
-var execWebpack = function(config) {
-    webpack(config, function(err, stats) {
-        if (err)
-            throw new gutil.PluginError('execWebpack', err);
-        gutil.log('[execWebpack]', stats.toString({colors: true}));
-    }
-};
+.task('webpack:build', ['sass', 'copy'], function(cb) {
+
+    var myConfig = Object.create(webpackConfig);
+
+    webpack(myConfig, function(err, stats) {
+        if(err) throw new gutil.PluginError('webpack:build', err);
+        gutil.log('[webpack.build]', stats.toString({ colors: true }));
+        cb();
+    });
+})
+
+.task('dev', ['webpack:dev-server'], function() {
+    gulp.watch(['src/**/*'], ['webpack:build-dev']);
+})
+
+
+.task('build', ['webpack:build'])
+
+.task('default', ['build']);
+
+var execWebpack = function(cb) {
+
+    new webpackDevServer(webpack(webpackConfig), {
+        contentBase: __dirname + '/dist/',
+        publicPath: webpackConfig.output.publicPath,
+    }).listen(8080, "localhost", function(err) {
+    
+        if(err)
+            throw new gutil.PluginError('webpack-dev-server', err);
+
+        gutil.log('[webpack-dev-server]', "http://localhost:8080/webpack-dev-server/index.html");
+
+        cb();
+    });
+
+}
