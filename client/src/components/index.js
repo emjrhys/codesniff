@@ -1,14 +1,16 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
-var CodeSniff = React.createClass({
+class CodeSniff extends Component {
 
-    render: function() {
-        return <div>
-                   <h1>CodeSniff</h1>
-               </div>;
+    render() {
+        return (
+            <div>
+                <h1>CodeSniff</h1>
+            </div>
+        )
     }
-});
+}
 
 ReactDOM.render(
         <CodeSniff />,
