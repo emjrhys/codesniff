@@ -6,7 +6,7 @@ class Code(models.Model):
 	content = models.TextField()
 	language = models.TextField()
 	creator = models.ForeignKey(User, default=1)
-	date_added = models.DateTimeField()
+	date_added = models.DateTimeField(auto_now=True)
 
 class Scores(models.Model):
 	code = models.ForeignKey(Code)
@@ -19,8 +19,4 @@ class CodeSmells(models.Model):
 	line = models.IntegerField()
 	smell = models.TextField()
 
-class Comment(models.Model):
-	content = models.TextField()
-	line = models.IntegerField()
-	user = models.ForeignKey(User)
-	code = models.ForeignKey(Code)
+
