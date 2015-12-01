@@ -1,8 +1,13 @@
-import { createStore } from 'redux'
-import rootReducer from '../reducers'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { reduxReactRouter } from 'redux-router';
+import { createHistory } from 'history';
+import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
-    const store = createStore(rootReducer, initialState);
+
+    const store = compose(
+            reduxReactRouter({ createHistory })
+            )(createStore)(rootReducer, initialState);
 
     if (module.hot) {
 

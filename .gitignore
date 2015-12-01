@@ -1,0 +1,4 @@
+node_modules/
+dist/
+codesniff/**/*.pyc
+.DS_Store
