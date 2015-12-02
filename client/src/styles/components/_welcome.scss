@@ -1,0 +1,33 @@
+.component-welcome {
+	h1, h2 {
+		color: $titles;
+		text-align: center;
+		font-weight: 700;
+	}
+
+	h1 {
+		margin: 30vh 0 0;
+
+		font-family: 'Roboto Slab', serif;
+		font-size: 4em;
+	}
+
+	h2 {
+		margin-top: 0;
+		font-family: 'Source Sans Pro', sans-serif;
+		font-size: 1.3em;
+	}
+
+	form {
+		margin-top: 200px;
+		text-align: center;
+
+		button {
+			width: 120px;
+		}
+
+		button:first-child {
+			margin-right: 20px;
+		}
+	}
+}

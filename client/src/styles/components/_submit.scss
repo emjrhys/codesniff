@@ -1,0 +1,66 @@
+.component-submit {
+	max-width: 800px;
+	margin: 0 auto;
+	font-family: 'Source Sans Pro', sans-serif;
+
+	h2 {
+		color: $accent;
+		font-weight: 700;
+		font-size: 2em;
+		margin: 100px 0 0;
+	}
+
+	p {
+		color: $titles;
+		font-weight: 400;
+		margin: 0 0 60px;
+
+		.profile {
+			color: $accent;
+			font-style: italic;
+		}
+	}
+
+	form {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	label {
+		flex-grow: 1;
+
+		&.title {
+			flex-grow: 2;
+			margin-right: 20px;
+		}
+
+		span {
+			display: block;
+			font-size: 1.2em;
+			margin-bottom: 10px;
+
+			color: $titles; 
+		}
+
+		input {
+			width: 100%;
+		}
+	}
+
+	textarea {
+		display: block;
+
+		width: 100%;
+		max-width: 100%;
+		height: 300px;
+		max-height: 1000px;
+
+		margin: 20px 0;
+	}
+
+	button {
+		background-color: $accent;
+		margin-left: auto;
+		width: 180px;
+	}
+}

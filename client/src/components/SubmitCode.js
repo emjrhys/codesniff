@@ -30,11 +30,16 @@ class SubmitCode extends Component {
 			{value: 'C++'}
 		];
 		return (
-			<div>
+			<div className="component-submit">
 				<h2>Submit Code</h2>
-				<p>Logged in as John</p>
-				<h4>Title:</h4><input value={this.state.value} onChange={this.handleChange}/>
-				<h4>Language:</h4>
+				<p>Logged in as <span className="profile">John</span></p>
+				<form>
+					<label className="title">Title<input placeholder={this.state.value} onChange={this.handleChange}/></label>
+					<label><span>Language</span><input placeholder="Java"/></label>
+					<textarea placeholder="paste or drag your code here">
+					</textarea>
+					<button type="button" className="cta">Submit</button>
+				</form>
 			</div>
 		)
 	}
