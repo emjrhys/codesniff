@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux';
-import { pushState } from 'redux-router';
 
 class SubmitCode extends Component {
 	constructor(props) {
