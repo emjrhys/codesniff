@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Code(models.Model):
+	title = models.TextField(default="Code")
 	content = models.TextField()
 	language = models.TextField()
 	creator = models.ForeignKey(User, default=1)
