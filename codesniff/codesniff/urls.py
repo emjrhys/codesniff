@@ -13,7 +13,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class CodeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Code
-        fields = ('content','language','creator','date_added')
+        fields = ('title','content','language','creator','date_added')
 
 class CodeSmellSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
