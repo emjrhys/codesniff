@@ -77,6 +77,7 @@ var execWebpack = function(cb) {
         contentBase: __dirname + '/dist/',
         publicPath: webpackConfig.output.publicPath,
         quiet: true,
+        historyApiFallback: true,
     }).listen(8080, "localhost", function(err) {
     
         if(err)

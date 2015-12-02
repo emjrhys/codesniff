@@ -1,23 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
 import { ReduxRouter } from 'redux-router';
-import { Route, Router } from 'react-router';
+import { Route, Router, IndexRoute } from 'react-router';
 import App from './containers/App';
 import SubmitCode from './components/SubmitCode';
+import Welcome from './components/Welcome.js';
 import configureStore from './store/configureStore';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { routes } from './routes/routes';
 
 const store = configureStore();
 
-console.log(App);
-
 render(
         <Provider store={store}>
-            <Router>
-                <Route path="/" component={App}>
-                    <Route path="/submit" component={SubmitCode} />
-                </Route>
-            </Router>
+            <ReduxRouter>{ routes }</ReduxRouter>
         </Provider>,
         document.getElementById('container')
       );
