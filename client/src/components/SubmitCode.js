@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux';
+import codeService from '../api/code';
 
 class SubmitCode extends Component {
 	constructor(props) {
@@ -22,6 +23,11 @@ class SubmitCode extends Component {
 			defaultLanguage: language
 		});
 	}
+    
+    handleSubmit() {
+        codeService.submitCode(this.state.value, this.state.defaultLanguage);
+    }
+
 	render() {
 		var languages = [
 			{value: 'Java'},
@@ -33,13 +39,16 @@ class SubmitCode extends Component {
 			<div className="component-submit">
 				<h2>Submit Code</h2>
 				<p>Logged in as <span className="profile">John</span></p>
-				<form>
 					<label className="title">Title<input placeholder={this.state.value} onChange={this.handleChange}/></label>
 					<label><span>Language</span><input placeholder="Java"/></label>
 					<textarea placeholder="paste or drag your code here">
 					</textarea>
-					<button type="button" className="cta">Submit</button>
-				</form>
+					<button
+                        onClick={this.handleSubmit}
+                        type="button"
+                        className="cta">
+                        Submit
+                    </button>
 			</div>
 		)
 	}

@@ -1,4 +1,4 @@
 node_modules/
 dist/
-codesniff/**/*.pyc
+*.pyc
 .DS_Store
