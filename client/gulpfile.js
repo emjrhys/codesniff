@@ -30,7 +30,7 @@ gulp.task('clean', function() {
 .task('sass', ['clean'], function() {
     return gulp.src('./src/styles/main.scss')
         .pipe(sass(sassConfig).on('error', gutil.log))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('./dist'));
 })
 
 .task('copy', ['clean'], function() {
@@ -42,7 +42,7 @@ gulp.task('clean', function() {
     execWebpack(cb)
 })
 
-.task('webpack:build-dev', function(cb) {
+.task('webpack:build-dev', ['sass', 'copy'], function(cb) {
     
     devCompiler.run(function(err, stats) {
         if(err) throw new gutil.PluginError('webpack:build-dev', err);
