@@ -3,14 +3,20 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Welcome from '../components/Welcome'
 
+
 class App extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
+        console.log(this.props);
         return (
+
                 <div>
-                    <Welcome />
+                    {this.props.children}
                 </div>
-               )
+               );
     }
 }
 

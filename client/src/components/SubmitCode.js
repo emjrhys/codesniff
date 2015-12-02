@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { pushState } from 'redux-router';
 
 class SubmitCode extends Component {
 	constructor(props) {
@@ -45,4 +46,5 @@ class SubmitCode extends Component {
 	}
 }
 
-export default connect()(SubmitCode)
+export default connect(
+)(SubmitCode);
