@@ -6,12 +6,13 @@ class SubmitCode extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: '(e.g. CS 242 - Chess)',
+			value: '(e.g. CS 242 - Chess)', 
 			language: {value: 'Java'}
 		};
 		// React components in ES6 no long autobinds this to nonReact methods
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	handleChange(evt) {
 		this.setState({
@@ -23,11 +24,9 @@ class SubmitCode extends Component {
 			language: evt.target.value
 		});
 	}
-    
-    handleSubmit() {
+    handleSubmit(evt) {
         codeService.submitCode(this.state.value, this.state.language);
     }
-
 	render() {
 		var languages = [
 			{value: 'Java'},

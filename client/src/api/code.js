@@ -8,7 +8,7 @@ const code = {
     
         return new Promise(function(resolve, reject) {
             request
-            .post('127.0.0.1:8000/code/', {
+            .post('http://localhost:8000/app/codes/', {
                 content: code,
                 language: language
             })
@@ -33,7 +33,7 @@ const code = {
         return new Promise(function(resolve, reject) {
         
             request
-            .get('127.0.0.1:8000/code/' + id)
+            .get('http://localhost:8000/app/codes/')
             .end(function(err, res) {
             
                 if(res && res.status === '404') {
