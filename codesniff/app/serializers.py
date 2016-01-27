@@ -6,7 +6,7 @@ from app.models import Code, Score, CodeSmell
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username','email')
+        fields = ('id','username','email', 'password')
 
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:

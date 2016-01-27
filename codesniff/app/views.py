@@ -10,7 +10,8 @@ from app.models import Code, Score, CodeSmell
 from app.serializers import UserSerializer, CodeSerializer, CodeSmellSerializer, ScoreSerializer
 from rest_framework import mixins
 from rest_framework import generics
-
+from rest_framework.response import Response
+from rest_framework import status
 
 # API functions
 class UserList(mixins.ListModelMixin,
@@ -23,7 +24,9 @@ class UserList(mixins.ListModelMixin,
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    	user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
+    	user.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
 
 class UserDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
