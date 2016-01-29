@@ -24,9 +24,12 @@ class UserList(mixins.ListModelMixin,
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-    	user = User.objects.create_user(username=request.data['username'], password=request.data['password'])
-    	user.save()
-        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = User.objects.create_user(username=request.data['username'], email=request.data['email'], password=request.data['password'])
+            user.save()
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -177,3 +180,4 @@ def account_request(request, type):
 			user = User.objects.create_user(username=username, password=password)
 			user.save()
 			return HttpResponseRedirect(reverse('app:login', args=(0, 1,)))
+			
