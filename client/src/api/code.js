@@ -31,9 +31,8 @@ const code = {
     getCode(id) {
     
         return new Promise(function(resolve, reject) {
-        
             request
-            .get('http://localhost:8000/app/codes/')
+            .get('http://localhost:8000/app/codes/' + id)
             .end(function(err, res) {
             
                 if(res && res.status === '404') {
