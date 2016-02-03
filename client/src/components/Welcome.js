@@ -3,10 +3,14 @@ import React, { PropTypes, Component } from 'react'
 class Welcome extends Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        this.routeToLogIn = this.routeToLogIn.bind(this);
+        this.routeToSignUp = this.routeToSignUp.bind(this);
     }
-    handleClick() {
+    routeToLogIn() {
         this.context.history.pushState(null, '/submit');
+    }
+    routeToSignUp() {
+        // TODO: implement sign up component
     }
     render() {
         return (
@@ -14,8 +18,8 @@ class Welcome extends Component {
                 <h1>CodeSniff</h1>
                 <h2>Crowdsource your refactoring</h2>
                 <form>
-	                <button type="button" className="cta" onClick={this.handleClick}>Log In</button>
-	                <button type="button">Sign Up</button>
+	                <button type="button" className="cta" onClick={this.routeToLogIn}>Log In</button>
+	                <button type="button" onClick={this.routeToSignUp}>Sign Up</button>
                 </form>
             </div>
         )
