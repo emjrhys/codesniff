@@ -1,6 +1,10 @@
 node_modules/
 dist/
 *.pyc
+<<<<<<< 1dd1b5c24eefbf340a5d046c23c6d47e82cf8d95
+=======
+.DS_Store
+>>>>>>> updated gitignore
 codesniff/.DS_Store
 codesniff/db.sqlite3
 codesniff/app/.DS_Store
