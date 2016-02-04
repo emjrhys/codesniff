@@ -12,6 +12,7 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 # API functions
 class UserList(mixins.ListModelMixin,
@@ -21,6 +22,7 @@ class UserList(mixins.ListModelMixin,
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
+        print self
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -41,11 +43,18 @@ class UserDetail(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def get_queryset(self):
+        username = self.request.user
+        return User.objects.filter(username=username)
 
 class CodeList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -59,6 +68,13 @@ class CodeList(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+    def get_queryset(self):
+        user = self.request.user
+        return Code.objects.filter(creator=user)
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
 class CodeDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -69,11 +85,19 @@ class CodeDetail(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Code.objects.filter(creator=user)
+
 
 class CodeSmellList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -87,6 +111,15 @@ class CodeSmellList(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+    def get_queryset(self):
+        user = self.request.user
+        code = self.kwargs['code']
+        return CodeSmell.objects.filter(user=user, code_id=code)
+
+    def perform_create(self, serializer):
+        code = self.kwargs['code']
+        serializer.save(user=self.request.user, code_id=code)
+
 class CodeSmellDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -97,11 +130,19 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def get_queryset(self):
+        user = self.request.user
+        code = self.kwargs['code']
+        return CodeSmell.objects.filter(user=user, code_id=code)
 
 class ScoreList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -115,6 +156,15 @@ class ScoreList(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+    def get_queryset(self):
+        user = self.request.user
+        code = self.kwargs['code']
+        return Score.objects.filter(user=user, code_id=code)
+
+    def perform_create(self, serializer):
+        code = self.kwargs['code']
+        serializer.save(user=self.request.user, code_id=code)
+
 class ScoreDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -125,11 +175,19 @@ class ScoreDetail(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def get_queryset(self):
+        user = self.request.user
+        code = self.kwargs['code']
+        return Score.objects.filter(user=user, code_id=code)
 
 
 # Create your views here.
