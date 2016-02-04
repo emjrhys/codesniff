@@ -1,4 +1,6 @@
 node_modules/
 dist/
 *.pyc
-.DS_Store
+codesniff/.DS_Store
+codesniff/db.sqlite3
+codesniff/app/.DS_Store
