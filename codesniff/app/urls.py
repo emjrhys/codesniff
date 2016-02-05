@@ -14,10 +14,10 @@ urlpatterns = patterns('',
 	url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^codes/$', views.CodeList.as_view()),
-    url(r'^codes/(?P<pk>[0-9]+)/$', views.CodeDetail.as_view()),
-    url(r'^codesmells/$', views.CodeSmellList.as_view()),
+    url(r'^codes/(?P<pk>[0-9]*)/$', views.CodeDetail.as_view()),
+    url(r'^code/(?P<code>[0-9]+)/codesmells/$', views.CodeSmellList.as_view()),
     url(r'^codesmells/(?P<pk>[0-9]+)/$', views.CodeSmellDetail.as_view()),
-    url(r'^scores/$', views.ScoreList.as_view()),
+    url(r'^code/(?P<code>[0-9]+)/scores/$', views.ScoreList.as_view()),
     url(r'^scores/(?P<pk>[0-9]+)/$', views.ScoreDetail.as_view()),
 )
 

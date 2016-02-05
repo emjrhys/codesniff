@@ -6,19 +6,23 @@ from app.models import Code, Score, CodeSmell
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username','email')
+        fields = ('id','username','email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
 
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Code
         fields = ('id','title','content','language','creator','date_added')
+        extra_kwargs = {'date_added': {'read_only': True}, 'creator': {'read_only': True}}
 
 class CodeSmellSerializer(serializers.ModelSerializer):
     class Meta:
         model = CodeSmell
         fields = ('id','code','user','line','smell')
+        extra_kwargs = {'code': {'read_only': True}, 'user': {'read_only': True}}
 
 class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
         fields = ('id','code','user','score')
+        extra_kwargs = {'code': {'read_only': True}, 'user': {'read_only': True}}
