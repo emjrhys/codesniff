@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
+import thunkMidddleware from 'redux-thunk';
 import { reduxReactRouter } from 'redux-router';
 import { createHistory } from 'history';
 import { routes } from '../routes/routes';
@@ -10,7 +11,10 @@ export default function configureStore(initialState) {
             reduxReactRouter({ 
                 routes,
                 createHistory
-            })
+            }),
+            applyMiddleware(
+                thunkMidddleware
+            )
             )(createStore)(rootReducer, initialState);
 
     if (module.hot) {

@@ -1,15 +1,10 @@
-import { ADD_CODE } from '../constants/ActionTypes'
+import { combineReducers } from 'redux';
+import { SEND_CODE, REQUEST_CODE, RECEIVE_CODE } from '../constants/ActionTypes';
 
-const initialState = [
-    {
-        id: 0,
-        code: 'cout << "Hello World" << endl;'
-    }
-];
 
-export default function codes(state = initialState, action) {
+export default function codes(state = {}, action) {
     switch (action.type) {
-        case ADD_CODE:
+        case SEND_CODE:
             return [
                 {
                     id: state.reduce((madId, code) => Math.max(code.id, maxId), -1) + 1,
@@ -17,7 +12,17 @@ export default function codes(state = initialState, action) {
                 },
                 ...state
             ]
+        case REQUEST_CODE:
+            return Object.assign({}, state, {
+                isFetching: true
+            });
+
+        case RECEIVE_CODE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                codeReview: action.code
+            });
         default:
-            return initialState
+            return {}
     }
 }
