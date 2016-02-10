@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^codesmells/(?P<pk>[0-9]+)/$', views.CodeSmellDetail.as_view()),
     url(r'^code/(?P<code>[0-9]+)/scores/$', views.ScoreList.as_view()),
     url(r'^scores/(?P<pk>[0-9]+)/$', views.ScoreDetail.as_view()),
+    url(r'^submit/$', views.CodeSubmit.as_view()),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -98,6 +98,55 @@ class CodeDetail(mixins.RetrieveModelMixin,
         user = self.request.user
         return Code.objects.filter(creator=user)
 
+class CodeSubmit(generics.GenericAPIView):
+    queryset = Code.objects.all()
+    serializer_class = CodeSerializer
+
+    def post(self, request, *args, **kwargs):
+    	data = request.data
+
+    	code = data['code']
+    	code = Code(title=code['title'], content=code['content'], language=code['language'])
+    	code.save()
+    	
+    	smells = data['smells']
+    	for s in smells:
+    		smell = CodeSmell(code_id=code.id, user=self.request.user, line=s['line'], smell=s['smell'])
+    		smell.save()
+
+    	return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
+
+class CodeCheck(generics.GenericAPIView):
+	queryset = CodeSmell.objects.all()
+	serializer_class = CodeSmellSerializer
+
+	def post(self, request, *args, **kwargs):
+		data = request.data
+		code = data['code']
+		smells = data['smells']
+
+		for s in smells:
+    		smell = CodeSmell(code_id=code.id, user=self.request.user, line=s['line'], smell=s['smell'])
+    		smell.save()
+
+    	smells = map(lambda x:(['line'], x['smell']), smells)
+
+    	origsmells = CodeSmell.objects.filter(code_id=code, user=Code.objects.filter(id=code)[0].creator)
+    	origsmells = map(lambda x:(x.line, x.smell), origsmells)
+
+    	score = 0
+
+    	for s in smells:
+    		if s in origsmells:
+    			score += 1
+
+    	score -= 0.5 * (len(origsmells) - score)
+    	score /= len(origsmells) * 100
+
+    	score = Score(code_id=code, user=self.request.user, score=score)
+    	score.save()
+
+    	return Response(ScoreSerializer(score).data, status=status.HTTP_200_SUCCESS)
 
 class CodeSmellList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
