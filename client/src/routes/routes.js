@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router';
 import App from '../containers/App';
-import Welcome from '../components/Welcome';
-import SubmitCode from '../components/SubmitCode';
-import ReviewCode from '../components/ReviewCode';
+import Welcome from '../containers/Welcome';
+import SubmitCode from '../containers/SubmitCode';
+import ReviewCode from '../containers/ReviewCode';
 
 const routes = (
                 <Route path="/" component={App}>
