@@ -31,7 +31,7 @@ URLs (Required token filters all data for that specific user)
 - http://127.0.0.1:8000/app/code/{code_id}/scores/ returns all scores for code snippet with id {code_id} for the user
 - http://127.0.0.1:8000/app/scores{id} returns the specific score with id {id}(Will return 'Not found' if provide token of user who did not receive that score)
 - http://127.0.0.1:8000/app/submit/ to submit a new code snippet with a list of codesmells together. See example post request body: 
-'''
+```
 {
 	"code" : {
 		"title" : "Third Code Snippet!",
@@ -40,12 +40,12 @@ URLs (Required token filters all data for that specific user)
 	},
 	"smells" : [{"line": 1, "smell": "Vague string"}, {"line": 2, "smell": "Bad variable name"}]
 }
-'''
+```
 - http://127.0.0.1:8000/app/checksmells/ to submit a list of code snippets and check it against the original uploader's code snippets to calculate a score for the user. See example post request body. The value for "code" is the code snippet's ID. 
-'''
+```
 {
 	"code" : 21,
 	"smells" : [{"line": 1, "smell": "Vague string"}, {"line": 2, "smell": "Bad variable name"}]
 }
-'''
+```
 - http://127.0.0.1:8000/app/share/code/{id} to share a specific code snippet 
