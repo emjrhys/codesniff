@@ -106,7 +106,7 @@ class CodeSubmit(generics.GenericAPIView):
     	data = request.data
 
     	code = data['code']
-    	code = Code(title=code['title'], content=code['content'], language=code['language'])
+    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator=self.request.user)
     	code.save()
     	
     	smells = data['smells']
@@ -117,36 +117,37 @@ class CodeSubmit(generics.GenericAPIView):
     	return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
 
 class CodeCheck(generics.GenericAPIView):
-	queryset = CodeSmell.objects.all()
-	serializer_class = CodeSmellSerializer
+    queryset = CodeSmell.objects.all()
+    serializer_class = CodeSmellSerializer
 
-	def post(self, request, *args, **kwargs):
-		data = request.data
-		code = data['code']
-		smells = data['smells']
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        codeid = data['code']
+        smells = data['smells']
+        for s in smells:
+            smell = CodeSmell(code_id=codeid, user=self.request.user, line=s['line'], smell=s['smell'])
+            smell.save()
 
-		for s in smells:
-    		smell = CodeSmell(code_id=code.id, user=self.request.user, line=s['line'], smell=s['smell'])
-    		smell.save()
+        smells = map(lambda x:(x['line'], x['smell']), smells)
+        print smells
+        origsmells = CodeSmell.objects.filter(code_id=codeid, user=Code.objects.filter(id=codeid)[0].creator)
+        origsmells = map(lambda x:(x.line, x.smell), origsmells)
+        print origsmells
 
-    	smells = map(lambda x:(['line'], x['smell']), smells)
+        score = 0
 
-    	origsmells = CodeSmell.objects.filter(code_id=code, user=Code.objects.filter(id=code)[0].creator)
-    	origsmells = map(lambda x:(x.line, x.smell), origsmells)
-
-    	score = 0
-
-    	for s in smells:
-    		if s in origsmells:
-    			score += 1
-
-    	score -= 0.5 * (len(origsmells) - score)
-    	score /= len(origsmells) * 100
-
-    	score = Score(code_id=code, user=self.request.user, score=score)
-    	score.save()
-
-    	return Response(ScoreSerializer(score).data, status=status.HTTP_200_SUCCESS)
+        for s in smells:
+        	if s in origsmells:
+        		score += 1
+        print score
+        print (len(origsmells) - score)
+        score -= 0.5 * (len(origsmells) - score)
+        print score
+        score = score/len(origsmells) * 100
+        print score
+        score = Score(code_id=codeid, user=self.request.user, score=score)
+        score.save()
+        return Response(ScoreSerializer(score).data, status=status.HTTP_200_OK)
 
 class CodeSmellList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -190,8 +191,7 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        code = self.kwargs['code']
-        return CodeSmell.objects.filter(user=user, code_id=code)
+        return CodeSmell.objects.filter(user=user)
 
 class ScoreList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -235,8 +235,17 @@ class ScoreDetail(mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        code = self.kwargs['code']
-        return Score.objects.filter(user=user, code_id=code)
+        return Score.objects.filter(user=user)
+
+class ShareCode(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Code.objects.all()
+    serializer_class = CodeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 
 # Create your views here.
