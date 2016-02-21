@@ -22,7 +22,6 @@ class UserList(mixins.ListModelMixin,
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
-        print self
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -32,6 +31,13 @@ class UserList(mixins.ListModelMixin,
             user.save()
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset =  queryset.filter(username=username)
+        return queryset
 
 class UserDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -52,10 +58,6 @@ class UserDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
-    def get_queryset(self):
-        username = self.request.user
-        return User.objects.filter(username=username)
-
 class CodeList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -69,11 +71,20 @@ class CodeList(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
-        user = self.request.user
-        return Code.objects.filter(creator=user)
-
-    def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        queryset = Code.objects.all()
+        title = self.request.query_params.get('content', None)
+        language = self.request.query_params.get('language', None)
+        username = self.request.query_params.get('creator', None)
+        date_added = self.request.query_params.get('date_added', None)
+        if title is not None:
+            queryset = queryset.filter(title=title)
+        if language is not None:
+            queryset = queryset.filter(language=language)
+        if username is not None:
+            queryset = queryset.filter(creator__username=username)
+        if date_added is not None:
+            queryset = queryset.filter(date_added=date_added)
+        return queryset
 
 class CodeDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -94,26 +105,29 @@ class CodeDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
-    def get_queryset(self):
-        user = self.request.user
-        return Code.objects.filter(creator=user)
-
 class CodeSubmit(generics.GenericAPIView):
     queryset = Code.objects.all()
     serializer_class = CodeSerializer
 
     def post(self, request, *args, **kwargs):
     	data = request.data
-
+        user = data['creator']
     	code = data['code']
-    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator=self.request.user)
-    	code.save()
-    	
+    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user)
+        try: 
+            code.clean_fields()
+            code.save()
+        except Exception as error:
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
+
     	smells = data['smells']
     	for s in smells:
-    		smell = CodeSmell(code_id=code.id, user=self.request.user, line=s['line'], smell=s['smell'])
-    		smell.save()
-
+            smell = CodeSmell(code_id=code.id, user_id=user, line=s['line'], smell=s['smell'])
+            try:
+                smell.clean_fields()
+                smell.save()
+            except Exception as error:
+                return Response(error, status=status.HTTP_400_BAD_REQUEST)
     	return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
 
 class CodeCheck(generics.GenericAPIView):
@@ -122,35 +136,31 @@ class CodeCheck(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
+        user = data['user']
         codeid = data['code']
         smells = data['smells']
         for s in smells:
-            smell = CodeSmell(code_id=codeid, user=self.request.user, line=s['line'], smell=s['smell'])
-            smell.save()
-
+            smell = CodeSmell(code_id=codeid, user_id=user, line=s['line'], smell=s['smell'])
+            try: 
+                smell.clean_fields()
+                smell.save()
+            except Exception as error:
+                return Response(error, status=status.HTTP_400_BAD_REQUEST)
         smells = map(lambda x:(x['line'], x['smell']), smells)
-        print smells
         origsmells = CodeSmell.objects.filter(code_id=codeid, user=Code.objects.filter(id=codeid)[0].creator)
         origsmells = map(lambda x:(x.line, x.smell), origsmells)
-        print origsmells
-
         score = 0
-
         for s in smells:
         	if s in origsmells:
         		score += 1
-        print score
-        print (len(origsmells) - score)
         score -= 0.5 * (len(origsmells) - score)
-        print score
         score = score/len(origsmells) * 100
-        print score
-        score = Score(code_id=codeid, user=self.request.user, score=score)
+        score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
         return Response(ScoreSerializer(score).data, status=status.HTTP_200_OK)
 
 class CodeSmellList(mixins.ListModelMixin,
-                  mixins.CreateModelMixin,
+                    mixins.CreateModelMixin,
                   generics.GenericAPIView):
     queryset = CodeSmell.objects.all()
     serializer_class = CodeSmellSerializer
@@ -162,13 +172,20 @@ class CodeSmellList(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
-        user = self.request.user
-        code = self.kwargs['code']
-        return CodeSmell.objects.filter(user=user, code_id=code)
-
-    def perform_create(self, serializer):
-        code = self.kwargs['code']
-        serializer.save(user=self.request.user, code_id=code)
+        queryset = CodeSmell.objects.all()
+        code_id = self.request.query_params.get('code', None)
+        username = self.request.query_params.get('username', None)
+        line = self.request.query_params.get('line', None)
+        smell = self.request.query_params.get('smell', None)
+        if code_id is not None:
+            queryset = queryset.filter(code_id=code_id)
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        if line is not None:
+            queryset = queryset.filter(line=line)
+        if smell is not None:
+            queryset = queryset.filter(smell=smell)
+        return queryset 
 
 class CodeSmellDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -189,10 +206,6 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
-    def get_queryset(self):
-        user = self.request.user
-        return CodeSmell.objects.filter(user=user)
-
 class ScoreList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -206,13 +219,17 @@ class ScoreList(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
-        user = self.request.user
-        code = self.kwargs['code']
-        return Score.objects.filter(user=user, code_id=code)
-
-    def perform_create(self, serializer):
-        code = self.kwargs['code']
-        serializer.save(user=self.request.user, code_id=code)
+        queryset = Score.objects.all()
+        code_id = self.request.query_params.get('code', None)
+        username = self.request.query_params.get('username', None)
+        score = self.request.query_params.get('score', None)
+        if code_id is not None:
+            queryset = queryset.filter(code_id=code_id)
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        if score is not None:
+            queryset = queryset.filter(score=score)
+        return queryset
 
 class ScoreDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -232,20 +249,6 @@ class ScoreDetail(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
-
-    def get_queryset(self):
-        user = self.request.user
-        return Score.objects.filter(user=user)
-
-class ShareCode(mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
-    queryset = Code.objects.all()
-    serializer_class = CodeSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
 
 
 # Create your views here.
