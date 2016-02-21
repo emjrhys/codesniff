@@ -11,7 +11,7 @@ class Code(models.Model):
 	title = models.TextField(default="Code")
 	content = models.TextField()
 	language = models.TextField()
-	creator = models.ForeignKey(User, default=1)
+	creator = models.ForeignKey(User)
 	date_added = models.DateTimeField(auto_now=True)
 
 class Score(models.Model):
