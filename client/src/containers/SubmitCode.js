@@ -1,6 +1,6 @@
-import React, { PropTypes, Component } from 'react'
+import React, { PropTypes, Component } from 'react';
+import { submitCode } from '../actions/code';
 import { connect } from 'react-redux';
-import codeService from '../api/code';
 
 class SubmitCode extends Component {
 	constructor(props) {
@@ -25,7 +25,7 @@ class SubmitCode extends Component {
 		});
 	}
     handleSubmit(evt) {
-        codeService.submitCode(this.state.value, this.state.language);
+        submitCode(this.state.value, this.state.language);
     }
 	render() {
 		var languages = [

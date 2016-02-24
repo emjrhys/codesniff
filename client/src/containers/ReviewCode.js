@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { fetchCode } from '../actions/codesnippets';
+import { fetchCode } from '../actions/code';
 import { connect } from 'react-redux';
 
 class ReviewCode extends Component {
