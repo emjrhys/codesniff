@@ -15,7 +15,7 @@ const store = configureStore();
 
 render(
         <Provider store={store}>
-            <ReduxRouter>{ routes }</ReduxRouter>
+            <ReduxRouter routes={ routes } />
         </Provider>,
         document.getElementById('container')
       );
