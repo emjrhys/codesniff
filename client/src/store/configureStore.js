@@ -8,13 +8,13 @@ import rootReducer from '../reducers';
 export default function configureStore(initialState) {
 
     const store = compose(
+            applyMiddleware(
+                thunkMidddleware
+            ),
             reduxReactRouter({ 
                 routes,
                 createHistory
-            }),
-            applyMiddleware(
-                thunkMidddleware
-            )
+            })
             )(createStore)(rootReducer, initialState);
 
     if (module.hot) {

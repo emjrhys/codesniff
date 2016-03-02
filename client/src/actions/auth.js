@@ -4,13 +4,14 @@ import jwtDecode from 'jwt-decode';
 import request from 'superagent';
 
 
-export function loginUserSuccess(token) {
+export function loginUserSuccess(token, username) {
 
     localStorage.setItem('token', token);
     return {
         type: LOGIN_USER_SUCCESS,
         payload: {
-            token: token
+            token: token,
+            username: username
         }
     }
 
@@ -66,42 +67,45 @@ export function signupFailure() {
 }
 
 export function signup(username, email, password, confirmPassword, redirect="/") {
-    
-    if(password !== confirmPassword) {
-        dispatch(signupFailure());
-    }
-    else {
+   
+    return function(dispatch) {
+        
+        if(password !== confirmPassword) {
+            dispatch(signupFailure());
+        }
+        else {
 
-        dispatch(signupRequest());
+            dispatch(signupRequest());
 
-        return request
-            .post('http://localhost:8000/app/users/', {
-                username,
-                email,
-                password
-            })
-            .end(function(err, res) {
+            return request
+                .post('http://localhost:8000/app/users/', {
+                    username,
+                    email,
+                    password
+                })
+                .end(function(err, res) {
             
-                if(res && res.status === '404') {
-                    dispatch(signupFailure());               
-                }
-                else {
-                    dispatch(signupSuccess);
-                    dispatch(loginUser(email, password, redirect));
-                }
+                    if(res && res.status === '404') {
+                        dispatch(signupFailure());               
+                    }
+                    else {
+                        dispatch(signupSuccess);
+                        dispatch(loginUser(username, password, redirect));
+                    }
 
-            });
+                });
+        }
     }
 }
 
-export function loginUser(email, password, redirect="/") {
+export function loginUser(username, password, redirect="/") {
     return function (dispatch) {
         
         dispatch(loginUserRequest());
 
         return request
-            .post('http://localhost:8000/app/api-token-auth/', {
-                    email: email,
+            .post('http://localhost:8000/api-token-auth/', {
+                    username: username,
                     password: password
             })
             .end(function(err, res) {
@@ -112,9 +116,10 @@ export function loginUser(email, password, redirect="/") {
                 }
                 else {
 
-                    let decoded = jwtDecode(res.token);
-                    dispatch(loginUserSuccess(res.token));
-                    dispatch(pushState(null, redirect));
+                    dispatch(loginUserSuccess(res.token, username));
+                    console.log(pushState);
+                    dispatch(pushState(null, '/submit', ''));
+                    console.log('login');
 
                 }
             });

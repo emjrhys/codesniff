@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { signup } from '../actions/auth';
 import { connect } from 'react-redux';
 
 class SignUp extends Component {
@@ -14,6 +15,10 @@ class SignUp extends Component {
         }
 
         this.handleSignUp = this.handleSignUp.bind(this);
+        this.handleUsername = this.handleUsername.bind(this);
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this);
+        this.handleConfirm = this.handleConfirm.bind(this);
     }
 
     componentDidMount() {
@@ -21,7 +26,32 @@ class SignUp extends Component {
     }
 
     handleSignUp(evt) {
-        auth.signUp(username, email, password, confirmPassword);
+        const { username, email, password, confirmPassword } = this.state;
+        this.props.dispatch(signup(username, email, password, confirmPassword));
+    }
+
+    handleUsername(evt) {
+        this.setState({
+            'username': evt.target.value
+        });
+    }
+
+    handleEmail(evt) {
+        this.setState({
+            'email': evt.target.value
+        });
+    }
+
+    handlePassword(evt) {
+        this.setState({
+            'password': evt.target.value
+        });
+    }
+
+    handleConfirm(evt) {
+        this.setState({
+            'confirmPassword': evt.target.value
+        });
     }
 
     render() {
@@ -30,16 +60,16 @@ class SignUp extends Component {
                 <div>
                     Username
                     <input type='text'
-                        valueLink={this.linkState('username')} />
+                        onChange={this.handleUsername} />
                     Email
                     <input type='email'
-                        valueLink={this.linkState('email')} />
+                        onChange={this.handleEmail} />
                     Password
                     <input type='password'
-                        valueLink={this.linkState('password')} />
+                        onChange={this.handlePassword} />
                     Confirm
                     <input type='password'
-                        valueLink={this.linkState('confirmPassword')} />
+                        onChange={this.handleConfirm} />
 
                     <button onClick={this.handleSignUp}>Sign Up</button>
                 </div>
@@ -50,11 +80,12 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-    isAuthenticated: PropTypes.boolean
+    isAuthenticated: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
     var isAuthenticated = state.auth.isAuthenticated;
+    console.log(state);
 
     return {
         isAuthenticated

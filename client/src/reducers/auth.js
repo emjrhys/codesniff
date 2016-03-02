@@ -21,8 +21,8 @@ export default function auth(state = initialState, action) {
             return Object.assign({}, state, {
                 isAuthenticating: false,
                 isAuthenicated: true,
-                token: payload.token,
-                userName: jwtDecode(payload.token),
+                token: action.payload.token,
+                userName: action.payload.username,
                 statusText: 'Successful login'
             });
 
