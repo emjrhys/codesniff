@@ -8,6 +8,7 @@ import Login from '../containers/Login';
 import SignUp from '../containers/SignUp';
 import Profile from '../containers/Profile';
 import {requireAuthentication} from '../components/AuthenticatedComponent'
+import Info from '../containers/Info'
 
 const routes = (
                 <Route path="/" component={App}>
