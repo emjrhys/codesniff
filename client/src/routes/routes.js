@@ -7,7 +7,8 @@ import ReviewCode from '../containers/ReviewCode';
 import Login from '../containers/Login';
 import SignUp from '../containers/SignUp';
 import Profile from '../containers/Profile';
-import {requireAuthentication} from '../components/AuthenticatedComponent'
+import {requireAuthentication} from '../components/AuthenticatedComponent';
+import Info from '../containers/Info';
 
 const routes = (
                 <Route path="/" component={App}>
@@ -17,6 +18,7 @@ const routes = (
                     <Route path="submit" component={requireAuthentication(SubmitCode)} />
                     <Route path="code/:id" component={ReviewCode} />
                     <Route path="profile" component={Profile} />
+                    <Route path="info" component={Info} />
                     <Route path="*" component={Welcome} />
                 </Route>
                 );
