@@ -1,10 +1,17 @@
 import React, { PropTypes, Component } from 'react';
-import { fetchCode } from '../actions/code';
+import { fetchCode, selectCode } from '../actions/code';
 import { connect } from 'react-redux';
+import CodeBlock from '../components/CodeBlock';
+
 
 class ReviewCode extends Component {
     constructor(props) {
         super(props);
+        this.clickAction = this.clickAction.bind(this);
+        this.selectCodeSmell = this.selectCodeSmell.bind(this);
+        this.state = {
+            codeSmellId: -1
+        }
     }
 
     componentDidMount() {
@@ -19,9 +26,19 @@ class ReviewCode extends Component {
         }
     }
 
+    clickAction(lineNumber) {
+        this.props.dispatch(selectCode(lineNumber, this.state.codeSmellId));
+    }
+
+    selectCodeSmell(id) {
+        this.setState({
+            codeSmellId: id
+        });
+    }
+
     render() {
 
-        const { id, codeReview } = this.props;
+        const { id, codeReview, codeSmells } = this.props;
         var content = "";
 
         if(codeReview) {
@@ -31,7 +48,15 @@ class ReviewCode extends Component {
         return (
             <div className="component-review">
                 <h2>Review Code</h2>
-                { content }
+                <div>
+                    {codeSmells.map((codeSmell) => {
+                        <Button key={codeSmell.id}
+                            onClick={() => this.selectCodeSmell(codeSmell.id)}>
+                        {codeSmell.name}
+                        </Button>
+                    })}
+                </div>
+                
             </div>
         );
 
@@ -42,16 +67,19 @@ class ReviewCode extends Component {
 ReviewCode.propTypes = {
     id: PropTypes.string,
     codeReview: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
+    codeSmells: PropTypes.array,
 }
 
 function mapStateToProps(state) {
     var id = state.router.params.id;
+    console.log(state.code);
     var codeReview = state.code.codeReview;
+    var codeSmells = state.smells.codeSmells || [];
 
     return {
         id,
-        codeReview
+        codeReview,
+        codeSmells
     }
 }
 

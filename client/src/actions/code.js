@@ -1,4 +1,4 @@
-import { ADD_CODE, REQUEST_CODE, RECEIVE_CODE } from '../constants/ActionTypes';
+import { ADD_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE } from '../constants/ActionTypes';
 import request from 'superagent';
 
 
@@ -28,7 +28,7 @@ export function fetchCode(id) {
     return function (dispatch) {
      
         dispatch(requestCode(id));
-
+        console.log("Hello!");
         return request
             .get('http://localhost:8000/app/codes/' + id)
             .end(function(err, res) {
@@ -39,6 +39,7 @@ export function fetchCode(id) {
                 else {
                     
                     var data = JSON.parse(res.text);
+                    console.log(data);
                     dispatch(receiveCode(data));
                 
                 }
@@ -63,4 +64,14 @@ export function addCode(json) {
 
     }
 
+}
+
+export function selectCode(num, id) {
+    return {
+        type: SELECT_CODE, 
+        payload: {
+            codeSmellID: id,
+            lineNumber: num, 
+        }
+    }
 }
