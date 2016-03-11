@@ -58,6 +58,24 @@ class UserDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+class UserMe(generics.GenericAPIView):
+    queryset = Code.objects.all()
+    serializer_class = CodeSerializer
+
+    def get(self, request, *args, **kwargs):
+        username = self.request.user
+        print username
+        if username is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user = User.objects.filter(username=username)
+            code = Code.objects.filter(creator=username)
+            userSerializer = UserSerializer(user, many=True).data
+            codeSerializer = CodeSerializer(code, many=True).data
+            data = {"user": userSerializer[0], "code": codeSerializer}
+            return Response(data, status=status.HTTP_200_OK)   
+            
+
 class CodeList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):

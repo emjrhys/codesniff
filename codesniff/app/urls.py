@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
 	#urls for api
 	url(r'^users/$', views.UserList.as_view()),
+    url(r'^users/me/$', views.UserMe.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^codes/$', views.CodeList.as_view()),
     url(r'^codes/(?P<pk>[0-9]*)/$', views.CodeDetail.as_view()),
