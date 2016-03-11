@@ -45,7 +45,7 @@ class Info extends Component {
                         <p>Example:</p>
                         <div className="code">
                             <p>csDept.getFaculty().add(newProfessor);</p>
-                            <p>csDept.setFacultyCount(csDept.getFacultyCount()+1)</p>                           
+                            <p>csDept.setFacultyCount(csDept.getFacultyCount()+1);</p>                           
                         </div>
                         <p>Should be:</p>
                         <div className="code">
