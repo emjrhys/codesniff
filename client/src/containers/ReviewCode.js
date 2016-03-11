@@ -115,6 +115,7 @@ ReviewCode.propTypes = {
 // TODO Move code smells either into DB or to config
 function mapStateToProps(state) {
     var id = state.router.params.id;
+    console.log(state.code);
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
