@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import reactMixin from 'react-mixin';
 import { loginUser } from '../actions/auth';
 import { connect } from 'react-redux';
 
