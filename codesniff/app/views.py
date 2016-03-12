@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 import datetime
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 # imports for API
@@ -14,7 +14,6 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
 
 # API functions
 class UserPermissions(permissions.BasePermission):
@@ -35,7 +34,6 @@ class UserList(mixins.ListModelMixin,
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.permission_classes = [AllowAny,]
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = User.objects.create_user(username=request.data['username'], email=request.data['email'], password=request.data['password'])
