@@ -10,16 +10,25 @@ from app.models import Code, Score, CodeSmell
 from app.serializers import UserSerializer, CodeSerializer, CodeSmellSerializer, ScoreSerializer
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
 # API functions
+class UserPermissions(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET' and request.auth == None:
+            return False
+        else:
+            return True
+
 class UserList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (UserPermissions,)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
