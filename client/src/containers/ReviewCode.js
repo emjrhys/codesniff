@@ -49,7 +49,7 @@ class ReviewCode extends Component {
 
     selectCodeSmell(id) {
         this.setState({
-            codeSmellId: id
+            'codeSmellId': id
         });
     }
 
@@ -68,6 +68,7 @@ class ReviewCode extends Component {
                 };
             }   
         }
+        console.log("Props: " + this.props);
 
         return (
             <div className="component-review">
@@ -115,7 +116,6 @@ ReviewCode.propTypes = {
 // TODO Move code smells either into DB or to config
 function mapStateToProps(state) {
     var id = state.router.params.id;
-    console.log(state.code);
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
