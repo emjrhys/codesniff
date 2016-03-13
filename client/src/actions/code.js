@@ -28,12 +28,11 @@ export function fetchCode(id) {
     return function (dispatch) {
      
         dispatch(requestCode(id));
-        console.log("Hello!");
         return request
             .get('http://localhost:8000/app/codes/' + id)
             .end(function(err, res) {
             
-                if(res && res.status === '404') {
+                if(res && (res.status === '404' || res.status === '301')) {
                     reject();
                 }
                 else {
