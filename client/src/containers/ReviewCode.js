@@ -15,13 +15,14 @@ class ReviewCode extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, id, codeReview } = this.props;
+        const { dispatch, id, codeReview, codeSmells } = this.props;
+        console.log(dispatch);
         dispatch(fetchCode(id));
     }
     
     componentWillReceiveProps(nextProps) {
         if(!this.props.codeReview || nextProps.codeReview.id !== this.props.codeReview.id) {
-            const { dispatch, id, codeReview } = nextProps;
+            const { dispatch, id, codeReview, codeSmells } = nextProps;
             dispatch(fetchCode(id));
         }
     }
@@ -32,7 +33,7 @@ class ReviewCode extends Component {
 
     selectCodeSmell(id) {
         this.setState({
-            codeSmellId: id
+            'codeSmellId': id
         });
     }
 
@@ -44,16 +45,19 @@ class ReviewCode extends Component {
         if(codeReview) {
             content = codeReview.content;
         }
+        console.log("Props: " + this.props);
 
         return (
             <div className="component-review">
                 <h2>Review Code</h2>
                 <div>
                     {codeSmells.map((codeSmell) => {
-                        <Button key={codeSmell.id}
+                        <button
+                            type="button"
+                            key={codeSmell.id}
                             onClick={() => this.selectCodeSmell(codeSmell.id)}>
                         {codeSmell.name}
-                        </Button>
+                        </button>
                     })}
                 </div>
                 
@@ -72,7 +76,6 @@ ReviewCode.propTypes = {
 
 function mapStateToProps(state) {
     var id = state.router.params.id;
-    console.log(state.code);
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [];
 
