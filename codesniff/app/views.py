@@ -140,7 +140,7 @@ class CodeSubmit(generics.GenericAPIView):
     	data = request.data
         user = data['creator']
     	code = data['code']
-    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user)
+    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user, difficulty=max(len(smells)*10, 100))
         try: 
             code.clean_fields()
             code.save()
@@ -184,6 +184,10 @@ class CodeCheck(generics.GenericAPIView):
         score = score/len(origsmells) * 100
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
+        scores = Score.objects.filter(code_id=codeid)
+        avg = sum(scores)/len(scores)
+        code = Code.objects.get(pk=codeid)
+        code.difficulty = (max(len(origsmells) * 10, 100) + avg) / 2
         return Response(ScoreSerializer(score).data, status=status.HTTP_200_OK)
 
 class CodeSmellList(mixins.ListModelMixin,

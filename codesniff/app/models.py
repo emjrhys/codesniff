@@ -13,6 +13,7 @@ class Code(models.Model):
 	language = models.TextField()
 	creator = models.ForeignKey(User)
 	date_added = models.DateTimeField(auto_now=True)
+	difficulty = models.IntegerField()
 
 class Score(models.Model):
 	code = models.ForeignKey(Code)
