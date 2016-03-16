@@ -35,6 +35,7 @@ export function getUserInfo () {
             .get('http://localhost:8000/app/users/me/')
             .set('Authorization', 'Token ' + localStorage.getItem('token'))
             .end(function(err, res) {
+                // NOTE don't think '404' works
                 if(res && res.status === '404') {
                     dispatch(getUserFailure(err));
                 }

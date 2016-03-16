@@ -22,7 +22,7 @@ export default function codes(state = {}, action) {
             let selectedLines = state.selectedLines || [];
             let selectedLineObject = {};
             selectedLineObject["line"] = action.payload.lineNumber;
-            selectedLineObject["smell"] = action.payload.codeSmellId;
+            selectedLineObject["smell"] = action.payload.codeSmellName;
             selectedLines.push(selectedLineObject);
             return Object.assign({}, state, {
                 selectedLines: _.uniqWith(selectedLines, _.isEqual)

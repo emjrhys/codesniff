@@ -28,17 +28,18 @@ export function fetchCode(id) {
     return function (dispatch) {
      
         dispatch(requestCode(id));
+        console.log("TOKEN: " + localStorage.getItem('token'));        
+
+        // If I add the token, it fails the OPTIONS request
         return request
             .get('http://localhost:8000/app/codes/' + id)
             .end(function(err, res) {
                 console.log(res);
                 if(res && res.status === 404) {
-                    reject();
+                    console.log("FAILURE: " + res.text);
                 }
                 else {
-                    
                     var data = JSON.parse(res.text);
-                    console.log(data);
                     dispatch(receiveCode(data));
                 
                 }
@@ -65,12 +66,12 @@ export function addCode(json) {
 
 }
 
-export function selectCode(num, id) {
+export function selectCode(num, codesmell) {
     return {
         type: SELECT_CODE, 
         payload: {
             lineNumber: num, 
-            codeSmellId: id
+            codeSmellName: codesmell
         }
     }
 }

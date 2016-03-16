@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import { fetchCode, selectCode } from '../actions/code';
+import { fetchCode, selectCode } from '../actions/code.js';
 import { addDefaultCodeSmells } from '../actions/smells';
+import { getUserInfo } from '../actions/user.js';
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
 
@@ -13,43 +14,45 @@ class ReviewCode extends Component {
         this.selectCodeSmell = this.selectCodeSmell.bind(this);
         this.state = {
             className: "",
-            codeSmellId: -1
+            codeSmellName: ""
         }
     }
 
     componentDidMount() {
-        const { dispatch, id, codeReview, codeSmells, selectedLines } = this.props;
+        const { dispatch, id, userid, codeReview, codeSmells, selectedLines } = this.props;
         dispatch(fetchCode(id));
+        dispatch(getUserInfo());
     }
     
     componentWillReceiveProps(nextProps) {
         // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
         // TODO Change && to ||
         if(!this.props.codeReview && 
-            (this.state.codeSmellId !== -1)) {
-            const { dispatch, id, codeReview, codeSmells, selectedLines } = nextProps;
+            (this.state.codeSmellName !== "")) {
+            const { dispatch, id, userid, codeReview, codeSmells, selectedLines } = nextProps;
             dispatch(fetchCode(id));
         }  
     }
 
     clickAction(lineNumber) {
-        const { dispatch, id, codeReview, codeSmells, selectedLines } = this.props;
-        if (this.state.codeSmellId !== -1) {
-            dispatch(selectCode(lineNumber, this.state.codeSmellId));
+        const { dispatch, id, userid, codeReview, codeSmells, selectedLines } = this.props;
+        if (this.state.codeSmellName !== "") {
+            dispatch(selectCode(lineNumber, this.state.codeSmellName));
         }
     }
 
-    // TODO Pass in user ID from authentication
     handleSubmit() {
-        const { dispatch, id, codeReview, codeSmells, selectedLines } = this.props;
-        for (var i in selectedLines)
+        const { dispatch, id, userid, codeReview, codeSmells, selectedLines } = this.props;
+        // Uncomment below for debugging purposes
+        /* for (var i in selectedLines)
             console.log(selectedLines[i].line + " " + selectedLines[i].smell);
-        dispatch(addDefaultCodeSmells(1, id, selectedLines));
+        console.log("USER ID " + userid); */
+        dispatch(addDefaultCodeSmells(userid, id, selectedLines));
     }
 
-    selectCodeSmell(id) {
+    selectCodeSmell(name) {
         this.setState({
-            codeSmellId: id
+            codeSmellName: name
         });
     }
 
@@ -78,7 +81,7 @@ class ReviewCode extends Component {
                             return(<button 
                                     className="codesmell"
                                     key={codeSmell.id}
-                                    onClick={() => this.selectCodeSmell(codeSmell.id)}>
+                                    onClick={() => this.selectCodeSmell(codeSmell.name)}>
                                     {codeSmell.name}
                                 </button>)
                         })
@@ -107,14 +110,17 @@ class ReviewCode extends Component {
 
 ReviewCode.propTypes = {
     id: PropTypes.string,
+    userid: PropTypes.number,
     codeReview: PropTypes.object,
     codeSmells: PropTypes.array,
     selectedLines: PropTypes.array
 }
 
 // TODO Move code smells either into DB or to config
+// TODO Error checking
 function mapStateToProps(state) {
     var id = state.router.params.id;
+    var userid = state.user.user.id; 
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
@@ -133,6 +139,7 @@ function mapStateToProps(state) {
 
     return {
         id,
+        userid,
         codeReview,
         codeSmells,
         selectedLines

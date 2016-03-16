@@ -55,7 +55,6 @@ export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
                 code: codeid,
                 smells: JSON.stringify(codesmells)
             }) 
-            .set('Accept', 'application/json')
             .end(function(err, res) {
                 console.log(res);
                 if(res && (res.status === 400 || res.status === 404 || res.status === 500)) {
@@ -68,7 +67,7 @@ export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
     }   
 } 
 
-export function addCodeSmells(user, codeid, line, codesmellid) {
+export function addCodeSmells(user, codeid, line, codesmellname) {
     return function (dispatch) {
         //dispatch(addCodeSmellsRequest());
         return request
@@ -76,7 +75,7 @@ export function addCodeSmells(user, codeid, line, codesmellid) {
                 user: user,
                 codeid: codeid,
                 line: line,
-                codesmellid: codesmellid
+                codesmellid: codesmellname
             }) 
             .end(function(err, res) {
                 console.log(res);
