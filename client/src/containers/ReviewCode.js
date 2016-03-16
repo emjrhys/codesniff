@@ -1,7 +1,12 @@
 import React, { PropTypes, Component } from 'react';
+<<<<<<< HEAD
 import { fetchCode, selectCode } from '../actions/code.js';
 import { addDefaultCodeSmells } from '../actions/smells';
 import { getUserInfo } from '../actions/user.js';
+=======
+import { fetchCode, selectCode } from '../actions/code';
+import { addDefaultCodeSmells } from '../actions/smells';
+>>>>>>> b7b3197c10c123523e4d3d308588639605b5331f
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
 

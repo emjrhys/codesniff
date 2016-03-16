@@ -37,9 +37,11 @@ export function fetchCode(id) {
                 console.log(res);
                 if(res && res.status === 404) {
                     console.log("FAILURE: " + res.text);
+                    //reject();
                 }
                 else {
                     var data = JSON.parse(res.text);
+                    console.log(data);
                     dispatch(receiveCode(data));
                 
                 }
@@ -67,6 +69,7 @@ export function addCode(json) {
 }
 
 export function selectCode(num, codesmell) {
+
     return {
         type: SELECT_CODE, 
         payload: {

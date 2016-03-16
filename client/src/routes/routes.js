@@ -18,10 +18,15 @@ const routes = (
                     <Route path="login" component={Login} />
                     <Route path="signup" component={SignUp} />
                     <Route path="submit" component={SubmitCode} />
+<<<<<<< HEAD
                     <Route path="code/:id" component={requireAuthentication(ReviewCode)} />
                     <Route path="profile" component={requireAuthentication(Profile)} />
                     <Route path="info" component={Info} />
                     <Route path="allCode" component={AllCode} />
+=======
+                    <Route path="code/:id" component={ReviewCode} />
+                    <Route path="profile" component={Profile} />
+>>>>>>> b7b3197c10c123523e4d3d308588639605b5331f
                     <Route path="*" component={Welcome} />
                 </Route>
                 );
