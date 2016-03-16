@@ -7,10 +7,12 @@ class Login extends Component {
 
     constructor(props) {
         super(props);
+        const redirectRoute = this.props.location.query.next || '/welcome';
 
         this.state = {
             email: '',
             password: '',
+            redirectRoute,
         }
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -23,7 +25,8 @@ class Login extends Component {
     }
  
     handleLogin() {
-        this.props.dispatch(loginUser(this.state.email, this.state.password)); 
+        console.log(this.props);
+        this.props.dispatch(loginUser(this.state.email, this.state.password, this.state.redirectRoute)); 
     }
 
     handleUsername(evt) {
@@ -59,7 +62,7 @@ function mapStateToProps(state) {
     var isAuthenticated = state.auth.isAuthenticated;
 
     return {
-        isAuthenticated
+        isAuthenticated,
     }
 }
 
