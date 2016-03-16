@@ -1,5 +1,5 @@
 import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE} from '../constants/ActionTypes.js';
-import {pushState} from 'redux-router';
+import {replaceState, pushState} from 'redux-router';
 import jwtDecode from 'jwt-decode';
 import request from 'superagent';
 
@@ -120,9 +120,8 @@ export function loginUser(username, password, redirect="/") {
                     let token = (JSON.parse(res.text)).token;
 
                     dispatch(loginUserSuccess(token, username));
-                    dispatch(pushState(null, '/submit', ''));
-                    console.log('login');
-
+                    console.log(redirect);
+                    dispatch(pushState(null, redirect));
                 }
             });
 

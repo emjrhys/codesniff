@@ -6,8 +6,11 @@ import {
 
 const initialState = {
     isRequesting: false,
+    code: [],
     user: {
         username: 'John Doe',
+        email: 'a@a.com',
+        id: 0,
     },
 };
 
@@ -21,7 +24,8 @@ export default function user(state = initialState, action) {
         case GET_USER_SUCCESS:
             return Object.assign({}, state, {
                 isRequesting: false,
-                user: action.payload,
+                user: action.payload.user,
+                code: action.payload.code,
             });
         case GET_USER_FAILURE:
             return Object.assign({}, state, {

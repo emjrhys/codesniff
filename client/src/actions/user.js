@@ -29,16 +29,18 @@ export function getUserInfo () {
     return function (dispatch) {
         
         dispatch(getUserRequest());
+        console.log(localStorage.getItem('token'));
 
         return request
-            .get('http://localhost:8000/app/users/me')
+            .get('http://localhost:8000/app/users/me/')
+            .set('Authorization', 'Token ' + localStorage.getItem('token'))
             .end(function(err, res) {
                 if(res && res.status === '404') {
                     dispatch(getUserFailure(err));
-
                 }
                 else {
-                    dispatch(getUserSuccess(res.data));
+                    dispatch(getUserSuccess(JSON.parse(res.text)));
+                }
             });
 
     }
