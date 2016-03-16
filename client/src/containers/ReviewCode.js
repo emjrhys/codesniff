@@ -35,11 +35,6 @@ class ReviewCode extends Component {
     clickAction(lineNumber) {
         const { dispatch, id, codeReview, codeSmells, selectedLines } = this.props;
         if (this.state.codeSmellId !== -1) {
-            if (this.state.className === "") {
-                this.state.className = "highlight";
-            } else {
-                this.state.className = "";
-            }
             dispatch(selectCode(lineNumber, this.state.codeSmellId));
         }
     }
@@ -81,6 +76,7 @@ class ReviewCode extends Component {
                     {
                         codeSmells.map((codeSmell) => {
                             return(<button 
+                                    className="codesmell"
                                     key={codeSmell.id}
                                     onClick={() => this.selectCodeSmell(codeSmell.id)}>
                                     {codeSmell.name}
@@ -121,9 +117,18 @@ function mapStateToProps(state) {
     var id = state.router.params.id;
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [
-        {id: 1, name: "What is react really"},
-        {id: 2, name: "Life is meaningless"},
-        {id: 3, name: "I'm a boring old code smell"}];
+        {id: 1, name: "duplicate code"},
+        {id: 2, name: "long methods/functions"},
+        {id: 3, name: "large classes"},
+        {id: 4, name: "long parameter list"},
+        {id: 5, name: "message chain"},
+        {id: 6, name: "feature envy"},
+        {id: 7, name: "switch statements, nested ifs"},
+        {id: 8, name: "temporary fields"},
+        {id: 9, name: "refused bequest"},
+        {id: 10, name: "too many bugs"},
+        {id: 11, name: "too hard to understand"},
+        {id: 12, name: "too hard to change"}];
     var selectedLines = state.code.selectedLines || [];
 
     return {

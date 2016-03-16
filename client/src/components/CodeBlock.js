@@ -13,7 +13,7 @@ const CodeBlock = ({ className, codeLines, clickAction, selectedLines }) => (
 							line={codeLines[key].line}
 							lineNumber={codeLines[key].lineNumber}
 							clickAction={clickAction}
-							//highlight={selectedLines[selectedLines.length - 1]}
+							highlight={selectedLines[selectedLines.length - 1]}
 							onClick={clickAction}
 						/>
 					)
