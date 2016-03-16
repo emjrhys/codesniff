@@ -49,7 +49,7 @@ class ReviewCode extends Component {
 
     selectCodeSmell(id) {
         this.setState({
-            'codeSmellId': id
+            codeSmellId: id
         });
     }
 
@@ -68,7 +68,6 @@ class ReviewCode extends Component {
                 };
             }   
         }
-        console.log("Props: " + this.props);
 
         return (
             <div className="component-review">

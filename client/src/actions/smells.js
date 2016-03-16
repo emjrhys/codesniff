@@ -44,7 +44,6 @@ export function fetchCodeSmells() {
                 }
 			});
 	}
-<<<<<<< 0481b44f97906d512c8d45af1c7c328a4ee8a5c1
 }
 
 export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
