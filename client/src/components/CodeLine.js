@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
-// className={(highlight && highlight.lineNumber === lineNumber) ? "highlight" : ""}
 const CodeLine = ({ line, lineNumber, clickAction, highlight }) => (
 
-		<div onClick={() => clickAction(lineNumber)}>
+		<div className={(highlight && highlight.line === lineNumber) ? "highlight" : ""} onClick={() => clickAction(lineNumber)}>
 			<span className="lineNumber">{lineNumber}</span> <span className="code">{line}</span>
 		</div>
 
