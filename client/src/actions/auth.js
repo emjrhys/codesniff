@@ -1,5 +1,5 @@
 import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE} from '../constants/ActionTypes.js';
-import {replaceState, pushState} from 'redux-router';
+import {pushState} from 'redux-router';
 import jwtDecode from 'jwt-decode';
 import request from 'superagent';
 
