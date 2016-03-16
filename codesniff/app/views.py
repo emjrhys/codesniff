@@ -166,7 +166,7 @@ class CodeCheck(generics.GenericAPIView):
         data = request.data
         user = data['user']
         codeid = data['code']
-        smells = data['smells']
+        smells = eval(data['smells'])
         for s in smells:
             smell = CodeSmell(code_id=codeid, user_id=user, line=s['line'], smell=s['smell'])
             try: 

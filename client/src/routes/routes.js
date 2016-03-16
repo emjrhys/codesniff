@@ -18,7 +18,7 @@ const routes = (
                     <Route path="login" component={Login} />
                     <Route path="signup" component={SignUp} />
                     <Route path="submit" component={SubmitCode} />
-                    <Route path="code/:id" component={ReviewCode} />
+                    <Route path="code/:id" component={requireAuthentication(ReviewCode)} />
                     <Route path="profile" component={requireAuthentication(Profile)} />
                     <Route path="info" component={Info} />
                     <Route path="allCode" component={AllCode} />
