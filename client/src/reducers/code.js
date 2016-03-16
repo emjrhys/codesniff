@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { SEND_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE } from '../constants/ActionTypes';
-import _ from 'underscore';
+import _ from 'lodash';
 
 export default function codes(state = {}, action) {
     switch (action.type) {
@@ -19,11 +19,13 @@ export default function codes(state = {}, action) {
             });
 
         case SELECT_CODE:
-            let selectedLines = state.selectedLines || {};
-            selectedLines[action.payload.lineNumber] = action.payload.codeSmellId; 
-
+            let selectedLines = state.selectedLines || [];
+            let selectedLineObject = {};
+            selectedLineObject["line"] = action.payload.lineNumber;
+            selectedLineObject["smell"] = action.payload.codeSmellId;
+            selectedLines.push(selectedLineObject);
             return Object.assign({}, state, {
-                selectedLines
+                selectedLines: _.uniqWith(selectedLines, _.isEqual)
             });
 
         default:

@@ -31,8 +31,8 @@ export function fetchCode(id) {
         return request
             .get('http://localhost:8000/app/codes/' + id)
             .end(function(err, res) {
-            
-                if(res && (res.status === '404' || res.status === '301')) {
+                console.log(res);
+                if(res && res.status === 404) {
                     reject();
                 }
                 else {
@@ -69,8 +69,8 @@ export function selectCode(num, id) {
     return {
         type: SELECT_CODE, 
         payload: {
-            codeSmellID: id,
             lineNumber: num, 
+            codeSmellId: id
         }
     }
 }

@@ -25,6 +25,7 @@ class SubmitCode extends Component {
 		});
 	}
     handleSubmit(evt) {
+    	// TODO Change to another function
         submitCode(this.state.value, this.state.language);
     }
 	render() {

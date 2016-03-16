@@ -1,4 +1,4 @@
-import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS } from '../constants/ActionTypes';
+import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_DEFAULT_CODESMELLS, ADD_CODESMELLS_REQUEST } from '../constants/ActionTypes';
 
 export default function codesmells(state = {}, action) {
 	switch (action.type) {
@@ -8,6 +8,8 @@ export default function codesmells(state = {}, action) {
 			return Object.assign({}, state, {
 				codeSmells: action.payload.smells
 			});
+		case ADD_CODESMELLS_REQUEST:
+			return state;
 		default:
 			return state;
 	}

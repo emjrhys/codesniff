@@ -11,12 +11,13 @@ import {requireAuthentication} from '../components/AuthenticatedComponent';
 import Info from '../containers/Info';
 import AllCode from '../containers/AllCode';
 
+//TODO Add requireAuthentication to ReviewCode and SubmitCode
 const routes = (
                 <Route path="/" component={App}>
                     <IndexRoute component={Welcome} />
                     <Route path="login" component={Login} />
                     <Route path="signup" component={SignUp} />
-                    <Route path="submit" component={requireAuthentication(SubmitCode)} />
+                    <Route path="submit" component={SubmitCode} />
                     <Route path="code/:id" component={ReviewCode} />
                     <Route path="profile" component={requireAuthentication(Profile)} />
                     <Route path="info" component={Info} />
