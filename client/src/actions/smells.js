@@ -55,6 +55,7 @@ export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
                 code: codeid,
                 smells: JSON.stringify(codesmells)
             }) 
+            .set('Accept', 'application/json')
             .end(function(err, res) {
                 console.log(res);
                 if(res && (res.status === 400 || res.status === 404 || res.status === 500)) {
