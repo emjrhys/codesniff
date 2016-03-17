@@ -1,7 +1,8 @@
 import {
     REQUEST_USER_INFO,
     GET_USER_SUCCESS,
-    GET_USER_FAILURE
+    GET_USER_FAILURE,
+    SEND_USER
 } from '../constants/ActionTypes';
 import request from 'superagent';
 
@@ -25,17 +26,16 @@ export function getUserFailure(err) {
     }
 }
 
-export function getUserInfo () {
+export function getUserInfo() {
     return function (dispatch) {
         
         dispatch(getUserRequest());
-        console.log(localStorage.getItem('token'));
 
         return request
             .get('http://localhost:8000/app/users/me/')
             .set('Authorization', 'Token ' + localStorage.getItem('token'))
             .end(function(err, res) {
-                if(res && res.status === '404') {
+                if(err || !res.ok) {
                     dispatch(getUserFailure(err));
                 }
                 else {
@@ -43,5 +43,14 @@ export function getUserInfo () {
                 }
             });
 
+    }
+}
+
+export function sendUser(userid) {
+    return {
+        type: SEND_USER,
+        payload: {
+            userid: userid
+        }
     }
 }

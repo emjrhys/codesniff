@@ -139,7 +139,7 @@ class CodeSubmit(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
     	data = request.data
         user = data['creator']
-    	code = data['code']
+    	code = eval(data['code'])
     	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user)
         try: 
             code.clean_fields()
@@ -147,7 +147,7 @@ class CodeSubmit(generics.GenericAPIView):
         except Exception as error:
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
-    	smells = data['smells']
+    	smells = eval(data['smells'])
     	for s in smells:
             smell = CodeSmell(code_id=code.id, user_id=user, line=s['line'], smell=s['smell'])
             try:
@@ -165,7 +165,7 @@ class CodeCheck(generics.GenericAPIView):
         data = request.data
         user = data['user']
         codeid = data['code']
-        smells = data['smells']
+        smells = eval(data['smells'])
         for s in smells:
             smell = CodeSmell(code_id=codeid, user_id=user, line=s['line'], smell=s['smell'])
             try: 

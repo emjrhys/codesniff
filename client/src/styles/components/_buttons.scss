@@ -27,3 +27,16 @@ button.cta {
 		background-color: $accent-muted;
 	}
 }
+
+button.codesmell {
+	background-color: $button !important;
+
+	font-size: 1em;
+	font-family: 'Source Sans Pro';
+	font-weight: 400;
+
+	margin: 5px;
+
+	padding: 5px 11px;
+
+}
