@@ -27,13 +27,14 @@ class SubmitCodeSmells extends Component {
     }
 
 	handleSubmit() {
-		const { dispatch, code, userid, selectedLines } = this.props;
+		const { dispatch, code, codeid, userid, selectedLines } = this.props;
         if (selectedLines.length !== 0) {
             dispatch(submitCode(userid, code, selectedLines));
+            dispatch(fetchCodeId());
+            console.log("CODE ID" + codeid);
         } else {
             console.log("You didn't input any code smells!");
         }
-        // TODO Reroute to code/codeid
 	}
 
     selectCodeSmell(name) {
@@ -87,6 +88,7 @@ class SubmitCodeSmells extends Component {
 
 SubmitCodeSmells.propTypes = {
 	code: PropTypes.object,
+    codeid: PropTypes.number,
 	userid: PropTypes.number,
 	codeSmells: PropTypes.array,
 	selectedLines: PropTypes.array
@@ -94,6 +96,7 @@ SubmitCodeSmells.propTypes = {
 
 function mapStateToProps(state) {
     var code = state.code.code;
+    var codeid = state.code.codeid;
 	var userid = state.user.userid;
 	var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
@@ -112,6 +115,7 @@ function mapStateToProps(state) {
 
     return {
     	code,
+        codeid,
     	userid,
     	codeSmells,
     	selectedLines
