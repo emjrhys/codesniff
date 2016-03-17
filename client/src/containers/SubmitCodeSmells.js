@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
-import { selectCode, submitCode } from '../actions/code.js';
+import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
 import CodeBlock from '../components/CodeBlock';
 
 class SubmitCodeSmells extends Component {
@@ -14,6 +15,10 @@ class SubmitCodeSmells extends Component {
 		};
 	}
 
+    componentDidMount() {
+
+    }
+
 	clickAction(lineNumber) {
         const { dispatch } = this.props;
         if (this.state.codeSmellName !== "") {
@@ -23,12 +28,12 @@ class SubmitCodeSmells extends Component {
 
 	handleSubmit() {
 		const { dispatch, code, userid, selectedLines } = this.props;
-		dispatch(submitCode(userid, code, selectedLines));
-		
-		var codeid = localStorage.getItem("codeid"),
-			baseURL = "/code/",
-			codeReviewURL = baseURL.concat(codeid);
-		this.context.history.pushState(null, codeReviewURL);
+        if (selectedLines.length !== 0) {
+            dispatch(submitCode(userid, code, selectedLines));
+        } else {
+            console.log("You didn't input any code smells!");
+        }
+        // TODO Reroute to code/codeid
 	}
 
     selectCodeSmell(name) {
@@ -80,8 +85,6 @@ class SubmitCodeSmells extends Component {
 	}
 }
 
-SubmitCodeSmells.contextTypes = { history: React.PropTypes.object.isRequred }
-
 SubmitCodeSmells.propTypes = {
 	code: PropTypes.object,
 	userid: PropTypes.number,
@@ -90,8 +93,8 @@ SubmitCodeSmells.propTypes = {
 }
 
 function mapStateToProps(state) {
-	var userid = parseInt(localStorage.getItem('userid'));
-	var code = JSON.parse(localStorage.getItem('code'));
+    var code = state.code.code;
+	var userid = state.user.userid;
 	var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
         {id: 2, name: "long methods/functions"},

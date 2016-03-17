@@ -1,16 +1,20 @@
 import React, { PropTypes, Component } from 'react';
-import { getUserInfo } from '../actions/user.js';
+import { getUserInfo, sendUser } from '../actions/user.js';
+import { sendCode } from '../actions/code.js';
+import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
+
 
 class SubmitCode extends Component {
 	constructor(props) {
 		super(props);
-		// React components in ES6 no long autobinds this to nonReact methods
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleLanguageSelect = this.handleLanguageSelect.bind(this);
 		this.handleContentChange = this.handleContentChange.bind(this);
 		this.routeToSubmitCodeSmells = this.routeToSubmitCodeSmells.bind(this);
 		this.state = {
+			title: "",
+			language: "",
 			content: ""
 		}
 	}
@@ -21,33 +25,41 @@ class SubmitCode extends Component {
     }
 
 	handleTitleChange(evt) {
-		const { code } = this.props;
-		code.title = evt.target.value;
+		this.setState({
+            title: evt.target.value
+        });
 	}
 
 	handleLanguageSelect(evt) {
-		const { code } = this.props;
-		code.language = evt.target.value;
+		this.setState({
+            language: evt.target.value
+        });
 	}
 
 	handleContentChange(evt) {
-		const { code } = this.props;
-		// console.log("CHANGING CONTENT " + evt.target.value);
-		code.content = evt.target.value;
+		this.setState({
+            content: evt.target.value
+        });
 	}
 
     routeToSubmitCodeSmells() {
-    	const { dispatch, user, code } = this.props;
-        if (code.title === "") {
+    	const { dispatch, user } = this.props;
+        if (this.state.title === "") {
         	console.log("You need to input title!");
-        } else if (code.language === "") {
+        } else if (this.state.language === "") {
         	console.log("You need to input language!");
-        } else if (code.content === "") {
+        } else if (this.state.content === "") {
         	console.log("You need to input content!");
         } else {
-        	localStorage.setItem("userid", user.id);
-        	localStorage.setItem("code", JSON.stringify(code));
-        	this.context.history.pushState(null, '/submitSmells');
+        	var code = {
+		    	title : this.state.title,
+		    	language : this.state.language,
+		    	content : this.state.content
+		    };
+
+        	dispatch(sendCode(code));
+        	dispatch(sendUser(user.id));
+        	dispatch(pushState(null, `/submitSmells`));
         }
     }
 
@@ -59,14 +71,14 @@ class SubmitCode extends Component {
 			{value: "C++"}
 		];
 
-		const { user, code } = this.props;
+		const { user } = this.props;
 
 		return (
 			<div className="component-submit">
 				<h2>Submit Code</h2>
 				<p>Logged in as <span className="profile">{ user.username }</span></p>
                 <form>
-					<label className="title">Title<input placeholder={this.state.value} onChange={this.handleTitleChange}/></label>
+					<label className="title">Title<input onChange={this.handleTitleChange}/></label>
 					<label><span>Language</span>
 						<select onChange={this.handleLanguageSelect} required>
 							<option value="">Select a Language</option>
@@ -95,25 +107,14 @@ class SubmitCode extends Component {
 	}
 }
 
-SubmitCode.contextTypes = { history: React.PropTypes.object.isRequred }
-
 SubmitCode.propTypes = {
-    user: PropTypes.object,
-    code: PropTypes.object
+    user: PropTypes.object
 }
 
 function mapStateToProps(state) {
     var user = state.user.user; 
-    var code = {
-    	title : "",
-    	content : "",
-    	language : ""
-    };
 
-    return {
-        user,
-        code
-    }
+    return { user }
 }
 
 export default connect(mapStateToProps)(SubmitCode);

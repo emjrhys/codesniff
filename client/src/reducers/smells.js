@@ -1,4 +1,7 @@
-import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_CODESMELLS_REQUEST } from '../constants/ActionTypes';
+import { 
+	RECEIVE_CODESMELLS, 
+	REQUEST_CODESMELLS
+} from '../constants/ActionTypes';
 
 export default function codesmells(state = {}, action) {
 	switch (action.type) {
