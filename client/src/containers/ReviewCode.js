@@ -42,10 +42,6 @@ class ReviewCode extends Component {
 
     handleSubmit() {
         const { dispatch, id, userid, selectedLines } = this.props;
-        // Uncomment below for debugging purposes
-        /* for (var i in selectedLines)
-            console.log(selectedLines[i].line + " " + selectedLines[i].smell);
-        console.log("USER ID " + userid); */
         dispatch(addCodeSmells(userid, id, selectedLines));
     }
 
