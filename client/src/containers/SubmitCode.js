@@ -1,63 +1,93 @@
 import React, { PropTypes, Component } from 'react';
-import { submitCode } from '../actions/code';
+import { getUserInfo } from '../actions/user.js';
 import { connect } from 'react-redux';
 
 class SubmitCode extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			value: '(e.g. CS 242 - Chess)', 
-			language: {value: 'Java'}
-		};
 		// React components in ES6 no long autobinds this to nonReact methods
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSelect = this.handleSelect.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleTitleChange = this.handleTitleChange.bind(this);
+		this.handleLanguageSelect = this.handleLanguageSelect.bind(this);
+		this.handleContentChange = this.handleContentChange.bind(this);
+		this.routeToSubmitCodeSmells = this.routeToSubmitCodeSmells.bind(this);
+		this.state = {
+			content: ""
+		}
 	}
-	handleChange(evt) {
-		this.setState({
-			value: evt.target.value
-		});
-	}
-	handleSelect(evt) {
-		this.setState({
-			language: evt.target.value
-		});
-	}
-    handleSubmit(evt) {
-    	// TODO Change to another function
-        submitCode(this.state.value, this.state.language);
+
+	componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(getUserInfo());
     }
+
+	handleTitleChange(evt) {
+		const { code } = this.props;
+		code.title = evt.target.value;
+	}
+
+	handleLanguageSelect(evt) {
+		const { code } = this.props;
+		code.language = evt.target.value;
+	}
+
+	handleContentChange(evt) {
+		const { code } = this.props;
+		// console.log("CHANGING CONTENT " + evt.target.value);
+		code.content = evt.target.value;
+	}
+
+    routeToSubmitCodeSmells() {
+    	const { dispatch, user, code } = this.props;
+        if (code.title === "") {
+        	console.log("You need to input title!");
+        } else if (code.language === "") {
+        	console.log("You need to input language!");
+        } else if (code.content === "") {
+        	console.log("You need to input content!");
+        } else {
+        	localStorage.setItem("userid", user.id);
+        	localStorage.setItem("code", JSON.stringify(code));
+        	this.context.history.pushState(null, '/submitSmells');
+        }
+    }
+
 	render() {
 		var languages = [
-			{value: 'Java'},
-			{value: 'Python'},
-			{value: 'C'},
-			{value: 'C++'}
+			{value: "Java"},
+			{value: "Python"},
+			{value: "C"},
+			{value: "C++"}
 		];
+
+		const { user, code } = this.props;
+
 		return (
 			<div className="component-submit">
 				<h2>Submit Code</h2>
-				<p>Logged in as <span className="profile">John</span></p>
+				<p>Logged in as <span className="profile">{ user.username }</span></p>
                 <form>
-					<label className="title">Title<input placeholder={this.state.value} onChange={this.handleChange}/></label>
+					<label className="title">Title<input placeholder={this.state.value} onChange={this.handleTitleChange}/></label>
 					<label><span>Language</span>
-						<select onChange={this.handleSelect}>
-							<option value="" disabled selected>select a language</option>
+						<select onChange={this.handleLanguageSelect} required>
+							<option value="">Select a Language</option>
 							{
-								languages.map(function(language) {
-									return (<option id={language.id} value={language.value}>{language.value}</option>)
+								languages.map((language) => {
+									return (<option 
+												value={language.value}>
+													{language.value}
+											</option>)
 								})
 							}
 						</select>
 					</label>
-					<textarea placeholder="paste or drag your code here">
-					</textarea>
+	                <textarea onChange={this.handleContentChange}>
+	                	{this.state.content}
+	                </textarea>
 					<button
-                        onClick={this.handleSubmit}
+                        onClick={this.routeToSubmitCodeSmells}
                         type="button"
                         className="cta">
-                        Submit
+                        Add Codesmells
                     </button>
                 </form>
 			</div>
@@ -65,5 +95,25 @@ class SubmitCode extends Component {
 	}
 }
 
-export default connect(
-)(SubmitCode);
+SubmitCode.contextTypes = { history: React.PropTypes.object.isRequred }
+
+SubmitCode.propTypes = {
+    user: PropTypes.object,
+    code: PropTypes.object
+}
+
+function mapStateToProps(state) {
+    var user = state.user.user; 
+    var code = {
+    	title : "",
+    	content : "",
+    	language : ""
+    };
+
+    return {
+        user,
+        code
+    }
+}
+
+export default connect(mapStateToProps)(SubmitCode);

@@ -1,4 +1,4 @@
-import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_DEFAULT_CODESMELLS, ADD_CODESMELLS_REQUEST } from '../constants/ActionTypes';
+import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_DEFAULT_CODESMELLS } from '../constants/ActionTypes';
 import request from 'superagent';
 
 function requestCodeSmells() {
@@ -46,7 +46,7 @@ export function fetchCodeSmells() {
 	}
 }
 
-export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
+export function addCodeSmells(userid, codeid, codesmells, redirect="/") {
     return function (dispatch) {
         //dispatch(addCodeSmellsRequest());
         return request

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SEND_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE } from '../constants/ActionTypes';
+import { SEND_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE, SUBMIT_CODE } from '../constants/ActionTypes';
 import _ from 'lodash';
 
 export default function codes(state = {}, action) {
@@ -27,6 +27,9 @@ export default function codes(state = {}, action) {
             return Object.assign({}, state, {
                 selectedLines: _.uniqWith(selectedLines, _.isEqual)
             });
+
+        case SUBMIT_CODE:
+            return state;
 
         default:
             return state;

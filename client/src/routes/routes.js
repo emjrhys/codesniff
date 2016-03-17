@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import App from '../containers/App';
 import Welcome from '../containers/Welcome';
 import SubmitCode from '../containers/SubmitCode';
+import SubmitCodeSmells from '../containers/SubmitCodeSmells';
 import ReviewCode from '../containers/ReviewCode';
 import Login from '../containers/Login';
 import SignUp from '../containers/SignUp';
@@ -17,7 +18,8 @@ const routes = (
                     <IndexRoute component={Welcome} />
                     <Route path="login" component={Login} />
                     <Route path="signup" component={SignUp} />
-                    <Route path="submit" component={SubmitCode} />
+                    <Route path="submit" component={requireAuthentication(SubmitCode)} />
+                    <Route path="submitSmells" component={requireAuthentication(SubmitCodeSmells)} />
                     <Route path="code/:id" component={requireAuthentication(ReviewCode)} />
                     <Route path="profile" component={requireAuthentication(Profile)} />
                     <Route path="info" component={Info} />

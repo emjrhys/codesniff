@@ -1,4 +1,4 @@
-import { ADD_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE } from '../constants/ActionTypes';
+import { ADD_CODE, REQUEST_CODE, RECEIVE_CODE, SELECT_CODE, SUBMIT_CODE } from '../constants/ActionTypes';
 import request from 'superagent';
 
 
@@ -75,3 +75,26 @@ export function selectCode(num, codesmell) {
         }
     }
 }
+
+export function submitCode(userid, code, codesmells) {
+    return function (dispatch) {
+
+        return request
+            .post('http://localhost:8000/app/submit/', {
+                creator: userid,
+                code: JSON.stringify(code),
+                smells: JSON.stringify(codesmells)
+            }) 
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                console.log(res);
+                if(res && (res.status === 400 || res.status === 404 || res.status === 500)) {
+                    console.log("submit code failure...");
+                } else {
+                    console.log("submit code success!");
+                    var data = JSON.parse(res.text);
+                    localStorage.setItem("codeid", data.id);
+                }
+            });
+    }   
+} 
