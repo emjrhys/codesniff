@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^codesmells/(?P<pk>[0-9]+)/$', views.CodeSmellDetail.as_view()),
     url(r'^scores/$', views.ScoreList.as_view()),
     url(r'^scores/(?P<pk>[0-9]+)/$', views.ScoreDetail.as_view()),
+    url(r'^smells/$', views.SmellList.as_view()),
+    url(r'^smells/(?P<pk>[0-9]*)/$', views.SmellDetail.as_view()),
     url(r'^submit/$', views.CodeSubmit.as_view()),
     url(r'^checksmells/$', views.CodeCheck.as_view()),
 )

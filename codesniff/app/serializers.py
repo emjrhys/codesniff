@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from app.models import Code, Score, CodeSmell
+from app.models import Code, Score, CodeSmell, Smell
 
 # Serializers define the API representation.
 class UserSerializer(serializers.ModelSerializer):
@@ -19,6 +19,11 @@ class CodeSmellSerializer(serializers.ModelSerializer):
     class Meta:
         model = CodeSmell
         fields = ('id','code','user','line','smell')
+
+class SmellSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Smell
+        fields = ('id','name')
 
 class ScoreSerializer(serializers.ModelSerializer):
     class Meta:

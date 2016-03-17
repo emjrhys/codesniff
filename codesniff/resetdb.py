@@ -2,7 +2,7 @@
 
 # settings.configure()
 
-from app.models import Code, Score, CodeSmell
+from app.models import Code, Score, CodeSmell, Smell
 from django.contrib.auth.models import User
 
 import subprocess
@@ -23,3 +23,8 @@ codesmell = CodeSmell(code_id=1, user_id=1, line=1, smell='2')
 codesmell.save()
 codesmell = CodeSmell(code_id=2, user_id=1, line=1, smell='1')
 codesmell.save()
+
+with open('codesmells.txt') as f:
+	for line in f:
+		smell = Smell(name=line.replace('\n', ''))
+		smell.save()

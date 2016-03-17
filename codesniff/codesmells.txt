@@ -1,0 +1,12 @@
+duplicate code
+long methods/functions
+large classes
+long parameter list
+message chain
+feature envy
+switch statements, nested ifs
+temporary fields
+refused bequest
+too many bugs
+too hard to understand
+too hard to change

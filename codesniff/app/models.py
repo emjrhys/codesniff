@@ -13,7 +13,7 @@ class Code(models.Model):
 	language = models.TextField()
 	creator = models.ForeignKey(User)
 	date_added = models.DateTimeField(auto_now=True)
-	difficulty = models.IntegerField()
+	difficulty = models.IntegerField(default=0)
 
 class Score(models.Model):
 	code = models.ForeignKey(Code)
@@ -25,6 +25,9 @@ class CodeSmell(models.Model):
 	user = models.ForeignKey(User)
 	line = models.IntegerField()
 	smell = models.TextField()
+
+class Smell(models.Model):
+	name = models.TextField()
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 # imports for API
-from app.models import Code, Score, CodeSmell
-from app.serializers import UserSerializer, CodeSerializer, CodeSmellSerializer, ScoreSerializer
+from app.models import Code, Score, CodeSmell, Smell
+from app.serializers import UserSerializer, CodeSerializer, CodeSmellSerializer, ScoreSerializer, SmellSerializer
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import permissions
@@ -140,7 +140,7 @@ class CodeSubmit(generics.GenericAPIView):
     	data = request.data
         user = data['creator']
     	code = data['code']
-    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user, difficulty=max(len(smells)*10, 100))
+    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user, difficulty=min(len(smells)*10, 100))
         try: 
             code.clean_fields()
             code.save()
@@ -188,7 +188,8 @@ class CodeCheck(generics.GenericAPIView):
         scores = Score.objects.filter(code_id=codeid)
         avg = sum(scores)/len(scores)
         code = Code.objects.get(pk=codeid)
-        code.difficulty = (max(len(origsmells) * 10, 100) + avg) / 2
+        code.difficulty = (min(len(origsmells) * 10, 100) + 100 - avg) / 2
+        code.save()
         return Response(ScoreSerializer(score).data, status=status.HTTP_200_OK)
 
 class CodeSmellList(mixins.ListModelMixin,
@@ -225,6 +226,41 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
                     generics.GenericAPIView):
     queryset = CodeSmell.objects.all()
     serializer_class = CodeSmellSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+class SmellList(mixins.ListModelMixin,
+                    mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = Smell.objects.all()
+    serializer_class = SmellSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = Smell.objects.all()
+        return queryset 
+
+class SmellDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Smell.objects.all()
+    serializer_class = SmellSerializer
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
