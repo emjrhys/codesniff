@@ -2,22 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { pushState } from 'redux-router';
 
+
 export function requireAuthentication(Component) {
 
     class AuthenticatedComponent extends React.Component {
     
-        componentWillMount() {
+        componentDidMount() {
             this.checkAuth();
         }
 
         componentWillReceiveProps(nextProps) {
-            this.checkAuth();
+            if(nextProps.isAuthenticated !== this.props.isAuthenticated) {
+                this.checkAuth();
+            }
         }
 
         checkAuth() {
+            console.log(this.props.isAuthenticated);
+            console.log(this.props);
             if (!this.props.isAuthenticated) {
                 let redirectAfterLogin = this.props.location.pathname;
-                this.props.dispatch(pushState(null, '/login?next=${redirectAfterLogin}'));
+                this.props.dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
             }
         }
 

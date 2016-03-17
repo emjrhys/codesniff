@@ -7,6 +7,7 @@ import request from 'superagent';
 export function loginUserSuccess(token, username) {
 
     localStorage.setItem('token', token);
+
     return {
         type: LOGIN_USER_SUCCESS,
         payload: {
@@ -116,11 +117,11 @@ export function loginUser(username, password, redirect="/") {
                 }
                 else {
 
-                    dispatch(loginUserSuccess(res.token, username));
-                    console.log(pushState);
-                    dispatch(pushState(null, '/submit', ''));
-                    console.log('login');
+                    let token = (JSON.parse(res.text)).token;
 
+                    dispatch(loginUserSuccess(token, username));
+                    console.log(redirect);
+                    dispatch(pushState(null, redirect));
                 }
             });
 

@@ -28,7 +28,7 @@ class UserList(mixins.ListModelMixin,
                   generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (UserPermissions,)
+    #permission_classes = (UserPermissions,)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -177,11 +177,12 @@ class CodeCheck(generics.GenericAPIView):
         origsmells = CodeSmell.objects.filter(code_id=codeid, user=Code.objects.filter(id=codeid)[0].creator)
         origsmells = map(lambda x:(x.line, x.smell), origsmells)
         score = 0
-        for s in smells:
-        	if s in origsmells:
-        		score += 1
-        score -= 0.5 * (len(origsmells) - score)
-        score = score/len(origsmells) * 100
+        if len(origsmells) > 0:
+            for s in smells:
+            	if s in origsmells:
+            		score += 1
+            score -= 0.5 * (len(origsmells) - score)
+            score = score/len(origsmells) * 100
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
         scores = Score.objects.filter(code_id=codeid)
