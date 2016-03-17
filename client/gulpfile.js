@@ -78,7 +78,7 @@ var execWebpack = function(cb) {
         publicPath: webpackConfig.output.publicPath,
         quiet: true,
         historyApiFallback: true,
-    }).listen(8081, "localhost", function(err) {
+    }).listen(8080, "localhost", function(err) {
     
         if(err)
             throw new gutil.PluginError('webpack-dev-server', err);
