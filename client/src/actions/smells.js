@@ -1,4 +1,4 @@
-import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_DEFAULT_CODESMELLS, ADD_CODESMELLS_REQUEST } from '../constants/ActionTypes';
+import { REQUEST_CODESMELLS, RECEIVE_CODESMELLS, ADD_CODESMELLS, ADD_DEFAULT_CODESMELLS } from '../constants/ActionTypes';
 import request from 'superagent';
 
 function requestCodeSmells() {
@@ -46,7 +46,7 @@ export function fetchCodeSmells() {
 	}
 }
 
-export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
+export function addCodeSmells(userid, codeid, codesmells, redirect="/") {
     return function (dispatch) {
         //dispatch(addCodeSmellsRequest());
         return request
@@ -56,28 +56,6 @@ export function addDefaultCodeSmells(userid, codeid, codesmells, redirect="/") {
                 smells: JSON.stringify(codesmells)
             }) 
             .set('Accept', 'application/json')
-            .end(function(err, res) {
-                console.log(res);
-                if(res && (res.status === 400 || res.status === 404 || res.status === 500)) {
-                    console.log("add codesmells failure...");
-                    //reject();
-                } else {
-                    console.log('add codesmells success!');
-                }
-            });
-    }   
-} 
-
-export function addCodeSmells(user, codeid, line, codesmellname) {
-    return function (dispatch) {
-        //dispatch(addCodeSmellsRequest());
-        return request
-            .post('http://localhost:8000/app/codesmells/', {
-                user: user,
-                codeid: codeid,
-                line: line,
-                codesmellid: codesmellname
-            }) 
             .end(function(err, res) {
                 console.log(res);
                 if(res && (res.status === 400 || res.status === 404 || res.status === 500)) {
