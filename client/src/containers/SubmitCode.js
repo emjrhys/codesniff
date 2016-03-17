@@ -26,20 +26,20 @@ class SubmitCode extends Component {
 
 	handleTitleChange(evt) {
 		this.setState({
-            title: evt.target.value
-        });
+			title: evt.target.value
+		});
 	}
 
 	handleLanguageSelect(evt) {
 		this.setState({
-            language: evt.target.value
+			language: evt.target.value
         });
 	}
 
 	handleContentChange(evt) {
 		this.setState({
-            content: evt.target.value
-        });
+			content: evt.target.value
+		});
 	}
 
 	routeToSubmitCodeSmells() {

@@ -74,7 +74,6 @@ export function fetchCode(id) {
     }
 }
 
-// TODO Need to send code id somehow...
 export function submitCode(userid, code, codesmells) {
     return function (dispatch) {
         return request

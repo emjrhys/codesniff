@@ -2,7 +2,6 @@ import React, { PropTypes, Components } from 'react';
 import CodeLine from './CodeLine';
 import { connect } from 'react-redux';
 
-// NOTE This will modify the existing codeLines object - plz don't fuck shit up
 // TODO Create styles (indentation, colors, etc.) 
 const CodeBlock = ({ className, codeLines, clickAction, selectedLines }) => (
 			<div>
