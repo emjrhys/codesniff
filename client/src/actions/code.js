@@ -1,14 +1,12 @@
 import { 
-    FETCH_CODE_ID,
     REQUEST_CODE, 
     RECEIVE_CODE, 
     SELECT_CODE, 
     SEND_CODE, 
-    SEND_CODE_ID,
-    SUBMIT_CODE 
+    SUBMIT_CODE,
+    SUBMIT_CODE_SUCCESS 
 } from '../constants/ActionTypes';
 import request from 'superagent';
-
 
 function requestCode(id) {
     return {
@@ -45,17 +43,11 @@ export function sendCode(code) {
     }  
 }
 
-export function fetchCodeId() {
+export function submitCodeSuccess(id) {
     return {
-        type: FETCH_CODE_ID
-    }
-}
-
-export function sendCodeId(codeid) {
-    return {
-        type: SEND_CODE_ID,
+        type: SUBMIT_CODE_SUCCESS,
         payload: {
-            codeid: codeid
+            codeid: id
         }
     }
 }
@@ -81,6 +73,7 @@ export function fetchCode(id) {
             });
     }
 }
+
 // TODO Need to send code id somehow...
 export function submitCode(userid, code, codesmells) {
     return function (dispatch) {
@@ -97,7 +90,7 @@ export function submitCode(userid, code, codesmells) {
                 } else {
                     console.log("submit code success!");
                     var data = JSON.parse(res.text);
-                    dispatch(sendCodeId(data.id));
+                    dispatch(submitCodeSuccess(data.id));
                 }
             });
     }   

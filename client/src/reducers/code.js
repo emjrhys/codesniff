@@ -1,31 +1,19 @@
 import { combineReducers } from 'redux';
 import { 
-    FETCH_CODE_ID,
     REQUEST_CODE, 
     RECEIVE_CODE, 
     SELECT_CODE, 
     SEND_CODE, 
-    SEND_CODE_ID,
-    SUBMIT_CODE 
+    SUBMIT_CODE,
+    SUBMIT_CODE_SUCCESS  
 } from '../constants/ActionTypes';
 import _ from 'lodash';
 
 export default function codes(state = {}, action) {
     switch (action.type) {
-        case FETCH_CODE_ID:
-            let codeid = state.codeid || -1;
-            return Object.assign({}, state, {
-                codeid: codeid
-            });
-
         case SEND_CODE:
             return Object.assign({}, state, {
                 code: action.payload.code
-            });
-
-        case SEND_CODE_ID:
-            return Object.assign({}, state, {
-                codeid: action.payload.codeid
             });
 
         case REQUEST_CODE:
@@ -50,6 +38,9 @@ export default function codes(state = {}, action) {
             });
 
         case SUBMIT_CODE:
+            return state;
+
+        case SUBMIT_CODE_SUCCESS:
             return Object.assign({}, state, {
                 codeid: action.payload.codeid
             });

@@ -1,10 +1,9 @@
-export const FETCH_CODE_ID = 'FETCH_CODE_ID';
-export const SEND_CODE_ID = 'SEND_CODE_ID';
 export const RECEIVE_CODE = 'RECEIVE_CODE';
 export const REQUEST_CODE = 'REQUEST_CODE';
 export const SELECT_CODE = 'SELECT_CODE';
 export const SEND_CODE = 'SEND_CODE';
 export const SUBMIT_CODE = 'SUBMIT_CODE';
+export const SUBMIT_CODE_SUCCESS = 'SUBMIT_CODE_SUCCESS';
 
 export const REQUEST_CODESMELLS = 'REQUEST_CODESMELLS';
 export const RECEIVE_CODESMELLS = 'RECEIVE_CODESMELLS';
