@@ -12,7 +12,6 @@ import {requireAuthentication} from '../components/AuthenticatedComponent';
 import Info from '../containers/Info';
 import AllCode from '../containers/AllCode';
 
-//TODO Add requireAuthentication to ReviewCode and SubmitCode
 const routes = (
                 <Route path="/" component={App}>
                     <IndexRoute component={Welcome} />

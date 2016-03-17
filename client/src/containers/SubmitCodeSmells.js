@@ -5,7 +5,7 @@ import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
 import CodeBlock from '../components/CodeBlock';
 
 class SubmitCodeSmells extends Component {
-	constructor(props) {
+    constructor(props) {
 		super(props);
 		this.clickAction = this.clickAction.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,14 +22,14 @@ class SubmitCodeSmells extends Component {
         }
     }
 
-	clickAction(lineNumber) {
+    clickAction(lineNumber) {
         const { dispatch } = this.props;
         if (this.state.codeSmellName !== "") {
             dispatch(selectCode(lineNumber, this.state.codeSmellName));
         }
     }
 
-	handleSubmit() {
+    handleSubmit() {
 		const { dispatch, code, codeid, userid, selectedLines } = this.props;
         if (selectedLines.length !== 0) {
             dispatch(submitCode(userid, code, selectedLines));
@@ -88,18 +88,18 @@ class SubmitCodeSmells extends Component {
 }
 
 SubmitCodeSmells.propTypes = {
-	code: PropTypes.object,
+    code: PropTypes.object,
     codeid: PropTypes.number,
-	userid: PropTypes.number,
-	codeSmells: PropTypes.array,
-	selectedLines: PropTypes.array
+    userid: PropTypes.number,
+    codeSmells: PropTypes.array,
+    selectedLines: PropTypes.array
 }
 
 function mapStateToProps(state) {
     var code = state.code.code;
     var codeid = state.code.codeid;
-	var userid = state.user.userid;
-	var codeSmells = state.smells.codeSmells || [
+    var userid = state.user.userid;
+    var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
         {id: 2, name: "long methods/functions"},
         {id: 3, name: "large classes"},
@@ -115,11 +115,11 @@ function mapStateToProps(state) {
     var selectedLines = state.code.selectedLines || [];
 
     return {
-    	code,
+        code,
         codeid,
-    	userid,
-    	codeSmells,
-    	selectedLines
+        userid,
+        codeSmells,
+        selectedLines
     }
 }
 

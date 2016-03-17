@@ -42,24 +42,24 @@ class SubmitCode extends Component {
         });
 	}
 
-    routeToSubmitCodeSmells() {
-    	const { dispatch, user } = this.props;
-        if (this.state.title === "") {
-        	console.log("You need to input title!");
-        } else if (this.state.language === "") {
-        	console.log("You need to input language!");
-        } else if (this.state.content === "") {
-        	console.log("You need to input content!");
-        } else {
-        	var code = {
-		    	title : this.state.title,
-		    	language : this.state.language,
-		    	content : this.state.content
-		    };
+	routeToSubmitCodeSmells() {
+		const { dispatch, user } = this.props;
+		if (this.state.title === "") {
+			console.log("You need to input title!");
+		} else if (this.state.language === "") {
+			console.log("You need to input language!");
+		} else if (this.state.content === "") {
+			console.log("You need to input content!");
+		} else {
+			var code = {
+				title : this.state.title,
+				language : this.state.language,
+				content : this.state.content
+			};
 
-        	dispatch(sendCode(code));
-        	dispatch(sendUser(user.id));
-        	dispatch(pushState(null, `/submitSmells`));
+			dispatch(sendCode(code));
+			dispatch(sendUser(user.id));
+			dispatch(pushState(null, `/submitSmells`));
         }
     }
 
@@ -108,13 +108,13 @@ class SubmitCode extends Component {
 }
 
 SubmitCode.propTypes = {
-    user: PropTypes.object
+	user: PropTypes.object
 }
 
 function mapStateToProps(state) {
-    var user = state.user.user; 
+	var user = state.user.user; 
 
-    return { user }
+	return { user }
 }
 
 export default connect(mapStateToProps)(SubmitCode);
