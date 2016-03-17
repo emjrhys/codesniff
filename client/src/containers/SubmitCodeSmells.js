@@ -15,8 +15,11 @@ class SubmitCodeSmells extends Component {
 		};
 	}
 
-    componentDidMount() {
-
+    componentWillReceiveProps(nextProps) {
+        const { dispatch } = this.props;
+        if (nextProps.codeid) {
+            dispatch(pushState(null, `/code/${nextProps.codeid}`));
+        }
     }
 
 	clickAction(lineNumber) {
@@ -30,8 +33,6 @@ class SubmitCodeSmells extends Component {
 		const { dispatch, code, codeid, userid, selectedLines } = this.props;
         if (selectedLines.length !== 0) {
             dispatch(submitCode(userid, code, selectedLines));
-            dispatch(fetchCodeId());
-            console.log("CODE ID" + codeid);
         } else {
             console.log("You didn't input any code smells!");
         }
