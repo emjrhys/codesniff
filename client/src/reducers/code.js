@@ -13,7 +13,10 @@ import _ from 'lodash';
 export default function codes(state = {}, action) {
     switch (action.type) {
         case FETCH_CODE_ID:
-            return state;
+            let codeid = state.codeid || -1;
+            return Object.assign({}, state, {
+                codeid: codeid
+            });
 
         case SEND_CODE:
             return Object.assign({}, state, {
@@ -47,7 +50,9 @@ export default function codes(state = {}, action) {
             });
 
         case SUBMIT_CODE:
-            return state;
+            return Object.assign({}, state, {
+                codeid: action.payload.codeid
+            });
 
         default:
             return state;

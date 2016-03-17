@@ -76,7 +76,6 @@ export function fetchCode(id) {
                     console.log("fetch codesmells success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCode(data));
-                
                 }
             
             });
