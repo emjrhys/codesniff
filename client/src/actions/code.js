@@ -1,8 +1,8 @@
 import { 
+    TRANSFER_CODE, 
     REQUEST_CODE, 
     RECEIVE_CODE, 
     SELECT_CODE, 
-    SEND_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS 
 } from '../constants/ActionTypes';
@@ -34,9 +34,9 @@ export function selectCode(num, codesmell) {
     }
 }
 
-export function sendCode(code) { 
+export function transferCode(code) { 
     return {
-        type: SEND_CODE,
+        type: TRANSFER_CODE,
         payload: {
             code: code
         }

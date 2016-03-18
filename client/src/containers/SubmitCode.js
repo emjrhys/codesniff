@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import { getUserInfo, sendUser } from '../actions/user.js';
-import { sendCode } from '../actions/code.js';
+import { transferCode } from '../actions/code.js';
+import { getUserInfo } from '../actions/user.js';
 import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 
@@ -57,8 +57,7 @@ class SubmitCode extends Component {
 				content : this.state.content
 			};
 
-			dispatch(sendCode(code));
-			dispatch(sendUser(user.id));
+			dispatch(transferCode(code));
 			dispatch(pushState(null, `/submitSmells`));
         }
     }

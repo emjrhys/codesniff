@@ -55,23 +55,3 @@ export function addCodeSmells(userid, codeid, codesmells) {
             });
     }   
 } 
-
-export function addCodeSmells(user, codeid, line, codesmellname) {
-    return function (dispatch) {
-        return request
-            .post('http://localhost:8000/app/codesmells/', {
-                user: user,
-                codeid: codeid,
-                line: line,
-                codesmellid: codesmellname
-            }) 
-            .end(function(err, res) {
-                console.log(res);
-                if(err || !res.ok) {
-                    console.log("add codesmells failure...");
-                } else {
-                    console.log("add codesmells success!");
-                }
-            });
-    }   
-} 

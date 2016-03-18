@@ -1,8 +1,7 @@
 import {
-    REQUEST_USER_INFO,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
-    SEND_USER
+    REQUEST_USER_INFO
 } from '../constants/ActionTypes';
 import request from 'superagent';
 
@@ -43,14 +42,5 @@ export function getUserInfo() {
                 }
             });
 
-    }
-}
-
-export function sendUser(userid) {
-    return {
-        type: SEND_USER,
-        payload: {
-            userid: userid
-        }
     }
 }

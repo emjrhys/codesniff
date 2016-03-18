@@ -1,8 +1,7 @@
 import {
-    REQUEST_USER_INFO,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
-    SEND_USER
+    REQUEST_USER_INFO
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -28,13 +27,10 @@ export default function user(state = initialState, action) {
                 user: action.payload.user,
                 code: action.payload.code
             });
+            
         case GET_USER_FAILURE:
             return Object.assign({}, state, {
                 isRequesting: false
-            });
-        case SEND_USER:
-            return Object.assign({}, state, {
-                userid: action.payload.userid
             });
 
         default:

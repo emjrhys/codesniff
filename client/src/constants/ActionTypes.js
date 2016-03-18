@@ -1,7 +1,7 @@
+export const TRANSFER_CODE = 'TRANSFER_CODE';
 export const RECEIVE_CODE = 'RECEIVE_CODE';
 export const REQUEST_CODE = 'REQUEST_CODE';
 export const SELECT_CODE = 'SELECT_CODE';
-export const SEND_CODE = 'SEND_CODE';
 export const SUBMIT_CODE = 'SUBMIT_CODE';
 export const SUBMIT_CODE_SUCCESS = 'SUBMIT_CODE_SUCCESS';
 
@@ -12,7 +12,6 @@ export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
-export const SEND_USER = 'SEND_USER';
 
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
+import { getUserInfo } from '../actions/user.js';
 import CodeBlock from '../components/CodeBlock';
 
 class SubmitCodeSmells extends Component {
@@ -14,6 +15,11 @@ class SubmitCodeSmells extends Component {
 			codeSmellName: ""
 		};
 	}
+
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(getUserInfo());
+    }
 
     componentWillReceiveProps(nextProps) {
         const { dispatch } = this.props;
@@ -98,7 +104,7 @@ SubmitCodeSmells.propTypes = {
 function mapStateToProps(state) {
     var code = state.code.code;
     var codeid = state.code.codeid;
-    var userid = state.user.userid;
+    var userid = state.user.user.id;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
         {id: 2, name: "long methods/functions"},
