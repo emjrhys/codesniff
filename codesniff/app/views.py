@@ -137,19 +137,18 @@ class CodeSubmit(generics.GenericAPIView):
     serializer_class = CodeSerializer
 
     def post(self, request, *args, **kwargs):
-    	data = request.data
+        data = request.data
         user = data['creator']
-    	code = data['code']
-        smells = data['smells']
-        
-    	code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user, difficulty=min(len(smells)*10, 100))
+        code = eval(data['code'])
+        code = Code(title=code['title'], content=code['content'], language=code['language'], creator_id=user)
         try: 
             code.clean_fields()
             code.save()
         except Exception as error:
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
-    	for s in smells:
+        smells = eval(data['smells'])
+        for s in smells:
             smell = CodeSmell(code_id=code.id, user_id=user, line=s['line'], smell=s['smell'])
             try:
                 smell.clean_fields()
@@ -166,7 +165,7 @@ class CodeCheck(generics.GenericAPIView):
         data = request.data
         user = data['user']
         codeid = data['code']
-        smells = data['smells']
+        smells = eval(data['smells'])
         for s in smells:
             smell = CodeSmell(code_id=codeid, user_id=user, line=s['line'], smell=s['smell'])
             try: 

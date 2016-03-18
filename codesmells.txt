@@ -1,0 +1,12 @@
+id: 1, name: duplicate code
+id: 2, name: long methods/functions
+id: 3, name: large classes
+id: 4, name: long parameter list
+id: 5, name: message chain
+id: 6, name: feature envy
+id: 7, name: switch statements, nested ifs
+id: 8, name: temporary fields
+id: 9, name: refused bequest
+id: 10, name: too many bugs
+id: 11, name: too hard to understand
+id: 12, name: too hard to change

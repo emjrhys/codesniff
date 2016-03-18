@@ -1,36 +1,31 @@
 import React, { PropTypes, Component } from 'react';
-import { fetchCode, selectCode } from '../actions/code.js';
-import { addCodeSmells } from '../actions/smells';
-import { getUserInfo } from '../actions/user.js';
+import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
+import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
+import { getUserInfo } from '../actions/user.js';
 import CodeBlock from '../components/CodeBlock';
 
-
-class ReviewCode extends Component {
+class SubmitCodeSmells extends Component {
     constructor(props) {
-        super(props);
-        this.clickAction = this.clickAction.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.selectCodeSmell = this.selectCodeSmell.bind(this);
-        this.state = {
-            codeSmellName: ""
-        }
-    }
+		super(props);
+		this.clickAction = this.clickAction.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.selectCodeSmell = this.selectCodeSmell.bind(this);
+		this.state = {
+			codeSmellName: ""
+		};
+	}
 
     componentDidMount() {
-        const { dispatch, id } = this.props;
-        dispatch(fetchCode(id));
+        const { dispatch } = this.props;
         dispatch(getUserInfo());
     }
-    
+
     componentWillReceiveProps(nextProps) {
-        // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
-        // TODO Change && to ||
-        if(!this.props.codeReview && 
-            (this.state.codeSmellName !== "")) {
-            const { dispatch, id } = nextProps;
-            dispatch(fetchCode(id));
-        }  
+        const { dispatch } = this.props;
+        if (nextProps.codeid) {
+            dispatch(pushState(null, `/code/${nextProps.codeid}`));
+        }
     }
 
     clickAction(lineNumber) {
@@ -41,9 +36,13 @@ class ReviewCode extends Component {
     }
 
     handleSubmit() {
-        const { dispatch, id, userid, selectedLines } = this.props;
-        dispatch(addCodeSmells(userid, id, selectedLines));
-    }
+		const { dispatch, code, codeid, userid, selectedLines } = this.props;
+        if (selectedLines.length !== 0) {
+            dispatch(submitCode(userid, code, selectedLines));
+        } else {
+            console.log("You didn't input any code smells!");
+        }
+	}
 
     selectCodeSmell(name) {
         this.setState({
@@ -51,24 +50,19 @@ class ReviewCode extends Component {
         });
     }
 
-    render() {
-
-        const { id, codeReview, codeSmells, selectedLines } = this.props;
-        var content = "";
-
-        if(codeReview) {
-            content = codeReview.content.split("\n");
-            for (var i = 0; i < content.length; i++) {
-                content[i] = {
-                    lineNumber: i + 1,
-                    line: content[i],
-                };
-            }   
-        }
-
-        return (
-            <div className="component-review">
-                <h2>Review Code</h2>
+	render() {
+		const { code, codeSmells, selectedLines } = this.props;
+		var contentByLines = code.content.split("\n");
+		for (var i in contentByLines) {
+            contentByLines[i] = {
+                lineNumber: i + 1,
+                line: contentByLines[i],
+            };
+        }   
+        
+		return(
+			<div className="component-review">
+                <h2>Submit CodeSmells</h2>
                 <div>
                     {
                         codeSmells.map((codeSmell) => {
@@ -83,7 +77,7 @@ class ReviewCode extends Component {
                 </div>
                 <div className="codearea">
                     <CodeBlock
-                        codeLines={content}
+                        codeLines={contentByLines}
                         clickAction={this.clickAction}
                         selectedLines={selectedLines}
                     />  
@@ -95,25 +89,22 @@ class ReviewCode extends Component {
                     Submit
                 </button>
             </div>
-        );
-
-    }
-
+		)
+	}
 }
 
-ReviewCode.propTypes = {
-    id: PropTypes.string,
+SubmitCodeSmells.propTypes = {
+    code: PropTypes.object,
+    codeid: PropTypes.number,
     userid: PropTypes.number,
-    codeReview: PropTypes.object,
     codeSmells: PropTypes.array,
     selectedLines: PropTypes.array
 }
 
-// TODO Error checking
 function mapStateToProps(state) {
-    var id = state.router.params.id;
-    var userid = state.user.user.id; 
-    var codeReview = state.code.codeReview;
+    var code = state.code.code;
+    var codeid = state.code.codeid;
+    var userid = state.user.user.id;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
         {id: 2, name: "long methods/functions"},
@@ -130,12 +121,12 @@ function mapStateToProps(state) {
     var selectedLines = state.code.selectedLines || [];
 
     return {
-        id,
+        code,
+        codeid,
         userid,
-        codeReview,
         codeSmells,
         selectedLines
     }
 }
 
-export default connect(mapStateToProps)(ReviewCode);
+export default connect(mapStateToProps)(SubmitCodeSmells);
