@@ -108,7 +108,7 @@ class CodeList(mixins.ListModelMixin,
         if language is not None:
             queryset = queryset.filter(language=language)
         if username is not None:
-            queryset = queryset.filter(creator__username=username)
+            queryset = queryset.filter(creator=username)
         if date_added is not None:
             queryset = queryset.filter(date_added=date_added)
         return queryset

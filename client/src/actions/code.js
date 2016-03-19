@@ -2,6 +2,7 @@ import {
     TRANSFER_CODE, 
     REQUEST_CODE, 
     RECEIVE_CODE, 
+    RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS 
@@ -21,6 +22,15 @@ function receiveCode(json) {
         type: RECEIVE_CODE,
         isFetching: false,
         code: json
+    }
+}
+
+function receiveCodesByUserId(json) {
+    return {
+        type: RECEIVE_CODE_BY_USERID,
+        payload: {
+            codelist: json 
+        }
     }
 }
 
@@ -63,14 +73,31 @@ export function fetchCode(id) {
             .end(function(err, res) {
                 if(err || !res.ok) {
                     console.log("fetch code failure...");                    
-                }
-                else {
+                } else {
                     console.log("fetch codesmells success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCode(data));
                 }
             
             });
+    }
+}
+
+export function fetchCodesByUserId(userid) {
+    return function (dispatch) {
+        return request
+            .get('http://localhost:8000/app/codes')
+            .query({ creator: userid })
+            .end(function(err, res) {
+                if (err || !res.ok) {
+                    console.log("fetch codes by user failure...");
+                } else {
+                    console.log("fetch codes by user success!");
+                    var data = JSON.parse(res.text);
+                    //console.log(data);
+                    dispatch(receiveCodesByUserId(data));
+                }
+            })
     }
 }
 

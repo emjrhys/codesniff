@@ -3,6 +3,7 @@ import {
     TRANSFER_CODE, 
     REQUEST_CODE, 
     RECEIVE_CODE, 
+    RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS  
@@ -25,6 +26,11 @@ export default function codes(state = {}, action) {
             return Object.assign({}, state, {
                 isFetching: false,
                 codeReview: action.code
+            });
+
+        case RECEIVE_CODE_BY_USERID:
+            return Object.assign({}, state, {
+                codelist: action.payload.codelist
             });
 
         case SELECT_CODE:
