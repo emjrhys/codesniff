@@ -108,7 +108,6 @@ export function submitCode(userid, code, codesmells) {
                 code: JSON.stringify(code),
                 smells: JSON.stringify(codesmells)
             }) 
-            .set('Accept', 'application/json')
             .end(function(err, res) {
                 if(err || !res.ok) {
                     console.log("submit code failure...");

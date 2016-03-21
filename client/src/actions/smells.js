@@ -46,7 +46,6 @@ export function addCodeSmells(userid, codeid, codesmells) {
                 smells: JSON.stringify(codesmells)
             }) 
             .end(function(err, res) {
-                console.log(res);
                 if(err || !res.ok) {
                     console.log("add codesmells failure...");
                 } else {
