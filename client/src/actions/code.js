@@ -2,6 +2,7 @@ import {
     TRANSFER_CODE, 
     REQUEST_CODE, 
     RECEIVE_CODE, 
+    REQUEST_CODE_BY_USERID,
     RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
@@ -25,10 +26,20 @@ function receiveCode(json) {
     }
 }
 
+function requestCodeByUserId(userid) {
+    return {
+        type: REQUEST_CODE_BY_USERID,
+        isFetchingByUserId: true,
+        userId: userid
+    }
+}
+    
+
 function receiveCodesByUserId(json) {
     return {
         type: RECEIVE_CODE_BY_USERID,
         payload: {
+            isFetchingByUserId: false,
             codelist: json 
         }
     }
@@ -85,6 +96,9 @@ export function fetchCode(id) {
 
 export function fetchCodesByUserId(userid) {
     return function (dispatch) {
+
+        dispatch(requestCodeByUserId(userid));
+
         return request
             .get('http://localhost:8000/app/codes')
             .query({ creator: userid })

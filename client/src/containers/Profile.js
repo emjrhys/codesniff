@@ -2,9 +2,9 @@ import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { pushState } from 'redux-router';
+import CodeList from '../components/CodeList';
 import { getUserInfo } from '../actions/user.js';
 import { fetchCodesByUserId } from '../actions/code.js';
-import CodeList from '../components/CodeList';
 
 // TODO make repsonsive design
 // TODO figure out how to get all code smells that this user has reviewed
@@ -13,9 +13,6 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.routeToCodeReview = this.routeToCodeReview.bind(this);
-        this.state = {
-            receivedCodes: false,
-        }
     }
 
     componentDidMount() {
@@ -24,16 +21,10 @@ class Profile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch } = this.props;
-        if (this.state.receivedCodes == false) {
+        const { dispatch, codes, isFetchingByUserId } = this.props;
+        if (!isFetchingByUserId && !codes) {
             if (nextProps.user) {
                 dispatch(fetchCodesByUserId(nextProps.user.id));
-            }
-
-            if (nextProps.codes) {
-                this.setState({
-                    receivedCodes: true
-                });
             }
         }
     }
@@ -77,16 +68,19 @@ class Profile extends Component {
 
 Profile.propTypes = {
     user: PropTypes.object,
-    codes: PropTypes.array
+    codes: PropTypes.array,
+    isFetchingByUserId: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     var user = state.user.user;
     var codes = state.code.codelist;
+    var isFetchingByUserId = state.code.isFetchingByUserId;
 
     return {
         user,
-        codes
+        codes,
+        isFetchingByUserId
     };
 }
 
