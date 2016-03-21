@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { pushState } from 'redux-router';
 import { getUserInfo } from '../actions/user.js';
 import { fetchCodesByUserId } from '../actions/code.js';
+import CodeList from '../components/CodeList';
 
 // TODO make repsonsive design
 // TODO figure out how to get all code smells that this user has reviewed
@@ -50,46 +51,11 @@ class Profile extends Component {
         var displayCodes;
         if (codes) {
             displayCodes = (
-                <div>
-                    <h4>You have submitted { codes.length } files </h4>
-                    <div className="responsive-table"> 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Time Submitted</th>
-                                    <th>Title</th>
-                                    <th>Language</th>
-                                    <th>Content Preview</th>
-                                </tr>
-                            </thead>
-                        <tbody>
-                            {
-                                codes.map((code) => {
-                                    return(<tr onClick={() => this.routeToCodeReview(code.id)}>
-                                            <td>{ formatDate(code.date_added) }</td>
-                                            <td>{ code.title }</td>
-                                            <td>{ code.language }</td>
-                                            <td>{ contentDisplay(code.content) }</td>
-                                        </tr>)
-                                })
-                            }
-                        </tbody>
-                        </table>
-                    </div>
-                </div>);
-
-            function contentDisplay(content) {
-                if (content.length <= 20) {
-                    return content;
-                } else {
-                    return (content.substring(0, 20) + "...");
-                }
-            }
-
-            function formatDate(jsonDate) {
-                var date = new Date(jsonDate);
-                return moment(date).format('MM/D/YY, h:mm A');
-            }
+                    <CodeList 
+                        codelist={codes}
+                        route={this.routeToCodeReview}
+                    />
+                );
         }
 
         return (
