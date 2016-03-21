@@ -94,7 +94,6 @@ export function fetchCodesByUserId(userid) {
                 } else {
                     console.log("fetch codes by user success!");
                     var data = JSON.parse(res.text);
-                    //console.log(data);
                     dispatch(receiveCodesByUserId(data));
                 }
             })

@@ -1,15 +1,17 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { pushState } from 'redux-router';
 import { getUserInfo } from '../actions/user.js';
 import { fetchCodesByUserId } from '../actions/code.js';
 
-// TODO offer sorting based on timestamp, title, and language 
+// TODO make repsonsive design
 // TODO figure out how to get all code smells that this user has reviewed
 class Profile extends Component {
 
     constructor(props) {
         super(props);
+        this.routeToCodeReview = this.routeToCodeReview.bind(this);
         this.state = {
             receivedCodes: false,
         }
@@ -35,6 +37,13 @@ class Profile extends Component {
         }
     }
 
+    routeToCodeReview(codeid) {
+        const { dispatch } = this.props;
+        if (codeid > 0) {
+            dispatch(pushState(null, `/code/${codeid}`));
+        }
+    }
+
 	render() {
 
         const { user, codes } = this.props;
@@ -42,29 +51,31 @@ class Profile extends Component {
         if (codes) {
             displayCodes = (
                 <div>
-                    <h4>Submitted { codes.length } files </h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Time Submitted</th>
-                                <th>Title</th>
-                                <th>Language</th>
-                                <th>Content Preview</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                        {
-                            codes.map((code) => {
-                                return(<tr>
-                                        <td>{ formatDate(code.date_added) }</td>
-                                        <td>{ code.title }</td>
-                                        <td>{ code.language }</td>
-                                        <td>{ contentDisplay(code.content) }</td>
-                                    </tr>)
-                            })
-                        }
-                    </tbody>
-                    </table>
+                    <h4>You have submitted { codes.length } files </h4>
+                    <div className="responsive-table"> 
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time Submitted</th>
+                                    <th>Title</th>
+                                    <th>Language</th>
+                                    <th>Content Preview</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            {
+                                codes.map((code) => {
+                                    return(<tr onClick={() => this.routeToCodeReview(code.id)}>
+                                            <td>{ formatDate(code.date_added) }</td>
+                                            <td>{ code.title }</td>
+                                            <td>{ code.language }</td>
+                                            <td>{ contentDisplay(code.content) }</td>
+                                        </tr>)
+                                })
+                            }
+                        </tbody>
+                        </table>
+                    </div>
                 </div>);
 
             function contentDisplay(content) {
@@ -82,12 +93,11 @@ class Profile extends Component {
         }
 
         return (
-            <div>
+            <div className="component-profile">
                 <div>
                 	<div>
-                		<h2>{ user.username }</h2>
-                        <h4>{ user.id }</h4>
-                        <h4>{ user.email }</h4>
+                		<h2>Welcome { user.username }!</h2>
+                        <h4>Your email address is { user.email }</h4>
                 	</div>
 
                 	<div>

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
+import { pushState } from 'redux-router';
 import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
 import { getUserInfo } from '../actions/user.js';
 import CodeBlock from '../components/CodeBlock';
