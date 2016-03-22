@@ -186,6 +186,7 @@ class CodeCheck(generics.GenericAPIView):
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
         scores = Score.objects.filter(code_id=codeid)
+        scores = map(lambda x: x.score, scores)
         avg = sum(scores)/len(scores)
         code = Code.objects.get(pk=codeid)
         code.difficulty = (min(len(origsmells) * 10, 100) + 100 - avg) / 2
