@@ -2,6 +2,8 @@ import {
     TRANSFER_CODE, 
     REQUEST_CODE, 
     RECEIVE_CODE, 
+    REQUEST_CODE_BY_USERID,
+    RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS 
@@ -21,6 +23,25 @@ function receiveCode(json) {
         type: RECEIVE_CODE,
         isFetching: false,
         code: json
+    }
+}
+
+function requestCodeByUserId(userid) {
+    return {
+        type: REQUEST_CODE_BY_USERID,
+        isFetchingByUserId: true,
+        userId: userid
+    }
+}
+    
+
+function receiveCodesByUserId(json) {
+    return {
+        type: RECEIVE_CODE_BY_USERID,
+        payload: {
+            isFetchingByUserId: false,
+            codelist: json 
+        }
     }
 }
 
@@ -63,14 +84,33 @@ export function fetchCode(id) {
             .end(function(err, res) {
                 if(err || !res.ok) {
                     console.log("fetch code failure...");                    
-                }
-                else {
+                } else {
                     console.log("fetch codesmells success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCode(data));
                 }
             
             });
+    }
+}
+
+export function fetchCodesByUserId(userid) {
+    return function (dispatch) {
+
+        dispatch(requestCodeByUserId(userid));
+
+        return request
+            .get('http://localhost:8000/app/codes')
+            .query({ creator: userid })
+            .end(function(err, res) {
+                if (err || !res.ok) {
+                    console.log("fetch codes by user failure...");
+                } else {
+                    console.log("fetch codes by user success!");
+                    var data = JSON.parse(res.text);
+                    dispatch(receiveCodesByUserId(data));
+                }
+            })
     }
 }
 
@@ -82,7 +122,6 @@ export function submitCode(userid, code, codesmells) {
                 code: JSON.stringify(code),
                 smells: JSON.stringify(codesmells)
             }) 
-            .set('Accept', 'application/json')
             .end(function(err, res) {
                 if(err || !res.ok) {
                     console.log("submit code failure...");

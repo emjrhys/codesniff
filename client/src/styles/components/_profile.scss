@@ -1,0 +1,52 @@
+.component-profile {
+	max-width: 600px;
+	margin: 0 auto;
+	font-family: 'Source Sans Pro', sans-serif;
+
+	h2 {
+		color: $accent;
+		font-weight: 700;
+		font-size: 2em;
+		margin: 100px 0 0;
+	}
+
+	h4 {
+		color: $titles;
+		font-weight: 500;
+		font-size: 1em;
+	}
+
+	p {
+		color: $titles;
+		font-weight: 400;
+	}
+
+	table {
+		border: 0;
+		border-spacing: 0;
+	}
+
+	th, td {
+		padding: 7px;
+		text-align: left;
+	}
+
+	th {
+		background-color: $accent-muted;
+	}
+
+	tr:nth-child(even) {
+		background-color: $button-muted;
+	}
+
+	tr:hover {
+		cursor: pointer;
+		background-color: $accent-muted;
+	}
+
+	.responsive-table {
+		max-height: 500px;
+		overflow-x: auto;
+	}
+
+}
