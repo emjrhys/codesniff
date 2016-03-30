@@ -11,7 +11,7 @@ class AllCode extends Component {
     }
 
     routeToCode(code) {
-        this.context.history.pushState(null, '/code/' + code.id);
+        this.dispatch(pushState(null, '/code/' + code.id));
     }
 
     componentDidMount() {
