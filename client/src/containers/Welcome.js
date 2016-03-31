@@ -11,6 +11,7 @@ class Welcome extends Component {
     }
     routeToSignUp() {
         // TODO: implement sign up component
+        this.context.history.pushState(null, '/signup');
     }
     render() {
         return (
