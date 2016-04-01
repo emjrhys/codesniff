@@ -1,3 +1,21 @@
 html, body {
 	background-color: $background;
+	margin: 0px;
+}
+
+.header {
+	color: white;
+	background-color: $accent-muted;
+	
+	height: 50px;
+	width: 100%;
+
+	padding: 1px 10px;
+
+	h2 {
+		cursor: pointer;
+
+		font-family: 'Roboto Slab', serif;
+		font-size: 1.3em;
+	}
 }
