@@ -42,10 +42,10 @@ class Login extends Component {
 
     render () {
         return ( 
-            <div>
-                <h2>Login</h2>
-                <input type='text' onChange={this.handleUsername} />
-                <input type='password' onChange={this.handlePassword} />
+            <div className="component-login">
+                <h1>Login</h1>
+                <input type='text' placeholder="Username" onChange={this.handleUsername} />
+                <input type='password' placeholder="Password" onChange={this.handlePassword} />
                 <button onClick={this.handleLogin}>Login</button>
             </div>
             );

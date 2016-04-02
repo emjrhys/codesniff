@@ -57,18 +57,15 @@ class SignUp extends Component {
     render() {
     
         return (
-                <div>
-                    Username
-                    <input type='text'
+                <div className="component-login">
+                    <h1>Sign Up</h1>
+                    <input type='text' placeholder="Username"
                         onChange={this.handleUsername} />
-                    Email
-                    <input type='email'
+                    <input type='email' placeholder="Email"
                         onChange={this.handleEmail} />
-                    Password
-                    <input type='password'
+                    <input type='password' placeholder="Password"
                         onChange={this.handlePassword} />
-                    Confirm
-                    <input type='password'
+                    <input type='password' placeholder="Confirm password"
                         onChange={this.handleConfirm} />
 
                     <button onClick={this.handleSignUp}>Sign Up</button>

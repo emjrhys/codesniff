@@ -14,8 +14,19 @@ html, body {
 
 	h2 {
 		cursor: pointer;
-
 		font-family: 'Roboto Slab', serif;
 		font-size: 1.3em;
+		display: inline-block;
+		margin: 0px 10px;	
+	}
+
+	.nav {
+		top: 50%;
+		transform: translateY(-50%);
+		display: inline-block;
+	}
+
+	.right {
+		float: right;
 	}
 }
