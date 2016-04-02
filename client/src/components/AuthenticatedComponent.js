@@ -1,4 +1,5 @@
 import React from 'react';
+import { checkSession } from '../actions/auth';
 import { connect } from 'react-redux';
 import { pushState } from 'redux-router';
 
@@ -18,6 +19,11 @@ export function requireAuthentication(Component) {
         }
 
         checkAuth() {
+            if (localStorage.getItem('token') !== null) {
+                this.props.dispatch(checkSession());
+                return;
+            }
+
             if (!this.props.isAuthenticated) {
                 let redirectAfterLogin = this.props.location.pathname;
                 this.props.dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
