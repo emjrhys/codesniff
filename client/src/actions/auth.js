@@ -3,10 +3,33 @@ import {pushState} from 'redux-router';
 import jwtDecode from 'jwt-decode';
 import request from 'superagent';
 
+export function checkSession() {
+    let token = localStorage.getItem('token');
+    let username = localStorage.getItem('token');
+    if(token !== null && username !== null) {
+        return {
+            type: LOGIN_USER_SUCCESS,
+            payload: {
+                token: token,
+                username: username
+            }
+        }
+    }
+    else {
+        return {
+            type: LOGIN_USER_FAILURE,
+            payload: {
+                status: 404,
+                statusText: 'No session',
+            }
+        }
+    }
+}
 
 export function loginUserSuccess(token, username) {
 
     localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
 
     return {
         type: LOGIN_USER_SUCCESS,
