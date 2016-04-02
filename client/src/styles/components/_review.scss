@@ -52,24 +52,24 @@
 	}
 
 	.modal-anim-enter {
-	    opacity: 0;
-	    transform: scale(0.7);
-	    transition: all 0.2s;
+		opacity: 0;
+		transform: scale(0.7);
+		transition: all 0.2s;
 	}
 
 	.modal-anim-enter.modal-anim-enter-active {
-	    opacity: 1;
-	    transform: scale(1);
+		opacity: 1;
+		transform: scale(1);
 	}
 
 	.modal-anim-leave {
-	    opacity: 1;
-	    transform: scale(1);
-	    transition: all 0.2s;
+		opacity: 1;
+		transform: scale(1);
+		transition: all 0.2s;
 	}
 
 	.modal-anim-leave.modal-anim-leave-active {
-	    opacity: 0;
-	    transform: scale(0.7);
+		opacity: 0;
+		transform: scale(0.7);
 	}
 }
