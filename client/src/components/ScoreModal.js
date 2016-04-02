@@ -12,7 +12,9 @@ class ScoreModal extends React.Component {
 					transitionEnterTimeout={this.props.transitionEnterTimeout}
 					transitionLeaveTimeout={this.props.transitionLeaveTimeout}>
 					<div className={this.props.className}>
-						{this.props.children}
+						<h2>Score</h2>
+						<p>Your score is {this.props.score}.</p>
+						<button onClick={this.props.closeModal}>Exit</button>
 					</div>
 				</ReactCSSTransitionGroup>);
 		} else {

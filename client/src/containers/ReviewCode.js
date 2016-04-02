@@ -83,15 +83,13 @@ class ReviewCode extends Component {
         if (score) {
             scoreDisplay = (
                     <ScoreModal
-                        isOpen={this.state.isModalOpen}
+                        score={score}
                         className="modal"
                         transitionName="modal-anim"
+                        closeModal={this.closeModal}
+                        isOpen={this.state.isModalOpen}
                         transitionEnterTimeout={300}
-                        transitionLeaveTimeout={300}>
-                        <h2>Score</h2>
-                        <p>Your score is {score}.</p>
-                        <button onClick={this.closeModal}>Exit</button>
-                    </ScoreModal>
+                        transitionLeaveTimeout={300}/>
                 );
         }
 
