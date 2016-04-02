@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react'
 import request from 'superagent';
+import { bindActionCreators } from 'redux';
+import { pushState } from 'redux-router';
+import { connect } from 'react-redux';
 
 class AllCode extends Component {
     constructor(props) {
@@ -11,7 +14,8 @@ class AllCode extends Component {
     }
 
     routeToCode(code) {
-        this.dispatch(pushState(null, '/code/' + code.id));
+        const { dispatch } = this.props;
+        dispatch(pushState(null, '/code/' + code.id));
     }
 
     componentDidMount() {
@@ -44,6 +48,5 @@ class AllCode extends Component {
         )
     };
 }
-AllCode.contextTypes = { history: React.PropTypes.object.isRequired }
 
-export default AllCode
+export default connect()(AllCode)

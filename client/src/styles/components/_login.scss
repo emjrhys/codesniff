@@ -1,0 +1,17 @@
+.component-login {
+	h1 {
+		color: $titles;
+		text-align: center;
+		font-weight: 700;
+		font-family: 'Roboto Slab', serif;
+		font-size: 4em;
+	}
+
+	button, input {
+		display: block;
+		left: 50%;
+		transform: translateX(-50%);
+		margin: 10px;
+		width: 300px;
+	}
+}

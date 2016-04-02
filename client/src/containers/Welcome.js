@@ -7,7 +7,7 @@ class Welcome extends Component {
         this.routeToSignUp = this.routeToSignUp.bind(this);
     }
     routeToLogIn() {
-        this.context.history.pushState(null, '/submit');
+        this.context.history.pushState(null, '/profile');
     }
     routeToSignUp() {
         // TODO: implement sign up component
