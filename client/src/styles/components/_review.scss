@@ -37,4 +37,39 @@
 	.highlight {
 		background-color: yellow;
 	}
+
+	.modal {
+		width: 12em;
+		padding: 1.2em;
+
+		position: absolute;
+		z-index: 10;
+		top: 50%;
+    	margin: -20em 0 0 20em;
+
+		border: 1px solid $button;
+		background: white;
+	}
+
+	.modal-anim-enter {
+	    opacity: 0;
+	    transform: scale(0.7);
+	    transition: all 0.2s;
+	}
+
+	.modal-anim-enter.modal-anim-enter-active {
+	    opacity: 1;
+	    transform: scale(1);
+	}
+
+	.modal-anim-leave {
+	    opacity: 1;
+	    transform: scale(1);
+	    transition: all 0.2s;
+	}
+
+	.modal-anim-leave.modal-anim-leave-active {
+	    opacity: 0;
+	    transform: scale(0.7);
+	}
 }
