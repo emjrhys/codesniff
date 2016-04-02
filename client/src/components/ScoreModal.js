@@ -10,17 +10,16 @@ class ScoreModal extends React.Component {
 				<ReactCSSTransitionGroup
 					transitionName={this.props.transitionName}
 					transitionEnterTimeout={this.props.transitionEnterTimeout}
-                    transitionLeaveTimeout={this.props.transitionLeaveTimeout}>
+					transitionLeaveTimeout={this.props.transitionLeaveTimeout}>
 					<div className={this.props.className}>
 						{this.props.children}
 					</div>
-				</ReactCSSTransitionGroup>
-				);
+				</ReactCSSTransitionGroup>);
 		} else {
 			return <ReactCSSTransitionGroup 
 					transitionName={this.props.transitionName}
 					transitionEnterTimeout={this.props.transitionEnterTimeout}
-                    transitionLeaveTimeout={this.props.transitionLeaveTimeout} />;
+					transitionLeaveTimeout={this.props.transitionLeaveTimeout} />;
 		}
 	}
 }
