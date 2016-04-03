@@ -62,7 +62,7 @@ class Profile extends Component {
                 		<h2>Welcome { user.username }!</h2>
                         <h4>Your email address is { user.email }</h4>
                 	</div>
-                    <button onClick={this.redirectToSubmit}>Add a file</button>
+                    <button className="submit" onClick={this.redirectToSubmit}>Add a file</button>
                 	<div>
                         {displayCodes}
                     </div>
