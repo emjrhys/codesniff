@@ -13,6 +13,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.routeToCodeReview = this.routeToCodeReview.bind(this);
+        this.redirectToSubmit = this.redirectToSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +37,11 @@ class Profile extends Component {
         }
     }
 
+    redirectToSubmit() {
+        const { dispatch } = this.props;
+        dispatch(pushState(null, `/submit`));
+    }
+
 	render() {
 
         const { user, codes } = this.props;
@@ -56,7 +62,7 @@ class Profile extends Component {
                 		<h2>Welcome { user.username }!</h2>
                         <h4>Your email address is { user.email }</h4>
                 	</div>
-
+                    <button className="submit" onClick={this.redirectToSubmit}>Add a file</button>
                 	<div>
                         {displayCodes}
                     </div>
