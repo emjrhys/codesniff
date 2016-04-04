@@ -1,6 +1,7 @@
 import { 
 	RECEIVE_CODESMELLS, 
-	REQUEST_CODESMELLS
+	REQUEST_CODESMELLS,
+	RECEIVE_SCORE
 } from '../constants/ActionTypes';
 
 export default function codesmells(state = {}, action) {
@@ -10,6 +11,10 @@ export default function codesmells(state = {}, action) {
 		case REQUEST_CODESMELLS:
 			return Object.assign({}, state, {
 				codeSmells: action.payload.smells
+			});
+		case RECEIVE_SCORE:
+			return Object.assign({}, state, {
+				score: action.payload.score
 			});
 		default:
 			return state;

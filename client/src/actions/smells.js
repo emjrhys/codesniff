@@ -1,6 +1,8 @@
 import { 
     RECEIVE_CODESMELLS,
-    REQUEST_CODESMELLS
+    REQUEST_CODESMELLS,
+    RECEIVE_SCORE
+
 } from '../constants/ActionTypes';
 import request from 'superagent';
 
@@ -19,6 +21,15 @@ function receiveCodeSmells(json) {
     }
 }
 
+function receiveSmellsScore(json) {
+    return {
+        type: RECEIVE_SCORE,
+        payload: {
+            score: json
+        }
+    }
+}
+
 export function fetchCodeSmells() {
 	return function (dispatch) {
 		dispatch(requestCodeSmells());
@@ -31,7 +42,6 @@ export function fetchCodeSmells() {
                     console.log("fetch codesmells success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCodeSmells(data));
-                
                 }
 			});
 	}
@@ -49,7 +59,10 @@ export function addCodeSmells(userid, codeid, codesmells) {
                 if(err || !res.ok) {
                     console.log("add codesmells failure...");
                 } else {
-                    console.log('add codesmells success!');
+                    console.log("add codesmells success!");
+                    var data = JSON.parse(res.text);
+                    var score = JSON.parse(data.score);
+                    dispatch(receiveSmellsScore(score));
                 }
             });
     }   

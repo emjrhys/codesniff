@@ -4,16 +4,18 @@ import { addCodeSmells } from '../actions/smells';
 import { getUserInfo } from '../actions/user.js';
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
-
+import ScoreModal from '../components/ScoreModal';
 
 class ReviewCode extends Component {
     constructor(props) {
         super(props);
+        this.closeModal = this.closeModal.bind(this);
         this.clickAction = this.clickAction.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.selectCodeSmell = this.selectCodeSmell.bind(this);
         this.state = {
-            codeSmellName: ""
+            codeSmellName: "",
+            isModalOpen: false
         }
     }
 
@@ -26,7 +28,8 @@ class ReviewCode extends Component {
     componentWillReceiveProps(nextProps) {
         // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
         // TODO Change && to ||
-        if(!this.props.codeReview && 
+        if(!this.props.codeReview &&
+            !this.props.score &&
             (this.state.codeSmellName !== "")) {
             const { dispatch, id } = nextProps;
             dispatch(fetchCode(id));
@@ -43,6 +46,9 @@ class ReviewCode extends Component {
     handleSubmit() {
         const { dispatch, id, userid, selectedLines } = this.props;
         dispatch(addCodeSmells(userid, id, selectedLines));
+        this.setState({
+            isModalOpen: true
+        });
     }
 
     selectCodeSmell(name) {
@@ -51,12 +57,20 @@ class ReviewCode extends Component {
         });
     }
 
+    closeModal() {
+        this.setState({
+            isModalOpen: false
+        });
+    }
+
     render() {
 
-        const { id, codeReview, codeSmells, selectedLines } = this.props;
+        const { id, score, codeReview, codeSmells, selectedLines } = this.props;
+       
         var content = "";
+        var scoreDisplay;
 
-        if(codeReview) {
+        if (codeReview) {
             content = codeReview.content.split("\n");
             for (var i = 0; i < content.length; i++) {
                 content[i] = {
@@ -64,6 +78,19 @@ class ReviewCode extends Component {
                     line: content[i],
                 };
             }   
+        }
+
+        if (score) {
+            scoreDisplay = (
+                    <ScoreModal
+                        score={score}
+                        className="modal"
+                        transitionName="modal-anim"
+                        closeModal={this.closeModal}
+                        isOpen={this.state.isModalOpen}
+                        transitionEnterTimeout={300}
+                        transitionLeaveTimeout={300}/>
+                );
         }
 
         return (
@@ -94,6 +121,9 @@ class ReviewCode extends Component {
                     className="cta">
                     Submit
                 </button>
+                <div>
+                    {scoreDisplay}
+                </div>
             </div>
         );
 
@@ -103,6 +133,7 @@ class ReviewCode extends Component {
 
 ReviewCode.propTypes = {
     id: PropTypes.string,
+    score: PropTypes.number,
     userid: PropTypes.number,
     codeReview: PropTypes.object,
     codeSmells: PropTypes.array,
@@ -112,7 +143,8 @@ ReviewCode.propTypes = {
 // TODO Error checking
 function mapStateToProps(state) {
     var id = state.router.params.id;
-    var userid = state.user.user.id; 
+    var userid = state.user.user.id;
+    var score = state.smells.score;
     var codeReview = state.code.codeReview;
     var codeSmells = state.smells.codeSmells || [
         {id: 1, name: "duplicate code"},
@@ -131,6 +163,7 @@ function mapStateToProps(state) {
 
     return {
         id,
+        score,
         userid,
         codeReview,
         codeSmells,
