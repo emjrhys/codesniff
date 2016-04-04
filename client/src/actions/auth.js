@@ -109,7 +109,6 @@ export function signup(username, email, password, confirmPassword, redirect="/")
                 })
                 .end(function(err, res) {
             
-                    console.log(res);
                     if(err || !res.ok) {
                         console.log('failure');
                         dispatch(signupFailure());               
