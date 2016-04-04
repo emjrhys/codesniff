@@ -109,7 +109,8 @@ export function signup(username, email, password, confirmPassword, redirect="/")
                 })
                 .end(function(err, res) {
             
-                    if(res && res.status === '404') {
+                    if(err || !res.ok) {
+                        console.log('failure');
                         dispatch(signupFailure());               
                     }
                     else {
@@ -134,8 +135,8 @@ export function loginUser(username, password, redirect="/") {
             })
             .end(function(err, res) {
                 
-                if(res && res.status === '404') {
-                    dispatch(loginUserFaiure(err));
+                if(err || !res.ok) {
+                    dispatch(loginUserFailure(err));
                     dispatch(pushState(null, '/login'));
                 }
                 else {
