@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Code
-        fields = ('id','title','content','language','creator','date_added')
+        fields = ('id','title','content','language','creator','date_added', 'difficulty')
         extra_kwargs = {'date_added': {'read_only': True}}
 
 class CodeSmellSerializer(serializers.ModelSerializer):

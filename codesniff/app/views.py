@@ -155,7 +155,7 @@ class CodeSubmit(generics.GenericAPIView):
                 smell.save()
             except Exception as error:
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
-    	return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
+        return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
 
 class CodeCheck(generics.GenericAPIView):
     queryset = CodeSmell.objects.all()
@@ -166,6 +166,7 @@ class CodeCheck(generics.GenericAPIView):
         user = data['user']
         codeid = data['code']
         smells = eval(data['smells'])
+        CodeSmell.objects.filter(code_id=codeid, user=user).delete()
         for s in smells:
             smell = CodeSmell(code_id=codeid, user_id=user, line=s['line'], smell=s['smell'])
             try: 
@@ -182,16 +183,18 @@ class CodeCheck(generics.GenericAPIView):
         missed = []
         if len(origsmells) > 0:
             for s in smells:
-            	if s in origsmells:
+                if s in origsmells:
                     score += 1
                     correct.add({'line': s[0], 'smell': s[1]})
                 else:
                     incorrect.add({'line': s[0], 'smell': s[1]})
             score -= 0.5 * (len(origsmells) - score)
             score = score/len(origsmells) * 100
+            score = max(0, score)
             for s in origsmells:
                 if s not in smells:
                     missed.add({'line': s[0], 'smell': s[1]})
+        Score.objects.filter(code_id=codeid, user_id=user).delete()
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
         scores = Score.objects.filter(code_id=codeid)
@@ -336,49 +339,49 @@ class ScoreDetail(mixins.RetrieveModelMixin,
 # Create your views here.
 
 def index(request):
-	context = {
-	}
-	return render(request, 'app/index.html', context)
+    context = {
+    }
+    return render(request, 'app/index.html', context)
 
 def login_view(request, error = 0, message = 0):
-	context = {
-		'error': error,
-		'message': message,
-	}
-	return render(request, 'app/login.html', context)
+    context = {
+        'error': error,
+        'message': message,
+    }
+    return render(request, 'app/login.html', context)
 
 def register(request, error = 0):
-	context = {
-		'error': error,
-	}
-	return render(request, 'app/register.html', context)
+    context = {
+        'error': error,
+    }
+    return render(request, 'app/register.html', context)
 
 def account_request(request, type):
-	if type == 'logout':
-		logout(request)
-		return HttpResponseRedirect(reverse('app:login', args=(0, 2,)))
+    if type == 'logout':
+        logout(request)
+        return HttpResponseRedirect(reverse('app:login', args=(0, 2,)))
 
-	username = request.POST['username']
-	password = request.POST['password']
-	
-	if type == 'login':
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				login(request, user)
-				if('app/login' in request.META.get('HTTP_REFERER')):
-					return HttpResponseRedirect("/app")
-				else:
-					return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-		return HttpResponseRedirect(reverse('app:login', args=(1, 0,)))
-	elif type == 'register':
-		user = User.objects.filter(username=username);
-		if len(user) > 0:
-			return HttpResponseRedirect(reverse('app:register', args=(1,)))
-		elif password != request.POST['confirm']:
-			return HttpResponseRedirect(reverse('app:register', args=(2,)))
-		else:
-			user = User.objects.create_user(username=username, password=password)
-			user.save()
-			return HttpResponseRedirect(reverse('app:login', args=(0, 1,)))
-			
+    username = request.POST['username']
+    password = request.POST['password']
+    
+    if type == 'login':
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                if('app/login' in request.META.get('HTTP_REFERER')):
+                    return HttpResponseRedirect("/app")
+                else:
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(reverse('app:login', args=(1, 0,)))
+    elif type == 'register':
+        user = User.objects.filter(username=username);
+        if len(user) > 0:
+            return HttpResponseRedirect(reverse('app:register', args=(1,)))
+        elif password != request.POST['confirm']:
+            return HttpResponseRedirect(reverse('app:register', args=(2,)))
+        else:
+            user = User.objects.create_user(username=username, password=password)
+            user.save()
+            return HttpResponseRedirect(reverse('app:login', args=(0, 1,)))
+            
