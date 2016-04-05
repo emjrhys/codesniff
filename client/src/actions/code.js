@@ -6,9 +6,16 @@ import {
     RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
-    SUBMIT_CODE_SUCCESS 
+    SUBMIT_CODE_SUCCESS,
+    CLEAR_CODE,
 } from '../constants/ActionTypes';
 import request from 'superagent';
+
+export function clearCode() {
+    return {
+        type: CLEAR_CODE,
+    }
+}
 
 function requestCode(id) {
     return {

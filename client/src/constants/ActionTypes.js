@@ -6,6 +6,7 @@ export const REQUEST_CODE = 'REQUEST_CODE';
 export const SELECT_CODE = 'SELECT_CODE';
 export const SUBMIT_CODE = 'SUBMIT_CODE';
 export const SUBMIT_CODE_SUCCESS = 'SUBMIT_CODE_SUCCESS';
+export const CLEAR_CODE = 'CLEAR_CODE';
 
 export const RECEIVE_SCORE = 'RECEIVE_SCORE';
 export const REQUEST_CODESMELLS = 'REQUEST_CODESMELLS';

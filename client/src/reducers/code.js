@@ -7,7 +7,8 @@ import {
     RECEIVE_CODE_BY_USERID,
     SELECT_CODE, 
     SUBMIT_CODE,
-    SUBMIT_CODE_SUCCESS  
+    SUBMIT_CODE_SUCCESS,
+    CLEAR_CODE,
 } from '../constants/ActionTypes';
 import _ from 'lodash';
 
@@ -17,6 +18,9 @@ export default function codes(state = {}, action) {
             return Object.assign({}, state, {
                 code: action.payload.code
             });
+
+        case CLEAR_CODE:
+            return {};
 
         case REQUEST_CODE:
             return Object.assign({}, state, {

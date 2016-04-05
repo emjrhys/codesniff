@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
-import { logoutAndRedirect } from '../actions/auth';
+import { logoutAndRedirect } from '../actions/auth'
+import { clearCode } from '../actions/code'
 import { pushState } from 'redux-router'
 import { connect } from 'react-redux'
 
@@ -17,6 +18,7 @@ class App extends Component {
 
     logout() {
         this.props.dispatch(logoutAndRedirect());
+        this.props.dispatch(clearCode());
     }
 
     handleRedirect() {
