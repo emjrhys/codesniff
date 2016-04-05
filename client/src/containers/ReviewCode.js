@@ -4,12 +4,10 @@ import { addCodeSmells } from '../actions/smells';
 import { getUserInfo } from '../actions/user.js';
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
-import ScoreModal from '../components/ScoreModal';
 
 class ReviewCode extends Component {
     constructor(props) {
         super(props);
-        this.closeModal = this.closeModal.bind(this);
         this.clickAction = this.clickAction.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.selectCodeSmell = this.selectCodeSmell.bind(this);
@@ -29,7 +27,6 @@ class ReviewCode extends Component {
         // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
         // TODO Change && to ||
         if(!this.props.codeReview &&
-            !this.props.score &&
             (this.state.codeSmellName !== "")) {
             const { dispatch, id } = nextProps;
             dispatch(fetchCode(id));
@@ -46,9 +43,6 @@ class ReviewCode extends Component {
     handleSubmit() {
         const { dispatch, id, userid, selectedLines } = this.props;
         dispatch(addCodeSmells(userid, id, selectedLines));
-        this.setState({
-            isModalOpen: true
-        });
     }
 
     selectCodeSmell(name) {
@@ -57,40 +51,21 @@ class ReviewCode extends Component {
         });
     }
 
-    closeModal() {
-        this.setState({
-            isModalOpen: false
-        });
-    }
-
     render() {
 
         const { id, score, codeReview, codeSmells, selectedLines } = this.props;
        
         var content = "";
-        var scoreDisplay;
 
         if (codeReview) {
             content = codeReview.content.split("\n");
             for (var i = 0; i < content.length; i++) {
+                var num = eval(i + 1);
                 content[i] = {
-                    lineNumber: i + 1,
+                    lineNumber: num,
                     line: content[i],
                 };
             }   
-        }
-
-        if (score) {
-            scoreDisplay = (
-                    <ScoreModal
-                        score={score}
-                        className="modal"
-                        transitionName="modal-anim"
-                        closeModal={this.closeModal}
-                        isOpen={this.state.isModalOpen}
-                        transitionEnterTimeout={300}
-                        transitionLeaveTimeout={300}/>
-                );
         }
 
         return (
@@ -121,9 +96,6 @@ class ReviewCode extends Component {
                     className="cta">
                     Submit
                 </button>
-                <div>
-                    {scoreDisplay}
-                </div>
             </div>
         );
 

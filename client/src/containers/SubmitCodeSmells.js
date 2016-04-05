@@ -4,28 +4,25 @@ import { pushState } from 'redux-router';
 import { fetchCodeId, selectCode, submitCode } from '../actions/code.js';
 import { getUserInfo } from '../actions/user.js';
 import CodeBlock from '../components/CodeBlock';
+import ShareLinkModal from '../components/ShareLinkModal';
 
 class SubmitCodeSmells extends Component {
     constructor(props) {
 		super(props);
+        this.closeModal = this.closeModal.bind(this);
 		this.clickAction = this.clickAction.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.selectCodeSmell = this.selectCodeSmell.bind(this);
 		this.state = {
-			codeSmellName: ""
+			codeSmellName: "",
+            isModalOpen: false,
+            hasSubmitted: false
 		};
 	}
 
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(getUserInfo());
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { dispatch } = this.props;
-        if (nextProps.codeid) {
-            dispatch(pushState(null, `/code/${nextProps.codeid}`));
-        }
     }
 
     clickAction(lineNumber) {
@@ -37,11 +34,22 @@ class SubmitCodeSmells extends Component {
 
     handleSubmit() {
 		const { dispatch, code, codeid, userid, selectedLines } = this.props;
-        if (selectedLines.length !== 0) {
-            dispatch(submitCode(userid, code, selectedLines));
+        if (!this.state.hasSubmitted) {
+            if (selectedLines.length !== 0) {
+                dispatch(submitCode(userid, code, selectedLines));
+                this.setState({
+                    isModalOpen: true,
+                    hasSubmitted: true
+                });
+            } else {
+                console.log("You didn't input any code smells!");
+            }
         } else {
-            console.log("You didn't input any code smells!");
+            this.setState({
+                isModalOpen: true,
+            });
         }
+
 	}
 
     selectCodeSmell(name) {
@@ -50,16 +58,38 @@ class SubmitCodeSmells extends Component {
         });
     }
 
+    closeModal() {
+        this.setState({
+            isModalOpen: false
+        });
+    }
+
 	render() {
-		const { code, codeSmells, selectedLines } = this.props;
+		const { code, codeid, codeSmells, selectedLines } = this.props;
 		var contentByLines = code.content.split("\n");
-		for (var i in contentByLines) {
+        var shareLinkDisplay;
+
+		for (var i = 0; i < contentByLines.length; i++) {
+            var num = eval(i + 1);
             contentByLines[i] = {
-                lineNumber: i + 1,
+                lineNumber: num,
                 line: contentByLines[i],
             };
         }   
         
+        if (codeid) {
+            shareLinkDisplay = (
+                    <ShareLinkModal
+                        codeid={codeid}
+                        className="modal"
+                        transitionName="modal-anim"
+                        closeModal={this.closeModal}
+                        isOpen={this.state.isModalOpen}
+                        transitionEnterTimeout={300}
+                        transitionLeaveTimeout={300}/>
+                );
+        }
+
 		return(
 			<div className="component-review">
                 <h2>Submit CodeSmells</h2>
@@ -88,6 +118,9 @@ class SubmitCodeSmells extends Component {
                     className="cta">
                     Submit
                 </button>
+                <div>
+                    {shareLinkDisplay}
+                </div>
             </div>
 		)
 	}
