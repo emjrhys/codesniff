@@ -19,18 +19,13 @@ class Profile extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        console.log("componentDidMount");
         dispatch(getUserInfo());
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, codes, isFetchingByUserId, notFetchingCodes } = this.props;
-        console.log("before componentWillReceiveProps");
-        console.log("newload " + this.newload);
+        const { dispatch, codes, isFetchingByUserId } = nextProps;
         if (!isFetchingByUserId && this.newload) {
-            console.log(codes);
             if (nextProps.user) {
-                console.log("componentWillReceiveProps");
                 dispatch(fetchCodesByUserId(nextProps.user.id));
                 this.newload = false;
             }
