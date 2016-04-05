@@ -177,12 +177,21 @@ class CodeCheck(generics.GenericAPIView):
         origsmells = CodeSmell.objects.filter(code_id=codeid, user=Code.objects.filter(id=codeid)[0].creator)
         origsmells = map(lambda x:(x.line, x.smell), origsmells)
         score = 0
+        correct = []
+        incorrect = []
+        missed = []
         if len(origsmells) > 0:
             for s in smells:
             	if s in origsmells:
-            		score += 1
+                    score += 1
+                    correct.add({'line': s[0], 'smell': s[1]})
+                else:
+                    incorrect.add({'line': s[0], 'smell': s[1]})
             score -= 0.5 * (len(origsmells) - score)
             score = score/len(origsmells) * 100
+            for s in origsmells:
+                if s not in smells:
+                    missed.add({'line': s[0], 'smell': s[1]})
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
         scores = Score.objects.filter(code_id=codeid)
@@ -191,7 +200,11 @@ class CodeCheck(generics.GenericAPIView):
         code = Code.objects.get(pk=codeid)
         code.difficulty = (min(len(origsmells) * 10, 100) + 100 - avg) / 2
         code.save()
-        return Response(ScoreSerializer(score).data, status=status.HTTP_200_OK)
+        data = { 'score': score,
+                 'correct': correct,
+                 'incorrect': incorrect,
+                 'missed': missed }
+        return Response(data, status=status.HTTP_200_OK)
 
 class CodeSmellList(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
