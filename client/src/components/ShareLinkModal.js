@@ -2,7 +2,7 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 
-class ScoreModal extends React.Component {
+class ShareLinkModal extends React.Component {
 
 	render() {
 		if (this.props.isOpen) {
@@ -12,8 +12,10 @@ class ScoreModal extends React.Component {
 					transitionEnterTimeout={this.props.transitionEnterTimeout}
 					transitionLeaveTimeout={this.props.transitionLeaveTimeout}>
 					<div className={this.props.className}>
-						<h2>Score</h2>
-						<p>Your score is {this.props.score}.</p>
+						<h2>Share Link</h2>
+						<p>
+							Your code snippet can be reviewed at /code/{this.props.codeid}
+						</p>
 						<button onClick={this.props.closeModal}>Exit</button>
 					</div>
 				</ReactCSSTransitionGroup>);
@@ -26,4 +28,4 @@ class ScoreModal extends React.Component {
 	}
 }
 
-export default ScoreModal;
+export default ShareLinkModal;
