@@ -12,20 +12,27 @@ class Profile extends Component {
 
     constructor(props) {
         super(props);
+        this.newload = true;
         this.routeToCodeReview = this.routeToCodeReview.bind(this);
         this.redirectToSubmit = this.redirectToSubmit.bind(this);
     }
 
     componentDidMount() {
         const { dispatch } = this.props;
+        console.log("componentDidMount");
         dispatch(getUserInfo());
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, codes, isFetchingByUserId } = this.props;
-        if (!isFetchingByUserId && !codes) {
+        const { dispatch, codes, isFetchingByUserId, notFetchingCodes } = this.props;
+        console.log("before componentWillReceiveProps");
+        console.log("newload " + this.newload);
+        if (!isFetchingByUserId && this.newload) {
+            console.log(codes);
             if (nextProps.user) {
+                console.log("componentWillReceiveProps");
                 dispatch(fetchCodesByUserId(nextProps.user.id));
+                this.newload = false;
             }
         }
     }
