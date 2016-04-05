@@ -21,6 +21,10 @@ class CodeList extends React.Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.state.codes = nextProps.codelist;
+	}
+
 	formatDate(jsonDate) {
 		var date = new Date(jsonDate);
 		return moment(date).format('MM/D/YY, h:mm A');
