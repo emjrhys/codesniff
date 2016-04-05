@@ -12,6 +12,7 @@ class Profile extends Component {
 
     constructor(props) {
         super(props);
+        this.newload = true;
         this.routeToCodeReview = this.routeToCodeReview.bind(this);
         this.redirectToSubmit = this.redirectToSubmit.bind(this);
     }
@@ -22,10 +23,11 @@ class Profile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, codes, isFetchingByUserId } = this.props;
-        if (!isFetchingByUserId && !codes) {
+        const { dispatch, codes, isFetchingByUserId } = nextProps;
+        if (!isFetchingByUserId && this.newload) {
             if (nextProps.user) {
                 dispatch(fetchCodesByUserId(nextProps.user.id));
+                this.newload = false;
             }
         }
     }
