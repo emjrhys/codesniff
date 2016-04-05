@@ -14,7 +14,7 @@ class SubmitCodeSmells extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.selectCodeSmell = this.selectCodeSmell.bind(this);
 		this.state = {
-			codeSmellName: "",
+            codeSmellName: "",
             isModalOpen: false,
             hasSubmitted: false
 		};
@@ -46,10 +46,9 @@ class SubmitCodeSmells extends Component {
             }
         } else {
             this.setState({
-                isModalOpen: true,
+                isModalOpen: true
             });
         }
-
 	}
 
     selectCodeSmell(name) {
@@ -69,7 +68,7 @@ class SubmitCodeSmells extends Component {
 		var contentByLines = code.content.split("\n");
         var shareLinkDisplay;
 
-		for (var i = 0; i < contentByLines.length; i++) {
+        for (var i = 0; i < contentByLines.length; i++) {
             var num = eval(i + 1);
             contentByLines[i] = {
                 lineNumber: num,
