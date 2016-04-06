@@ -203,7 +203,7 @@ class CodeCheck(generics.GenericAPIView):
         code = Code.objects.get(pk=codeid)
         code.difficulty = (min(len(origsmells) * 10, 100) + 100 - avg) / 2
         code.save()
-        data = { 'score': score,
+        data = { 'score': score.score,
                  'correct': correct,
                  'incorrect': incorrect,
                  'missed': missed }
