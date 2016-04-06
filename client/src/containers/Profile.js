@@ -12,9 +12,6 @@ class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            newload: true
-        }
         this.routeToCodeReview = this.routeToCodeReview.bind(this);
         this.redirectToSubmit = this.redirectToSubmit.bind(this);
     }
@@ -25,11 +22,10 @@ class Profile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, codes, isFetchingByUserId } = nextProps;
-        if (!isFetchingByUserId && this.state.newload) {
+        const { dispatch, codes, hasNewLoad, isFetchingByUserId } = nextProps;
+        if (!isFetchingByUserId && hasNewLoad) {
             if (nextProps.user) {
                 dispatch(fetchCodesByUserId(nextProps.user.id));
-                this.setState({newload: false});
             }
         }
     }
@@ -79,6 +75,7 @@ class Profile extends Component {
 Profile.propTypes = {
     user: PropTypes.object,
     codes: PropTypes.array,
+    hasNewLoad: PropTypes.bool,
     isFetchingByUserId: PropTypes.bool
 };
 
@@ -86,10 +83,12 @@ function mapStateToProps(state) {
     var user = state.user.user;
     var codes = state.code.codelist;
     var isFetchingByUserId = state.code.isFetchingByUserId;
+    var hasNewLoad = state.code.hasNewLoad;
 
     return {
         user,
         codes,
+        hasNewLoad,
         isFetchingByUserId
     };
 }

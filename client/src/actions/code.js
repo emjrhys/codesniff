@@ -36,8 +36,10 @@ function receiveCode(json) {
 function requestCodeByUserId(userid) {
     return {
         type: REQUEST_CODE_BY_USERID,
-        isFetchingByUserId: true,
-        userId: userid
+        payload: {
+            isFetchingByUserId: true,
+            userId: userid
+        }
     }
 }
     
@@ -47,6 +49,7 @@ function receiveCodesByUserId(json) {
         type: RECEIVE_CODE_BY_USERID,
         payload: {
             isFetchingByUserId: false,
+            hasNewLoad: false,
             codelist: json 
         }
     }
@@ -75,6 +78,7 @@ export function submitCodeSuccess(id) {
     return {
         type: SUBMIT_CODE_SUCCESS,
         payload: {
+            hasSubmitted: true,
             codeid: id
         }
     }
