@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 
 const initialState = {
+    hasNewLoad: true,
     hasSubmitted: false,
     selectedLines: []
 }
@@ -21,11 +22,13 @@ export default function codes(state = initialState, action) {
     switch (action.type) {
         case TRANSFER_CODE:
             return Object.assign({}, state, {
+                selectedLines: [],
+                hasSubmitted: false,
                 code: action.payload.code
             });
 
         case CLEAR_CODE:
-            return {};
+            return initialState;
 
         case REQUEST_CODE:
             return Object.assign({}, state, {
@@ -41,7 +44,6 @@ export default function codes(state = initialState, action) {
 
         case REQUEST_CODE_BY_USERID:
             return Object.assign({}, state, {
-                hasNewLoad: false,
                 isFetchingByUserId: true
             });
 
@@ -53,7 +55,7 @@ export default function codes(state = initialState, action) {
             });
 
         case SELECT_CODE:
-            let selectedLines = state.selectedLines || [];
+            let selectedLines = state.selectedLines;
             let selectedLineObject = {};
             selectedLineObject["line"] = action.payload.lineNumber;
             selectedLineObject["smell"] = action.payload.codeSmellName;
@@ -64,6 +66,7 @@ export default function codes(state = initialState, action) {
 
         case SUBMIT_CODE_SUCCESS:
             return Object.assign({}, state, {
+                hasNewLoad: true,
                 hasSubmitted: true,
                 codeid: action.payload.codeid
             });

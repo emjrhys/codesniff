@@ -49,6 +49,7 @@ function receiveCodesByUserId(json) {
         type: RECEIVE_CODE_BY_USERID,
         payload: {
             isFetchingByUserId: false,
+            hasNewLoad: false,
             codelist: json 
         }
     }
