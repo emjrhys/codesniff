@@ -12,7 +12,12 @@ import {
 } from '../constants/ActionTypes';
 import _ from 'lodash';
 
-export default function codes(state = {}, action) {
+const initialState = {
+    hasSubmitted: false,
+    selectedLines: []
+}
+
+export default function codes(state = initialState, action) {
     switch (action.type) {
         case TRANSFER_CODE:
             return Object.assign({}, state, {
@@ -36,11 +41,13 @@ export default function codes(state = {}, action) {
 
         case REQUEST_CODE_BY_USERID:
             return Object.assign({}, state, {
+                hasNewLoad: false,
                 isFetchingByUserId: true
             });
 
         case RECEIVE_CODE_BY_USERID:
             return Object.assign({}, state, {
+                hasNewLoad: false,
                 isFetchingByUserId: false,
                 codelist: action.payload.codelist
             });
@@ -55,11 +62,9 @@ export default function codes(state = {}, action) {
                 selectedLines: _.uniqWith(selectedLines, _.isEqual)
             });
 
-        case SUBMIT_CODE:
-            return state;
-
         case SUBMIT_CODE_SUCCESS:
             return Object.assign({}, state, {
+                hasSubmitted: true,
                 codeid: action.payload.codeid
             });
 

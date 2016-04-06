@@ -15,14 +15,22 @@ class SubmitCodeSmells extends Component {
 		this.selectCodeSmell = this.selectCodeSmell.bind(this);
 		this.state = {
 			codeSmellName: "",
-			isModalOpen: false,
-			hasSubmitted: false
+			isModalOpen: false
 		};
 	}
 
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(getUserInfo());
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { hasSubmitted } = nextProps;
+        if (hasSubmitted) {
+            this.setState({
+                isModalOpen: true
+            });
+        }
     }
 
     clickAction(lineNumber) {
@@ -33,18 +41,14 @@ class SubmitCodeSmells extends Component {
     }
 
     handleSubmit() {
-		const { dispatch, code, codeid, userid, selectedLines } = this.props;
-		if (!this.state.hasSubmitted) {
+		const { dispatch, code, userid, selectedLines, hasSubmitted } = this.props;
+		if (!hasSubmitted) {
 			if (selectedLines.length !== 0) {
 				dispatch(submitCode(userid, code, selectedLines));
-				this.setState({
-					isModalOpen: true,
-					hasSubmitted: true
-				});
 			} else {
 				console.log("You didn't input any code smells!");
 			}
-		} else {
+		} else { 
 			this.setState({
 				isModalOpen: true
 			});
@@ -130,6 +134,7 @@ SubmitCodeSmells.propTypes = {
     codeid: PropTypes.number,
     userid: PropTypes.number,
     codeSmells: PropTypes.array,
+    hasSubmitted: PropTypes.bool,
     selectedLines: PropTypes.array
 }
 
@@ -150,6 +155,7 @@ function mapStateToProps(state) {
         {id: 10, name: "too many bugs"},
         {id: 11, name: "too hard to understand"},
         {id: 12, name: "too hard to change"}];
+    var hasSubmitted = state.code.hasSubmitted;
     var selectedLines = state.code.selectedLines || [];
 
     return {
@@ -157,6 +163,7 @@ function mapStateToProps(state) {
         codeid,
         userid,
         codeSmells,
+        hasSubmitted,
         selectedLines
     }
 }
