@@ -3,13 +3,6 @@ from app import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = patterns('',
-	url(r'^$', views.index, name='index'),
-	url(r'^login/$', views.login_view, name='login'),
-	url(r'^login/e=(?P<error>[0-9])&m=(?P<message>[0-9])/$', views.login_view, name='login'),
-	url(r'^register/$', views.register, name='register'),
-	url(r'^register/e=(?P<error>[0-9])$', views.register, name='register'),
-	url(r'^account_request/(?P<type>[A-Za-z]+)/$', views.account_request, name='account_request'),
-
 	#urls for api
 	url(r'^users/$', views.UserList.as_view()),
     url(r'^users/me/$', views.UserMe.as_view()),
