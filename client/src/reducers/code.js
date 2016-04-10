@@ -5,6 +5,8 @@ import {
     RECEIVE_CODE, 
     REQUEST_CODE_BY_USERID,
     RECEIVE_CODE_BY_USERID,
+    FETCH_ALL_CODE,
+    RECEIVE_ALL_CODE,
     SELECT_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS,
@@ -45,6 +47,18 @@ export default function codes(state = initialState, action) {
         case REQUEST_CODE_BY_USERID:
             return Object.assign({}, state, {
                 isFetchingByUserId: true
+            });
+
+        case FETCH_ALL_CODE:
+            return Object.assign({}, state, {
+                isFetching: true,
+            });
+
+        case RECEIVE_ALL_CODE:
+            console.log(action);
+            return Object.assign({}, state, {
+                isFetching: false,
+                codes: action.payload.code,
             });
 
         case RECEIVE_CODE_BY_USERID:
