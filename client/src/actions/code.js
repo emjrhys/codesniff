@@ -4,7 +4,6 @@ import {
     RECEIVE_CODE, 
     REQUEST_CODE_BY_USERID,
     RECEIVE_CODE_BY_USERID,
-    FETCH_ALL_CODE,
     RECEIVE_ALL_CODE,
     SELECT_CODE, 
     SUBMIT_CODE,
@@ -44,7 +43,7 @@ export function receiveAllCode(codes) {
 
 export function requestAllCode() {
     return {
-        type: FETCH_ALL_CODE,
+        type: REQUEST_CODE,
     }
 }
 

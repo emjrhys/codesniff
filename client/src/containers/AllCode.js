@@ -31,7 +31,6 @@ class AllCode extends Component {
         this.setState({
             difficulty: diff,
         });
-        console.log(diff);
     }
 
     render() {
