@@ -25,7 +25,7 @@ class Profile extends Component {
     componentWillReceiveProps(nextProps) {
         const { dispatch, codes, hasNewLoad, isFetchingByUserId } = nextProps;
         if(this.props.user.id !== nextProps.user.id) {
-            disptach(fetchCodesByUserId(nextProps.user.id)); 
+            dispatch(fetchCodesByUserId(nextProps.user.id)); 
         }
         if (!isFetchingByUserId && hasNewLoad) {
             if (nextProps.user) {
@@ -54,8 +54,7 @@ class Profile extends Component {
             displayCodes = (
                     <CodeList 
                         codelist={codes}
-                        route={this.routeToCodeReview}
-                    />
+                        route={this.routeToCodeReview}/>
                 );
         }
 

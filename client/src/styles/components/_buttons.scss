@@ -41,6 +41,10 @@ button.codesmell {
 
 }
 
+button.codesmell:focus {
+	background-color: $accent-muted !important;
+}
+
 button.submit {
 	width: 150px;
 	font-size: 20px;

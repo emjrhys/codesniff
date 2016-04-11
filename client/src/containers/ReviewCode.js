@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { fetchCode, selectCode } from '../actions/code.js';
-import { addCodeSmells } from '../actions/smells';
+import { addCodeSmells, clearCodeSmells } from '../actions/smells';
 import { getUserInfo } from '../actions/user.js';
+import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
 
@@ -21,16 +22,22 @@ class ReviewCode extends Component {
         const { dispatch, id } = this.props;
         dispatch(fetchCode(id));
         dispatch(getUserInfo());
+        dispatch(clearCodeSmells());
     }
     
     componentWillReceiveProps(nextProps) {
         // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
         // TODO Change && to ||
+        const { dispatch, id } = nextProps;
+
         if(!this.props.codeReview &&
             (this.state.codeSmellName !== "")) {
-            const { dispatch, id } = nextProps;
             dispatch(fetchCode(id));
-        }  
+        } 
+
+        if (nextProps.score > -1) {
+            dispatch(pushState(null, `/score/${id}`));
+        }
     }
 
     clickAction(lineNumber) {
@@ -86,6 +93,7 @@ class ReviewCode extends Component {
                 <div className="codearea">
                     <CodeBlock
                         codeLines={content}
+                        colorClass="highlight"
                         clickAction={this.clickAction}
                         selectedLines={selectedLines}
                     />  

@@ -96,7 +96,7 @@ export function fetchCode(id) {
                 if(err || !res.ok) {
                     console.log("fetch code failure...");                    
                 } else {
-                    console.log("fetch codesmells success!");                    
+                    console.log("fetch code success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCode(data));
                 }
