@@ -55,11 +55,11 @@ class AllCode extends Component {
         return (
             <div className="component-allcode">
                 <h1>Code</h1>
-                <div className="difficulty">
-                    <a onClick={() => this.changeDifficulty(0)}>All</a> | 
-                    <a onClick={() => this.changeDifficulty(1)}> Easy</a> | 
-                    <a onClick={() => this.changeDifficulty(2)}> Medium</a> | 
-                    <a onClick={() => this.changeDifficulty(3)}> Hard</a>
+                <div className="difficultydiv">
+                    <button className="difficulty" onClick={() => this.changeDifficulty(0)}>All</button> 
+                    <button className="difficulty" onClick={() => this.changeDifficulty(1)}> Easy</button>  
+                    <button className="difficulty" onClick={() => this.changeDifficulty(2)}> Medium</button> 
+                    <button className="difficulty" onClick={() => this.changeDifficulty(3)}> Hard</button>
                 </div>
                 <div className="center">
                     {codesnippets}
