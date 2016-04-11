@@ -45,6 +45,10 @@ button.codesmell:focus {
 	background-color: $accent-muted !important;
 }
 
+button.difficulty {
+	margin: 0 0.2em;
+}
+
 button.submit {
 	width: 150px;
 	font-size: 20px;
