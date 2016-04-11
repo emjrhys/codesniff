@@ -41,20 +41,20 @@ export function clearCodeSmells() {
 }
 
 export function fetchCodeSmells() {
-	return function (dispatch) {
-		dispatch(requestCodeSmells());
-		return request
-			.get('http://localhost:8000/app/codesmells/')
-			.end(function(err, res) {
-				if(err || !res.ok) {
+    return function (dispatch) {
+        dispatch(requestCodeSmells());
+        return request
+            .get('http://localhost:8000/app/codesmells/')
+            .end(function(err, res) {
+                if(err || !res.ok) {
                     console.log("fetch codesmells failure...");                    
                 } else {
                     console.log("fetch codesmells success!");                    
                     var data = JSON.parse(res.text);
                     dispatch(receiveCodeSmells(data));
                 }
-			});
-	}
+            });
+    }
 }
 
 export function addCodeSmells(userid, codeid, codesmells) {

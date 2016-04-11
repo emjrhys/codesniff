@@ -11,13 +11,13 @@ class CheckCodeSmells extends Component {
 
 	componentDidMount() {
 		const { dispatch, id } = this.props;
-        dispatch(fetchCode(id));
+		dispatch(fetchCode(id));
 	}
 
 	extractLineNumbers(selectedLines, arr, color) {
 		for (var i = 0; i < arr.length; i++) {
-            selectedLines[arr[i].line - 1] = color;
-        }
+			selectedLines[arr[i].line - 1] = color;
+		}
 	}
 
 	render() {
@@ -85,7 +85,7 @@ class CheckCodeSmells extends Component {
 }
 
 CheckCodeSmells.PropTypes = {
-    id: PropTypes.string,
+	id: PropTypes.string,
 	code: PropTypes.object,
 	score: PropTypes.number,
 	missedLines: PropTypes.array,

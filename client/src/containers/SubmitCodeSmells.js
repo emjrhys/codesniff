@@ -12,9 +12,9 @@ class SubmitCodeSmells extends Component {
 		this.closeModal = this.closeModal.bind(this);
 		this.clickAction = this.clickAction.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.selectCodeSmell = this.selectCodeSmell.bind(this);
+        this.selectCodeSmell = this.selectCodeSmell.bind(this);
         this.redirectToReviewCode = this.redirectToReviewCode.bind(this);
-		this.state = {
+        this.state = {
 			codeSmellName: "",
 			isModalOpen: false
 		};
@@ -47,11 +47,11 @@ class SubmitCodeSmells extends Component {
     }
 
     handleSubmit() {
-		const { dispatch, code, userid, selectedLines, hasSubmitted } = this.props;
+        const { dispatch, code, userid, selectedLines, hasSubmitted } = this.props;
         if (!hasSubmitted) {
-			if (selectedLines.length !== 0) {
-				dispatch(submitCode(userid, code, selectedLines));
-			} else {
+            if (selectedLines.length !== 0) {
+                dispatch(submitCode(userid, code, selectedLines));
+            } else {
 				console.log("You didn't input any code smells!");
 			}
 		} else { 
@@ -93,11 +93,11 @@ class SubmitCodeSmells extends Component {
 			shareLinkDisplay = (
 				<ShareLinkModal
 					codeid={codeid}
-					className="modal"
+                    className="modal"
+                    transitionName="modal-anim"
+                    closeModal={this.closeModal}
+                    isOpen={this.state.isModalOpen}
                     clickAction={this.redirectToReviewCode}
-					transitionName="modal-anim"
-					closeModal={this.closeModal}
-					isOpen={this.state.isModalOpen}
 					transitionEnterTimeout={300}
 					transitionLeaveTimeout={300}/>
                 );
