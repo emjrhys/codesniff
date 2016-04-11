@@ -25,8 +25,6 @@ export function fetchAllCode() {
         return request
             .get('http://localhost:8000/app/codes/')
             .end(function(err, res) {
-                console.log('recieve');
-                console.log(res.body);
                 dispatch(receiveAllCode(res.body));
             });
     }
