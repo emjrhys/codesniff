@@ -188,12 +188,13 @@ class CodeCheck(generics.GenericAPIView):
                     correct.append({'line': s[0], 'smell': s[1]})
                 else:
                     incorrect.append({'line': s[0], 'smell': s[1]})
-            score -= 0.5 * (len(origsmells) - score)
+            incorrect_lines = map(lambda x:x['line'], incorrect)
+            for s in origsmells:
+                if s not in smells and s[0] not in incorrect_lines:
+                    missed.append({'line': s[0], 'smell': s[1]})
+            score -= 0.5 * (len(missed) + len(incorrect))
             score = score/len(origsmells) * 100
             score = max(0, score)
-            for s in origsmells:
-                if s not in smells:
-                    missed.append({'line': s[0], 'smell': s[1]})
         Score.objects.filter(code_id=codeid, user_id=user).delete()
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
