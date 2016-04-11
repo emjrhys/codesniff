@@ -4,6 +4,7 @@ import {
     RECEIVE_CODE, 
     REQUEST_CODE_BY_USERID,
     RECEIVE_CODE_BY_USERID,
+    RECEIVE_ALL_CODE,
     SELECT_CODE, 
     SUBMIT_CODE,
     SUBMIT_CODE_SUCCESS,
@@ -14,6 +15,35 @@ import request from 'superagent';
 export function clearCode() {
     return {
         type: CLEAR_CODE,
+    }
+}
+
+export function fetchAllCode() {
+    return function (dispatch) {
+        dispatch(requestAllCode());
+
+        return request
+            .get('http://localhost:8000/app/codes/')
+            .end(function(err, res) {
+                console.log('recieve');
+                console.log(res.body);
+                dispatch(receiveAllCode(res.body));
+            });
+    }
+}
+
+export function receiveAllCode(codes) {
+    return {
+        type: RECEIVE_ALL_CODE,
+        payload: {
+            code: codes,
+        }
+    }
+}
+
+export function requestAllCode() {
+    return {
+        type: REQUEST_CODE,
     }
 }
 
