@@ -8,17 +8,17 @@ import ShareLinkModal from '../components/ShareLinkModal';
 
 class SubmitCodeSmells extends Component {
     constructor(props) {
-		super(props);
-		this.closeModal = this.closeModal.bind(this);
-		this.clickAction = this.clickAction.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+        super(props);
+        this.closeModal = this.closeModal.bind(this);
+        this.clickAction = this.clickAction.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.selectCodeSmell = this.selectCodeSmell.bind(this);
         this.redirectToReviewCode = this.redirectToReviewCode.bind(this);
         this.state = {
-			codeSmellName: "",
-			isModalOpen: false
-		};
-	}
+            codeSmellName: "",
+            isModalOpen: false
+        };
+    }
 
     componentDidMount() {
         const { dispatch } = this.props;
