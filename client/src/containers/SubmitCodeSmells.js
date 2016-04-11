@@ -8,16 +8,17 @@ import ShareLinkModal from '../components/ShareLinkModal';
 
 class SubmitCodeSmells extends Component {
     constructor(props) {
-		super(props);
-		this.closeModal = this.closeModal.bind(this);
-		this.clickAction = this.clickAction.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.selectCodeSmell = this.selectCodeSmell.bind(this);
-		this.state = {
-			codeSmellName: "",
-			isModalOpen: false
-		};
-	}
+        super(props);
+        this.closeModal = this.closeModal.bind(this);
+        this.clickAction = this.clickAction.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.selectCodeSmell = this.selectCodeSmell.bind(this);
+        this.redirectToReviewCode = this.redirectToReviewCode.bind(this);
+        this.state = {
+            codeSmellName: "",
+            isModalOpen: false
+        };
+    }
 
     componentDidMount() {
         const { dispatch } = this.props;
@@ -40,12 +41,17 @@ class SubmitCodeSmells extends Component {
         }
     }
 
+    redirectToReviewCode(codeid) {
+        const { dispatch } = this.props;
+        dispatch(pushState(null, `/code/${codeid}`));
+    }
+
     handleSubmit() {
-		const { dispatch, code, userid, selectedLines, hasSubmitted } = this.props;
-		if (!hasSubmitted) {
-			if (selectedLines.length !== 0) {
-				dispatch(submitCode(userid, code, selectedLines));
-			} else {
+        const { dispatch, code, userid, selectedLines, hasSubmitted } = this.props;
+        if (!hasSubmitted) {
+            if (selectedLines.length !== 0) {
+                dispatch(submitCode(userid, code, selectedLines));
+            } else {
 				console.log("You didn't input any code smells!");
 			}
 		} else { 
@@ -69,25 +75,29 @@ class SubmitCodeSmells extends Component {
 
 	render() {
 		const { code, codeid, codeSmells, selectedLines } = this.props;
-		var contentByLines = code.content.split("\n");
         var shareLinkDisplay;
+        var content = "";
 
-		for (var i = 0; i < contentByLines.length; i++) {
-			var num = eval(i + 1);
-			contentByLines[i] = {
-				lineNumber: num,
-				line: contentByLines[i],
-			};
-		}   
+        if (code) {
+            content = code.content.split("\n");
+    		for (var i = 0; i < content.length; i++) {
+    			var num = eval(i + 1);
+    			content[i] = {
+    				lineNumber: num,
+    				line: content[i],
+    			};
+    		}   
+        }
         
 		if (codeid) {
 			shareLinkDisplay = (
 				<ShareLinkModal
 					codeid={codeid}
-					className="modal"
-					transitionName="modal-anim"
-					closeModal={this.closeModal}
-					isOpen={this.state.isModalOpen}
+                    className="modal"
+                    transitionName="modal-anim"
+                    closeModal={this.closeModal}
+                    isOpen={this.state.isModalOpen}
+                    clickAction={this.redirectToReviewCode}
 					transitionEnterTimeout={300}
 					transitionLeaveTimeout={300}/>
                 );
@@ -110,7 +120,8 @@ class SubmitCodeSmells extends Component {
                 </div>
                 <div className="codearea">
                     <CodeBlock
-                        codeLines={contentByLines}
+                        codeLines={content}
+                        colorClass="highlight"
                         clickAction={this.clickAction}
                         selectedLines={selectedLines}
                     />  

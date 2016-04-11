@@ -54,8 +54,7 @@ class Profile extends Component {
             displayCodes = (
                     <CodeList 
                         codelist={codes}
-                        route={this.routeToCodeReview}
-                    />
+                        route={this.routeToCodeReview}/>
                 );
         }
 
