@@ -69,6 +69,10 @@ class AllCode extends Component {
     };
 }
 
+AllCode.propTypes = {
+    codes: PropTypes.array,
+};
+
 function mapPropsToState(state) {
     let codes = state.code.codes || [];
 
