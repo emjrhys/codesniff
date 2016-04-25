@@ -6,8 +6,14 @@ import CodeList from '../components/CodeList';
 import { getUserInfo } from '../actions/user.js';
 import { fetchCodesByUserId } from '../actions/code.js';
 
-// TODO make repsonsive design
-// TODO figure out how to get all code smells that this user has reviewed
+/** 
+ * The profile component pulls information about the logged in user and displays it. Currently,
+ * it only pulls the username, email, and all the code snippets that the user has submitted.
+ *
+ * TODO Make repsonsive design.
+ * Fix design to be more similar to the all code component.
+ * Figure out how to get all code smells that this user has reviewed.
+ */
 class Profile extends Component {
 
     constructor(props) {
