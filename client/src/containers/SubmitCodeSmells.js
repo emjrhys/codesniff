@@ -6,6 +6,20 @@ import { getUserInfo } from '../actions/user.js';
 import CodeBlock from '../components/CodeBlock';
 import ShareLinkModal from '../components/ShareLinkModal';
 
+/**
+ * The submit code smells component receives the title, language, and content values from the
+ * submit code component. It creates a list of code smells and allows the user to assign a code
+ * smell to a line of the content.
+ * 
+ * Once the user is done assigning code smells, all the information (an array of code smell with
+ * line number) is sent to our backend and assigned to a code snippet. After a successful submission,
+ * a modal opens up with a sharing link. 
+ *
+ * TODO: Allow assigning multiple code smells to a line.
+ * Allow assigning multiple lines to a code smell.
+ * Display which code smell is assigning to what lines.
+ * Create syntax highlighting for different languages. 
+ */
 class SubmitCodeSmells extends Component {
     constructor(props) {
         super(props);
