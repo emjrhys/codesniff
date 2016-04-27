@@ -2,6 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import { loginUser } from '../actions/auth';
 import { connect } from 'react-redux';
 
+/** 
+ * The login component takes a username and password and attempts to authenticate the user.
+ *
+ * TODO: Currently, the username is the user's email, and the naming is confusing.
+ */
 class Login extends Component {
 
     constructor(props) {

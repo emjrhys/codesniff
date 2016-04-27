@@ -6,6 +6,16 @@ import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 import CodeBlock from '../components/CodeBlock';
 
+/**
+ * The review code component pulls the content and list of code smells. The user will be able
+ * to assign individual line of code with a code smell and submit it. This will redirect the
+ * user to a check code smell component where a score as well correct, incorrect, and missed
+ * lines.
+ * 
+ * TODO: Add more thorough error checking. 
+ * Display what line corresponds to which code smell.
+ * Create syntax highlighting for different languages. 
+ */
 class ReviewCode extends Component {
     constructor(props) {
         super(props);
@@ -26,8 +36,6 @@ class ReviewCode extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        // TODO Add (nextProps.codeReview.id !== this.props.codeReview.id) once auth is fixed
-        // TODO Change && to ||
         const { dispatch, id } = nextProps;
 
         if(!this.props.codeReview &&

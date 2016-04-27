@@ -7,12 +7,19 @@ import {
 } from '../constants/ActionTypes';
 import request from 'superagent';
 
+/**
+ * Requests code smells.
+ */
 function requestCodeSmells() {
     return {
         type: REQUEST_CODESMELLS,
     }
 }
 
+/**
+ * Receive the code smells and assigns it to smells.
+ * @param json: smells
+ */
 function receiveCodeSmells(json) {
     return {
         type: RECEIVE_CODESMELLS,
@@ -22,6 +29,13 @@ function receiveCodeSmells(json) {
     }
 }
 
+/**
+ * Receive the score as well as the correct, incorrect and missed lines.
+ * @param score
+ * @param missed
+ * @param correct
+ * @param incorrect
+ */
 function receiveCodeSmellsScore(score, missed, correct, incorrect) {
     return {
         type: RECEIVE_SCORE,
@@ -34,12 +48,21 @@ function receiveCodeSmellsScore(score, missed, correct, incorrect) {
     }
 }
 
+/**
+ * Clears all the code smells.
+ */
 export function clearCodeSmells() {
     return {
         type: CLEAR_CODESMELLS
     }
 }
 
+/**
+ * Fetches the code smells, currently not being used.
+ *
+ * TODO: Use it, we're currently hardcoding the code smells in because that was implemented 
+ *      before this endpoint was created.
+ */
 export function fetchCodeSmells() {
     return function (dispatch) {
         dispatch(requestCodeSmells());
@@ -57,6 +80,17 @@ export function fetchCodeSmells() {
     }
 }
 
+/**
+ * Add code smells takes a user's attempt to code and returns a score as well as information about what
+ * they got correct, incorrect and missed.
+ * @param userid
+ * @param codeid
+ * @param codesmells
+ *
+ * TODO: Relate the userid with the code smells submission so we can later pull submissions by user.
+ * If the creator of the code snippet submits, their attempt is marked as the correct response for all
+ *      future attempts. Is that a good idea?
+ */
 export function addCodeSmells(userid, codeid, codesmells) {
     return function (dispatch) {
         return request
@@ -69,7 +103,6 @@ export function addCodeSmells(userid, codeid, codesmells) {
                 if(err || !res.ok) {
                     console.log("add codesmells failure...");
                 } else {
-                    // data.correct[0].smell
                     console.log("add codesmells success!");
                     var data = JSON.parse(res.text);
                     var score = JSON.parse(data.score);

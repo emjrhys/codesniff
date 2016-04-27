@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react'
 
+/**
+ * The welcome component displays the log in and sign up buttons, which will redirect the user.
+ */
 class Welcome extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +13,6 @@ class Welcome extends Component {
         this.context.history.pushState(null, '/profile');
     }
     routeToSignUp() {
-        // TODO: implement sign up component
         this.context.history.pushState(null, '/signup');
     }
     render() {

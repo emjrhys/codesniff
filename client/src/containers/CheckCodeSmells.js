@@ -3,6 +3,13 @@ import { connect } from 'react-redux';
 import { fetchCode } from '../actions/code.js';
 import CodeBlock from '../components/CodeBlock';
 
+/**
+ * The check code smell component displays the score of the code snippet as well as the lines that
+ * were correctly and incorrectly identified as well as missed lines. 
+ *
+ * TODO: Simplify logic for displaying line colors, right now it's a little hacky.
+ * Create syntax highlighting for different languages. 
+ */
 class CheckCodeSmells extends Component {
 	constructor(props) {
 		super(props);

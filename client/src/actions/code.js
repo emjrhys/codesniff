@@ -12,12 +12,20 @@ import {
 } from '../constants/ActionTypes';
 import request from 'superagent';
 
+/**
+ * Clears all the code.
+ */
 export function clearCode() {
     return {
         type: CLEAR_CODE,
     }
 }
 
+/**
+ * Fetches all the code.
+ *
+ * TODO: Handle failure case.
+ */
 export function fetchAllCode() {
     return function (dispatch) {
         dispatch(requestAllCode());
@@ -30,6 +38,9 @@ export function fetchAllCode() {
     }
 }
 
+/**
+ * Receives all the code and passes it back to RECEIVE_ALL_CODE reducer.
+ */
 export function receiveAllCode(codes) {
     return {
         type: RECEIVE_ALL_CODE,
@@ -39,12 +50,19 @@ export function receiveAllCode(codes) {
     }
 }
 
+/**
+ * Request all the codes, similar to requestCode.
+ */
 export function requestAllCode() {
     return {
         type: REQUEST_CODE,
     }
 }
 
+/**
+ * Request a code by id.
+ * @param id
+ */
 function requestCode(id) {
     return {
         type: REQUEST_CODE,
@@ -53,6 +71,10 @@ function requestCode(id) {
     }
 }
 
+/**
+ * Receives the code passed in as json and sets isFetching to be false.
+ * @param json: code snipept
+ */
 function receiveCode(json) {
     return {
         type: RECEIVE_CODE,
@@ -61,6 +83,10 @@ function receiveCode(json) {
     }
 }
 
+/**
+ * Requests all the code that has been submitted by the user with userid.
+ * @param userid
+ */
 function requestCodeByUserId(userid) {
     return {
         type: REQUEST_CODE_BY_USERID,
@@ -71,18 +97,27 @@ function requestCodeByUserId(userid) {
     }
 }
     
-
-function receiveCodesByUserId(json) {
+/**
+ * Receive all the codes by userid and assigns it to codelist.
+ * @param codes: all the code snippets
+ */
+function receiveCodesByUserId(codes) {
     return {
         type: RECEIVE_CODE_BY_USERID,
         payload: {
             isFetchingByUserId: false,
             hasNewLoad: false,
-            codelist: json 
+            codelist: codes 
         }
     }
 }
 
+/**
+ * Select code assigns a line number and a code smell name and passes it back to the code reducer
+ * to add to the selectedLines array.
+ * @param num: line number
+ * @param codesmell: name of code smell
+ */
 export function selectCode(num, codesmell) {
     return {
         type: SELECT_CODE, 
@@ -93,6 +128,10 @@ export function selectCode(num, codesmell) {
     }
 }
 
+/**
+ * Trasnfer code passes the code object to another action.
+ * @param code: code snippet
+ */ 
 export function transferCode(code) { 
     return {
         type: TRANSFER_CODE,
@@ -102,6 +141,10 @@ export function transferCode(code) {
     }  
 }
 
+/**
+ * Submit code success assigns a newly created id to codeid and marks hasSubmitted to true.
+ * @param id: codeid
+ */
 export function submitCodeSuccess(id) {
     return {
         type: SUBMIT_CODE_SUCCESS,
@@ -112,6 +155,10 @@ export function submitCodeSuccess(id) {
     }
 }
 
+/**
+ * Fetch code requests a code snippet by id.
+ * @param id: codeid
+ */
 export function fetchCode(id) {
     return function (dispatch) {
      
@@ -133,6 +180,10 @@ export function fetchCode(id) {
     }
 }
 
+/**
+ * Fetches all codes that's been submitted by a user.
+ * @param userid
+ */
 export function fetchCodesByUserId(userid) {
     return function (dispatch) {
 
@@ -153,6 +204,12 @@ export function fetchCodesByUserId(userid) {
     }
 }
 
+/**
+ * Submit code submits a user's submission of a code snippet along with its codesmells.
+ * @param userid
+ * @param code
+ * @param codesmells: selectedLines
+ */
 export function submitCode(userid, code, codesmells) {
     return function (dispatch) {
         return request

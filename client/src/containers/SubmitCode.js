@@ -4,7 +4,15 @@ import { getUserInfo } from '../actions/user.js';
 import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 
-
+/**
+ * The submit code component takes in a title, language and content (with some basic error checking)
+ * and passes it onto the submit code smells component. 
+ *  
+ * Right now, language only handles Java, Python, C and C++. 
+ *
+ * TODO: Create syntax highlighting for different languages. 
+ * Refine error checking for inputs.
+ */
 class SubmitCode extends Component {
 	constructor(props) {
 		super(props);

@@ -2,6 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { signup } from '../actions/auth';
 import { connect } from 'react-redux';
 
+/**
+ * The signup component takes a username, email and password and creates an account for the user.
+ *
+ * TODO: Add error checking to handleConfirm to make sure the two passwords are the same.
+ * Check if the username is available.
+ * Add safety standards to the password (length, letters, etc.)
+ */
 class SignUp extends Component {
 
     constructor(props) {
