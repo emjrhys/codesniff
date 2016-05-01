@@ -118,7 +118,7 @@ class CodeList(mixins.ListModelMixin,
 
     def get_queryset(self):
         queryset = Code.objects.all()
-        title = self.request.query_params.get('content', None)
+        title = self.request.query_params.get('title', None)
         language = self.request.query_params.get('language', None)
         username = self.request.query_params.get('creator', None)
         date_added = self.request.query_params.get('date_added', None)
