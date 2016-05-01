@@ -23,24 +23,33 @@ The base url is:
 
 Endpoints | Actions | Notes 
 --- | --- | --- 
-users | GET | Gets list of all users. <br> Query parameters: username <br> `Ex: http://127.0.0.1:8000/app/users?username=Hanna`
- | POST | Create a new user. Post the username, email, and password
-users/:id | GET | Get details of specified user 
- | PUT | Replace entire user with supplied user 
+users | GET | Gets list of all users. <br> #####Query parameters: <br>
+username: the username of the user you want returned<br> `Ex: http://127.0.0.1:8000/app/users?username=Hanna`
+ | POST | Create a new user. Post the username, email, and password.
+users/:id | GET | Get details of specified user. 
+ | POST | Partially update a user. 
+ | PUT | Replace entire user with supplied user. 
  | DELETE | Delete specified user 
-recipes | GET | Gets list of all recipes 
- | POST | Creates a new recipe. Responds with details of new recipe 
- | OPTIONS | 
-recipes/:id | GET | Get details of specified recipe 
- | PUT | Replace entire recipe with supplied recipe 
- | DELETE | Delete specified recipe 
+users/me | GET | Gets current logged-in user's id, username, email, and list of submitted code snippets.
+codes | GET | Gets list of all code snippets. <br> #####Query parameters: <br>title: the title of the code snippet <br> 
+language: the language of the code snippet (Java, C, etc) <br> 
+username: the username of the creator of the code snippet <br>
+date_added: the date added of the code snippet
+ | POST | Create a new code snippet. Post the title, content, language, creator, and difficulty.
+codes/:id | GET | Get details of specified code snippet. 
+ | POST | Partially update a code snippet. 
+ | PUT | Replace entire code snippet with supplied code snippet.
+ | DELETE | Delete specified code snippet.
+codesmells | GET | Gets list of all code smells. <br> Query parameters: code, username, line, smell <br> Note: The parameter "code" is a code snippet's id. 
+ | POST | Create a new code snippet. Post the title, content, language, creator, and difficulty.
+codes/:id | GET | Get details of specified code snippet. 
+ | POST | Partially update a code snippet. 
+ | PUT | Replace entire code snippet with supplied code snippet.
+ | DELETE | Delete specified code snippet.
 
 Note: For the user fields in the models, username can be used in GET request queries but user id needs to be used in POST requests. For the code fields in the models, code id needs to be used in both GET request queries and POST requests
-- To create a user, post to http://127.0.0.1:8000/app/users/. Post the username, email, and password
-- http://127.0.0.1:8000/app/users/ returns a list of all users
-- http://127.0.0.1:8000/app/users/{id} returns user with id {id}
-- http://127.0.0.1:8000/app/codes/ returns a list of all code snippets
-- http://127.0.0.1:8000/app/codes/{id} returns a single code snippet with id {id}
+
+
 - http://127.0.0.1:8000/app/codesmells/ returns a list of all codesmells 
 - http://127.0.0.1:8000/app/codesmells/{id} returns the specific codesmell with id {id} 
 - http://127.0.0.1:8000/app/scores/ returns all a list of all scores
