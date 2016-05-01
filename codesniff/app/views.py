@@ -39,9 +39,19 @@ class UserList(mixins.ListModelMixin,
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of users.
+
+        Query parameters:
+
+        - username: the username of the user you want returned
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Add a new user. 
+        """
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = User.objects.create_user(username=request.data['username'], email=request.data['email'], password=request.data['password'])
@@ -68,15 +78,27 @@ class UserDetail(mixins.RetrieveModelMixin,
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get details of specified user.
+        """
         return self.retrieve(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Partially update a user.
+        """
         return self.partial_update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        """
+        Replace entire user with supplied user.
+        """
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        Delete specified user. 
+        """
         return self.destroy(request, *args, **kwargs)
 
 """
@@ -84,8 +106,12 @@ API function for /users/me endpoint.
 Returns current logged in user id, username, email, and list of submitted code snippets.
 """
 class UserMe(generics.GenericAPIView):
+    """
+    Gets current logged-in user's id, username, email, and list of submitted code snippets.
+
+    Supply user's unique token in the request header. The header is "Authorization" and the value is "Token {put token here}"
+    """
     queryset = Code.objects.all()
-    serializer_class = CodeSerializer
 
     def get(self, request, *args, **kwargs):
         username = self.request.user
@@ -103,6 +129,8 @@ class UserMe(generics.GenericAPIView):
 """
 API function for /codes endpoint.
 Supports GET and POST for list of all code snippets. 
+
+TODO: Implement query by difficulty.
 """
 class CodeList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -111,9 +139,25 @@ class CodeList(mixins.ListModelMixin,
     serializer_class = CodeSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of code snippets.
+
+        Query parameters:
+
+        - title: the title of the code snippet 
+
+        - language: the language of the code snippet (Java, C, etc) 
+
+        - username: the username of the creator of the code snippet
+
+        - date_added: the date added of the code snippet
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Add a new code snippet.
+        """
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -144,22 +188,57 @@ class CodeDetail(mixins.RetrieveModelMixin,
     serializer_class = CodeSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get details of specified code snippet. 
+        """
         return self.retrieve(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Partially update a code snippet. 
+        """
         return self.partial_update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        """
+        Replace entire code snippet with supplied code snippet.
+        """
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        Delete specified code snippet.
+        """
         return self.destroy(request, *args, **kwargs)
 
+"""
+API function for /submit endpoint.
+"""
 class CodeSubmit(generics.GenericAPIView):
     queryset = Code.objects.all()
-    serializer_class = CodeSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+        Submit a new code snippet with a list of codesmells together.
+
+        Example POST body:
+        <code>
+
+            {
+                "creator" : 18,
+                "code" : "{'title' : 'Third Code Snippet!', 'content' : 'sum = 3+4', 'language' : 'Python'}",
+                "smells" : "[{'line': 1, 'smell': 'Vague string'}, {'line': 2, 'smell': 'Bad variable name'}]"
+            }
+
+        </code>
+        ---
+        parameters:
+            - name: body
+              paramType: body
+              description: See example POST body above
+        consumes:
+            - application/json
+        """
         data = request.data
         user = data['creator']
         code = eval(data['code'])
@@ -180,11 +259,36 @@ class CodeSubmit(generics.GenericAPIView):
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
         return Response(CodeSerializer(code).data, status=status.HTTP_201_CREATED)
 
+"""
+API function for /checksmells endpoint.
+"""
 class CodeCheck(generics.GenericAPIView):
     queryset = CodeSmell.objects.all()
-    serializer_class = CodeSmellSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+        Submit a list of code smells and check it against the original uploader's code snippets to calculate a score for the user. 
+
+        Example POST body:
+        <code>
+
+            {
+                "user" : 17,
+                "code" : 38,
+                "smells" : "[{'line': 1, 'smell': 'Vague string'}, {'line': 2, 'smell': 'Bad variable name'}]"
+            }
+
+        </code>
+
+        Get back a list of incorrect, missed, and correct code smells labelled.
+        ---
+        parameters:
+            - name: body
+              paramType: body
+              description: See example POST body above
+        consumes:
+            - application/json
+        """
         data = request.data
         user = data['user']
         codeid = data['code']
@@ -244,9 +348,25 @@ class CodeSmellList(mixins.ListModelMixin,
     serializer_class = CodeSmellSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of code smells.
+
+        Query parameters:
+
+        - code: the id of the code snippet the code smell is labelled on 
+
+        - username: the username of the user who labelled the code smell
+
+        - line: the line number of the code smell
+
+        - smell: the name of the code smell
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Add a new code smell.
+        """
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -277,15 +397,27 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
     serializer_class = CodeSmellSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get details of specified code smell. 
+        """
         return self.retrieve(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Partially update a code smell. 
+        """
         return self.partial_update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        """
+        Replace entire code smell with supplied code smell.
+        """
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        Delete specified code smell.
+        """
         return self.destroy(request, *args, **kwargs)
 
 """
@@ -299,9 +431,15 @@ class SmellList(mixins.ListModelMixin,
     serializer_class = SmellSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get list of predetermined code smells to choose for labelling. 
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Add a new code smell to the list of predetermined code smells to choose for labelling. 
+        """
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -320,15 +458,27 @@ class SmellDetail(mixins.RetrieveModelMixin,
     serializer_class = SmellSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get details of specified code smell from the list of predetermined code smells to choose for labelling.
+        """
         return self.retrieve(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Partially update a code smell from the list of predetermined code smells to choose for labelling. 
+        """
         return self.partial_update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        """
+        Replace an entire code smell with supplied code smell for the list of predetermined code smells to choose for labelling. 
+        """
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        Delete specified code smell from list of predetermined code smells to choose for labelling. 
+        """
         return self.destroy(request, *args, **kwargs)
 
 """
@@ -342,9 +492,23 @@ class ScoreList(mixins.ListModelMixin,
     serializer_class = ScoreSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of scores.
+
+        Query parameters:
+
+        - code: the id of the code snippet the score is associated with
+
+        - username: the username of the user who received a score
+
+        - score: a specific score value (between 0 an 100)
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Add a new score. 
+        """
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -372,13 +536,25 @@ class ScoreDetail(mixins.RetrieveModelMixin,
     serializer_class = ScoreSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get details of specified score. 
+        """
         return self.retrieve(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Partially update a score.
+        """
         return self.partial_update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        """
+        Replace entire score with supplied score.
+        """
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        Delete specified score.
+        """
         return self.destroy(request, *args, **kwargs)

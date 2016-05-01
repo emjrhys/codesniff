@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'app',
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,4 +102,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )
+}
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': ['internal'],
 }
