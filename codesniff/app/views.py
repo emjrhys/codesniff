@@ -15,7 +15,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
-# API functions
+"""
+Custom permissions.
+Currently not being used because authentication is mostly handled by the front end. Currently anyone can use the API endpoints.
+
+TODO: determine security/permissions and modify function accordingly.
+"""
 class UserPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method == 'GET' and request.auth == None:
@@ -23,12 +28,15 @@ class UserPermissions(permissions.BasePermission):
         else:
             return True
 
+"""
+API function for /users endpoint.
+Supports GET and POST for list of all users.
+"""
 class UserList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #permission_classes = (UserPermissions,)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -48,6 +56,10 @@ class UserList(mixins.ListModelMixin,
             queryset =  queryset.filter(username=username)
         return queryset
 
+"""
+API function for /users/:id endpoint.
+Supports GET, POST, PUT, and DELETE for specified user.
+"""
 class UserDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -67,6 +79,10 @@ class UserDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+"""
+API function for /users/me endpoint.
+Returns current logged in user id, username, email, and list of submitted code snippets.
+"""
 class UserMe(generics.GenericAPIView):
     queryset = Code.objects.all()
     serializer_class = CodeSerializer
@@ -84,7 +100,10 @@ class UserMe(generics.GenericAPIView):
             data = {"user": userSerializer[0], "code": codeSerializer}
             return Response(data, status=status.HTTP_200_OK)   
             
-
+"""
+API function for /codes endpoint.
+Supports GET and POST for list of all code snippets. 
+"""
 class CodeList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -113,6 +132,10 @@ class CodeList(mixins.ListModelMixin,
             queryset = queryset.filter(date_added=date_added)
         return queryset
 
+"""
+API function for /codes/:id endpoint.
+Supports GET, POST, PUT, and DELETE for specified code snippet.
+"""
 class CodeDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -210,6 +233,10 @@ class CodeCheck(generics.GenericAPIView):
                  'missed': missed }
         return Response(data, status=status.HTTP_200_OK)
 
+"""
+API function for /codesmells endpoint.
+Supports GET and POST for list of all code smells.
+"""
 class CodeSmellList(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -238,6 +265,10 @@ class CodeSmellList(mixins.ListModelMixin,
             queryset = queryset.filter(smell=smell)
         return queryset 
 
+"""
+API function for /codesmells/:id endpoint.
+Supports GET, POST, PUT, and DELETE for specified code smell.
+"""
 class CodeSmellDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -257,6 +288,10 @@ class CodeSmellDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+"""
+API function for /smells endpoint.
+Supports GET and POST for list of all predetermined code smells used in CodeSniff.
+"""
 class SmellList(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -273,6 +308,10 @@ class SmellList(mixins.ListModelMixin,
         queryset = Smell.objects.all()
         return queryset 
 
+"""
+API function for /smells/:id endpoint.
+Supports GET, POST, PUT, and DELETE for specified code smell from predeterminedlist of code smells used in CodeSniff.
+"""
 class SmellDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -292,6 +331,10 @@ class SmellDetail(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+"""
+API function for /scores endpoint.
+Supports GET and POST for list of all scores.
+"""
 class ScoreList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -317,6 +360,10 @@ class ScoreList(mixins.ListModelMixin,
             queryset = queryset.filter(score=score)
         return queryset
 
+"""
+API function for /scores/:id endpoint.
+Supports GET, POST, PUT, and DELETE for specified score.
+"""
 class ScoreDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -335,6 +382,3 @@ class ScoreDetail(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
-
-
-# Create your views here.

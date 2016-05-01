@@ -13,13 +13,32 @@ This will start the webpack dev server on http://localhost:8080/webpack-dev-serv
 
 
 ### API
-- To create a user, post to http://127.0.0.1:8000/app/users/. Post the username, email, and password
+####Authentication
 - To get the user's token, post to http://127.0.0.1:8000/api-token-auth/. Post the username and password of the user. 
 - To include the token in a request, include it in the request header. The header is "Authorization" and the value is "Token {put token here}"
 
-####URls
-Note: For the user fields in the models, username can be used in GET request queries but user id needs to be used in POST requests. For the code fields in the models, code id needs to be used in both GET request queries and POST requests
+####Endpoints
+The base url is:
+`http://127.0.0.1:8000/app/` 
 
+Endpoints | Actions | Notes 
+--- | --- | --- 
+users | GET | Gets list of all users. <br> 
+				Query parameters: username
+				Ex: http://127.0.0.1:8000/app/users?username=Hanna
+ | POST | Create a new user. Post the username, email, and password
+users/:id | GET | Get details of specified user 
+ | PUT | Replace entire user with supplied user 
+ | DELETE | Delete specified user 
+recipes | GET | Gets list of all recipes 
+ | POST | Creates a new recipe. Responds with details of new recipe 
+ | OPTIONS | 
+recipes/:id | GET | Get details of specified recipe 
+ | PUT | Replace entire recipe with supplied recipe 
+ | DELETE | Delete specified recipe 
+
+Note: For the user fields in the models, username can be used in GET request queries but user id needs to be used in POST requests. For the code fields in the models, code id needs to be used in both GET request queries and POST requests
+- To create a user, post to http://127.0.0.1:8000/app/users/. Post the username, email, and password
 - http://127.0.0.1:8000/app/users/ returns a list of all users
 - http://127.0.0.1:8000/app/users/{id} returns user with id {id}
 - http://127.0.0.1:8000/app/codes/ returns a list of all code snippets
