@@ -23,9 +23,7 @@ The base url is:
 
 Endpoints | Actions | Notes 
 --- | --- | --- 
-users | GET | Gets list of all users. <br> 
-				Query parameters: username
-				Ex: http://127.0.0.1:8000/app/users?username=Hanna
+users | GET | Gets list of all users. <br> Query parameters: username <br> `Ex: http://127.0.0.1:8000/app/users?username=Hanna`
  | POST | Create a new user. Post the username, email, and password
 users/:id | GET | Get details of specified user 
  | PUT | Replace entire user with supplied user 
