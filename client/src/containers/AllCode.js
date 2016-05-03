@@ -4,6 +4,12 @@ import { bindActionCreators } from 'redux';
 import { pushState } from 'redux-router';
 import { connect } from 'react-redux';
 
+/**
+* The AllCode component displays all code snippets for user to browse through.
+* 
+* TODO: Add more filters.
+* Display other interesting information like uploader's username, average score, etc.
+*/
 class AllCode extends Component {
     constructor(props) {
         super(props);
