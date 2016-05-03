@@ -302,12 +302,18 @@ class CodeCheck(generics.GenericAPIView):
             except Exception as error:
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
         smells = map(lambda x:(x['line'], x['smell']), smells)
+        """
+        Code smells are compared against answers (code smells assigned by creator)
+        """
         origsmells = CodeSmell.objects.filter(code_id=codeid, user=Code.objects.filter(id=codeid)[0].creator)
         origsmells = map(lambda x:(x.line, x.smell), origsmells)
         score = 0
         correct = []
         incorrect = []
         missed = []
+        """
+        Score is calculated as follows: ((# correct answers) - 0.5*((# missed answers) + (# incorrect answers)))/(# originally assigned code smells)
+        """
         if len(origsmells) > 0:
             for s in smells:
                 if s in origsmells:
@@ -325,6 +331,9 @@ class CodeCheck(generics.GenericAPIView):
         Score.objects.filter(code_id=codeid, user_id=user).delete()
         score = Score(code_id=codeid, user_id=user, score=score)
         score.save()
+        """
+        Code's difficulty is assigned based on number of code smells (capped at 10) and average score
+        """
         scores = Score.objects.filter(code_id=codeid)
         scores = map(lambda x: x.score, scores)
         avg = sum(scores)/len(scores)

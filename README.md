@@ -26,4 +26,9 @@ See documentation at: http://localhost:8000/docs/
 - To get the user's token, post to http://localhost/api-token-auth/. Post the username and password of the user. 
 - To include the token in a request, include it in the request header. The header is "Authorization" and the value is "Token {put token here}"
 
-
+#### Reset Database
+Run resetdb.py to flush the current database and populate with sample data
+Instructions:
+- ./manage.py shell OR python manage.py shell
+- execfile('resetdb.py')
+- exit()
